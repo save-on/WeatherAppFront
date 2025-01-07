@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rain Animation Backgorund</title>
+    <link rel="stylesheet" href="rainStyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="cloud"></div>
+    </div>
+    <script>
+      function rain() {
+        let cloud = document.querySelector(".cloud");
+        let e = document.createElement("div");
+
+        e.classList.add("drop");
+        clould.appendChild(e);
+
+        // setTimeout(function () {
+        //   cloud.removeChild(e);
+        // }, 2000);
+      }
+
+      setInterval(function () {
+        rain();
+      }, 20);
+    </script>
+  </body>
+</html>
