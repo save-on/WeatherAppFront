@@ -18,14 +18,13 @@ body {
   height: 400px;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rbga(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .container .cloud {
   position: relative;
   width: 320px;
   height: 100px;
-  background: #fff;
   border-radius: 100px;
   filter: drop-shadow(8px 8px 0 #0005);
   animation: animateCloud 2s steps(1) infinite;
@@ -59,11 +58,12 @@ body {
   inset: 0;
   background: #484f59;
   border-radius: 100px;
+  z-index: 1000;
 }
 
 .container .cloud .drop {
   position: absolute;
-  top: 0;
+  top: 40px;
   background: #05a2eb;
   width: 2px;
   height: 10px;
@@ -73,18 +73,18 @@ body {
 
 @keyframes animate {
   0% {
-    trasnsmfor: translateY(0) scaleY(1);
+    transform: translateY(0) scaleY(1);
   }
 
   70% {
-    trasnsmfor: translateY(360px) scaleY(1);
+    transform: translateY(360px) scaleY(1);
   }
 
   80% {
-    trasnsmfor: translateY(360px) scaleY(0.2);
+    transform: translateY(360px) scaleY(0.2);
   }
 
   100% {
-    trasnsmfor: translateY(0) scaleY(0.2) scaleX(15);
+    transform: translateY(360px) scaleY(0.1) scaleX(15);
   }
 }
