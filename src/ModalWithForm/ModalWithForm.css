@@ -1,0 +1,161 @@
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__content {
+  background-color: white;
+  max-width: 496px;
+  height: 436px;
+  width: 100%;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.modal-form {
+  padding-left: 28px;
+}
+
+.add__garment-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px 28px 24px 28px;
+  padding-top: 28px;
+  padding-left: 28px;
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  margin: 0;
+}
+
+.close {
+  background-image: url("../../images/close.svg");
+  height: 20px;
+  width: 20px;
+  border: none;
+  /* margin-right: 28px; */
+  padding: 0;
+}
+
+.close:hover {
+  cursor: pointer;
+}
+
+.inputs {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  /* padding-left: 28px; */
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid;
+  margin-bottom: 24px;
+  width: 440px;
+  color: rgba(0, 0, 0, 1);
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 0;
+}
+
+.input-header {
+  margin-top: 0;
+  margin-bottom: 8px;
+  padding: 0px;
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.weather-type-header {
+  margin-bottom: 0;
+}
+
+.weather-inputs {
+  margin-top: 12px;
+  margin-bottom: 32px;
+}
+
+.weather-type-button {
+  accent-color: black;
+}
+.weather-type-button:hover {
+  cursor: pointer;
+}
+
+.modal-form-submit {
+  max-width: 124px;
+  width: 100%;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-family: "Cabinet Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-form-buttons {
+  display: flex;
+}
+
+.modal__login {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  border: 0;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.modal-form-submit:hover {
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+.radio-label {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "Cabinet Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.radio-label:hover {
+  color: #000;
+}
+
+input[type="radio"]:checked + label {
+  color: #000;
+}
