@@ -1,0 +1,51 @@
+.card_name {
+  position: relative;
+  top: 17px;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  padding: 2px 12px;
+  text-align: center;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.card_image {
+  max-width: 100%;
+  width: 323px;
+  height: 326px;
+  border-radius: 19px;
+}
+
+.card_image:hover {
+  cursor: pointer;
+}
+
+.card_section {
+  margin-top: 44px;
+  color: #000;
+  font-family: Cabinet Grotesk;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.card_items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.card__like {
+  width: 18px;
+  height: 15px;
+  border: none;
+  background-color: #fff;
+}
