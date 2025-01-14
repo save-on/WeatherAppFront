@@ -1,0 +1,76 @@
+.preview-image-content {
+  background-color: white;
+  max-width: 498px;
+  height: 610px;
+  width: 100%;
+  border-radius: 20px;
+  margin: auto;
+}
+
+.image-preview {
+  border-radius: 16px;
+  max-width: 498px;
+  height: 498px;
+  display: flex;
+  width: 100%;
+  object-fit: cover;
+}
+
+.preview-image-close {
+  background-image: url("../../images/preview-close.svg");
+  background-color: transparent;
+  position: absolute;
+  margin-left: 454px;
+  margin-top: 20px;
+  height: 20px;
+  width: 20px;
+  border: none;
+  padding: 0;
+  color: rgba(255, 255, 255, 1);
+}
+
+.preview-image-close:hover {
+  cursor: pointer;
+}
+
+.preview-image-name {
+  display: flex;
+  justify-content: space-between;
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-top: 20px;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-bottom: 12px;
+}
+
+.preview-image-weather-type {
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-left: 32px;
+  margin-bottom: 32px;
+}
+
+.delete-button {
+  background-color: #fff;
+  border: none;
+  color: #ff4d00;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.delete-button:hover {
+  cursor: pointer;
+  color: #ff4d00;
+}
