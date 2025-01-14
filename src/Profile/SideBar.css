@@ -1,0 +1,113 @@
+.sidebar-container {
+  display: flex;
+  font-family: "Cabinet", sans-serif;
+  justify-content: flex-start;
+  width: 229px;
+  height: 56px;
+  font-size: 20px;
+  font-weight: 700;
+  padding-right: 116px;
+  flex-direction: column;
+}
+
+.sidebar__logout-button {
+  background-color: transparent;
+  border: none;
+  margin-top: 8px;
+  display: flex;
+  color: #000;
+  font-family: "Cabinet Grotesk";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0;
+}
+
+.sidebar__logout-button:hover {
+  cursor: pointer;
+}
+
+.sidebar__change_profile_data-button {
+  background-color: transparent;
+  border: none;
+  margin-top: 24px;
+  display: flex;
+  color: #000;
+  font-family: "Cabinet Grotesk";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0;
+}
+
+.sidebar__change_profile_data-button:hover {
+  cursor: pointer;
+}
+
+.profile__logo {
+  font-family: "Familjen Grotesk", sans-serif;
+  display: flex;
+  margin: 0 0 0px 40px;
+  font-size: 20px;
+  font-weight: 700;
+  height: 40px;
+  gap: 16px;
+  margin: 0;
+}
+
+.profile__avatar-image {
+  border-radius: 50%;
+  background-color: black;
+  height: 56px;
+  width: 56px;
+}
+.profile__avatar-name {
+  align-self: center;
+}
+
+.modal__input-title {
+  color: #000;
+  font-family: "Cabinet Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  padding-bottom: 8px;
+}
+
+.modal__input {
+  border: none;
+  border-bottom: 1px solid;
+  width: 440px;
+}
+
+.edit-modal__input-container {
+  margin-bottom: 24px;
+  width: 496px;
+  padding: 0;
+  list-style: none;
+}
+
+.modal__inputs {
+  padding-bottom: 24px;
+}
+
+.modal__input-container-button {
+  display: inline-flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-family: "Cabinet Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  background-color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
