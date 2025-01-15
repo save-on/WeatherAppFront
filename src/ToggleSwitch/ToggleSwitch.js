@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from "react"; // useState not used?
 import "./ToggleSwitch.css";
 import { CurrentTemperatureUnitContex } from "../../contexts/CurrentTemperatureUnitContex";
 

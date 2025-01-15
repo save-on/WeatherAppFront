@@ -27,7 +27,7 @@ const Profile = ({
             + Add New
           </button>
         </div>
-        <ClothingSection
+        <ClothesSection
           clothingItems={clothingItems}
           onSelectCard={onSelectCard}
           onCreate={onCreate}
