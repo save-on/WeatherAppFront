@@ -16,7 +16,7 @@ Users should be able to **sign up, log in, and log out** securely.
 
 - User registration requires **name, email, password, and optional avatar upload**.
 - Passwords must be securely hashed.
-- Users can update their profile, including their **name, avatar, and location**.
+- Users can update their profile, including their **name, avatar, and location**. <!-- Updating location will be in a later feature -->
 - Use **JWT-based authentication** for session management.
 
 ---
