@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
-    "start": "react-scripts start",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
