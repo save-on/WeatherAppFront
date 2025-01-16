@@ -1,8 +1,8 @@
 import "./Header.css";
-import logoImage from "../../images/Logo.svg";
-import avatarImage from "../Images/avatar.svg"; // Not used?
-import { CurrentUserContext } from "../../contexts'CurrentUserContext";
-import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
+import logoImage from "../../Images/Logo.svg";
+import avatarImage from "../../Images/avatar.svg"; // Not used?
+import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 

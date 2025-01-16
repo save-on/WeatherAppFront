@@ -1,6 +1,6 @@
 import React from "react";
-import ItemCard from "../ItemCard/ItemCard";
-import "./ClothesSections.css";
+import ItemCard from "../ItemCard/ItemCard.js";
+import "./ClothesSection.css";
 
 const ClothesSection = ({
   onSelectCard,

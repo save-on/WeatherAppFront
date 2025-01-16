@@ -1,4 +1,4 @@
-import { processServerResponse } from "./Api";
+import { processServerResponse } from "./Api.js";
 
 const coordinates = { latitude: 38.8816, longitude: -77.091 };
 const APIKey = "8948385378cb8d6c557940f79b21048f";

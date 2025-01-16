@@ -1,21 +1,21 @@
 import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
-import Footer from "../Footer/Footer";
+import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 
 //Context imports
-import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext.js";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
+import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
+import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 //Utility imports
 import {
   getForecastWeather,
   parseWeatherData,
-} from "../../utils/WeatherAPI.js";
+} from "../../Utils/WeatherAPI.js";
 
 import {
   getItems,
@@ -23,7 +23,7 @@ import {
   deleteItems,
   addCardLike,
   removeCardLike,
-} from "../../utils/Api.js";
+} from "../../Utils/Api.js";
 
 import {
   login,
@@ -31,17 +31,17 @@ import {
   register,
   checkToken,
   getUserData,
-} from "../../utils/auth.js";
+} from "../../Utils/Auth.js";
 
 //Modal imports
 import DeleteItem from "../DeleteItem/DeleteItem.js";
-import ItemModal from "../ItemModal/ItemModal";
-import LoginModal from "../LogInModal/LogInModalForm.js";
+import ItemModal from "../ItemModal/ItemModal.js";
+import LoginModal from "../LoginModal/LoginModalForm.js";
 import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
-import * as api from "../../utils/Api";
+import * as api from "../../Utils/Api.js";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -52,7 +52,7 @@ function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-  const history = useHistory("");
+  const history = useNavigate("");
   const [token, setToken] = useState(localStorage.getItem("jwt") || "");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -260,7 +260,7 @@ function App() {
           onRegister={handleOpenRegisterModal}
           user={currentUser}
         />
-        <Switch>
+        <Routes>
           <Route exact path="/">
             <Main
               weatherTemp={temp}
@@ -284,7 +284,7 @@ function App() {
               onCardLike={handleCardLike}
             />
           </ProtectedRoute>
-        </Switch>
+        </Routes>
 
         {activeModal === "login" && (
           <LoginModal

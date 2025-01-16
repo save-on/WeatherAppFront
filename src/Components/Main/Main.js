@@ -1,8 +1,8 @@
-import WeatherCard from "../WeatherCard/WeatherCard";
-import ItemCard from "../ItemCard/ItemCard";
+import WeatherCard from "../WeatherCard/WeatherCard.js";
+import ItemCard from "../ItemCard/ItemCard.js";
 import { useMemo, useContext } from "react";
 import "./Main.css";
-import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
+import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
 function Main({
   weatherTemp,
