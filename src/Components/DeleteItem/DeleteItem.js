@@ -1,6 +1,6 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm"; // Not used?
 import React from "react";
-import close from "../../images/close.svg";
+import close from "../../Images/close.svg";
 import "./DeleteItem.css";
 
 const DeleteItemModal = ({ onClose, onDeleteClick }) => {
