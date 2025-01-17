@@ -38,39 +38,63 @@ export const defaultClothingItems = [
 ];
 
 export const weatherOptions = [
-  { url: require("../Images/sunnyday.svg").default, day: true, type: "sunny" },
   {
-    url: require("../Images/cloudyday.svg").default,
+    url: new URL("../Images/sunnyday.svg", import.meta.url),
+    day: true,
+    type: "sunny",
+  },
+  {
+    url: new URL("../Images/cloudyday.svg", import.meta.url),
     day: true,
     type: "cloudy",
   },
-  { url: require("../Images/fogday.svg").default, day: true, type: "fog" },
-  { url: require("../Images/rainday.svg").default, day: true, type: "rain" },
-  { url: require("../Images/snowday.svg").default, day: true, type: "snow" },
-  { url: require("../Images/stormday.svg").default, day: true, type: "storm" },
-  { url: require("../Images/moon.svg").default, day: false, type: "moon" },
   {
-    url: require("../Images/cloudynight.svg").default,
+    url: new URL("../Images/fogday.svg", import.meta.url),
+    day: true,
+    type: "fog",
+  },
+  {
+    url: new URL("../Images/rainday.svg", import.meta.url),
+    day: true,
+    type: "rain",
+  },
+  {
+    url: new URL("../Images/snowday.svg", import.meta.url),
+    day: true,
+    type: "snow",
+  },
+  {
+    url: new URL("../Images/stormday.svg", import.meta.url),
+    day: true,
+    type: "storm",
+  },
+  {
+    url: new URL("../Images/moon.svg", import.meta.url),
+    day: false,
+    type: "moon",
+  },
+  {
+    url: new URL("../Images/cloudynight.svg", import.meta.url),
     day: false,
     type: "cloudynight",
   },
   {
-    url: require("../Images/fognight.svg").default,
+    url: new URL("../Images/fognight.svg", import.meta.url),
     day: false,
     type: "fognight",
   },
   {
-    url: require("../Images/rainnight.svg").default,
+    url: new URL("../Images/rainnight.svg", import.meta.url),
     day: false,
     type: "rainnight",
   },
   {
-    url: require("../Images/snownight.svg").default,
+    url: new URL("../Images/snownight.svg", import.meta.url),
     day: false,
     type: "snownight",
   },
   {
-    url: require("../Images/stormnight.svg").default,
+    url: new URL("../Images/stormnight.svg", import.meta.url),
     day: false,
     type: "stormnight",
   },

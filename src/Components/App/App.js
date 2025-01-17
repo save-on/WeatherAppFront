@@ -9,7 +9,7 @@ import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router";
 
 //Utility imports
 import {
@@ -261,29 +261,39 @@ function App() {
           user={currentUser}
         />
         <Routes>
-          <Route exact path="/">
-            <Main
-              weatherTemp={temp}
-              onSelectCard={handleSelectedCard}
-              clothingItems={clothingItems}
-              handleCardLike={handleCardLike}
-              handleOpenItemModal={handleOpenItemModal}
-              onCardLike={handleCardLike}
-            />
-          </Route>
-          <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-            <Profile
-              onSelectCard={handleSelectedCard}
-              onCreate={handleCreateModal}
-              clothingItems={clothingItems}
-              handleOpenItemModal={handleOpenItemModal}
-              loggedIn={loggedIn}
-              onEditProfile={handleOpenEditProfileModal}
-              onSignOut={onSignOut}
-              onDeleteClick={handleDeleteCard}
-              onCardLike={handleCardLike}
-            />
-          </ProtectedRoute>
+          <Route
+            exact
+            path="/"
+            element={
+              <Main
+                weatherTemp={temp}
+                onSelectCard={handleSelectedCard}
+                clothingItems={clothingItems}
+                handleCardLike={handleCardLike}
+                handleOpenItemModal={handleOpenItemModal}
+                onCardLike={handleCardLike}
+              />
+            }
+          ></Route>
+          <Route
+            path="/profile"
+            loggedIn={loggedIn}
+            element={
+              <ProtectedRoute>
+                <Profile
+                  onSelectCard={handleSelectedCard}
+                  onCreate={handleCreateModal}
+                  clothingItems={clothingItems}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleOpenEditProfileModal}
+                  onSignOut={onSignOut}
+                  onDeleteClick={handleDeleteCard}
+                  onCardLike={handleCardLike}
+                />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Routes>
 
         {activeModal === "login" && (
