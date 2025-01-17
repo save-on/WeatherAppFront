@@ -9,7 +9,7 @@ import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router";
 
 //Utility imports
 import {

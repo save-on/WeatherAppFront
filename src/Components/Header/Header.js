@@ -3,7 +3,7 @@ import logoImage from "../../Images/Logo.svg";
 import avatarImage from "../../Images/avatar.svg"; // Not used?
 import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useContext } from "react";
 
 const currentDate = new Date().toLocaleString("default", {
