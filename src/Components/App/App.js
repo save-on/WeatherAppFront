@@ -261,29 +261,38 @@ function App() {
           user={currentUser}
         />
         <Routes>
-          <Route exact path="/">
-            <Main
-              weatherTemp={temp}
-              onSelectCard={handleSelectedCard}
-              clothingItems={clothingItems}
-              handleCardLike={handleCardLike}
-              handleOpenItemModal={handleOpenItemModal}
-              onCardLike={handleCardLike}
-            />
-          </Route>
-          <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-            <Profile
-              onSelectCard={handleSelectedCard}
-              onCreate={handleCreateModal}
-              clothingItems={clothingItems}
-              handleOpenItemModal={handleOpenItemModal}
-              loggedIn={loggedIn}
-              onEditProfile={handleOpenEditProfileModal}
-              onSignOut={onSignOut}
-              onDeleteClick={handleDeleteCard}
-              onCardLike={handleCardLike}
-            />
-          </ProtectedRoute>
+          <Route
+            exact
+            path="/"
+            element={
+              <Main
+                weatherTemp={temp}
+                onSelectCard={handleSelectedCard}
+                clothingItems={clothingItems}
+                handleCardLike={handleCardLike}
+                handleOpenItemModal={handleOpenItemModal}
+                onCardLike={handleCardLike}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+                <Profile
+                  onSelectCard={handleSelectedCard}
+                  onCreate={handleCreateModal}
+                  clothingItems={clothingItems}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleOpenEditProfileModal}
+                  onSignOut={onSignOut}
+                  onDeleteClick={handleDeleteCard}
+                  onCardLike={handleCardLike}
+                />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Routes>
 
         {activeModal === "login" && (

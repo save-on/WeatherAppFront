@@ -6,9 +6,9 @@
   "scripts": {
     "start": "react-scripts start",
     "dev": "nodemon app.js",
-    "build": "vite build",
+    "build": "react-scripts build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "react-scripts preview"
   },
   "dependencies": {
     "core-js": "^3.40.0",
@@ -30,8 +30,7 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "vite": "^6.0.5"
+    "globals": "^15.14.0"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

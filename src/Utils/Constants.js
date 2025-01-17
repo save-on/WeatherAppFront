@@ -1,3 +1,16 @@
+import { ReactComponent as SunnyDay } from "../Images/sunnyday.svg";
+import { ReactComponent as CloudyDay } from "../Images/cloudyday.svg";
+import { ReactComponent as CloudyNight } from "../Images/cloudynight.svg";
+import { ReactComponent as FogDay } from "../Images/fogday.svg";
+import { ReactComponent as FogNight } from "../Images/fognight.svg";
+import { ReactComponent as RainDay } from "../Images/rainday.svg";
+import { ReactComponent as RainNight } from "../Images/rainnight.svg";
+import { ReactComponent as SnowDay } from "../Images/snowday.svg";
+import { ReactComponent as SnowNight } from "../Images/snownight.svg";
+import { ReactComponent as StormDay } from "../Images/stormday.svg";
+import { ReactComponent as StormNight } from "../Images/stormnight.svg";
+import { ReactComponent as Moon } from "../Images/moon.svg";
+
 export const defaultClothingItems = [
   {
     _id: 0,
@@ -38,39 +51,63 @@ export const defaultClothingItems = [
 ];
 
 export const weatherOptions = [
-  { url: require("../Images/sunnyday.svg").default, day: true, type: "sunny" },
   {
-    url: require("../Images/cloudyday.svg").default,
+    component: <SunnyDay />,
+    day: true,
+    type: "sunny",
+  },
+  {
+    component: <CloudyDay />,
     day: true,
     type: "cloudy",
   },
-  { url: require("../Images/fogday.svg").default, day: true, type: "fog" },
-  { url: require("../Images/rainday.svg").default, day: true, type: "rain" },
-  { url: require("../Images/snowday.svg").default, day: true, type: "snow" },
-  { url: require("../Images/stormday.svg").default, day: true, type: "storm" },
-  { url: require("../Images/moon.svg").default, day: false, type: "moon" },
   {
-    url: require("../Images/cloudynight.svg").default,
+    component: <FogDay />,
+    day: true,
+    type: "fog",
+  },
+  {
+    component: <RainDay />,
+    day: true,
+    type: "rain",
+  },
+  {
+    component: <SnowDay />,
+    day: true,
+    type: "snow",
+  },
+  {
+    component: <StormDay />,
+    day: true,
+    type: "storm",
+  },
+  {
+    component: <Moon />,
+    day: false,
+    type: "moon",
+  },
+  {
+    component: <CloudyNight />,
     day: false,
     type: "cloudynight",
   },
   {
-    url: require("../Images/fognight.svg").default,
+    component: <FogNight />,
     day: false,
     type: "fognight",
   },
   {
-    url: require("../Images/rainnight.svg").default,
+    component: <RainNight />,
     day: false,
     type: "rainnight",
   },
   {
-    url: require("../Images/snownight.svg").default,
+    component: <SnowNight />,
     day: false,
     type: "snownight",
   },
   {
-    url: require("../Images/stormnight.svg").default,
+    component: <StormNight />,
     day: false,
     type: "stormnight",
   },
