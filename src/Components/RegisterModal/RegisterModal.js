@@ -6,6 +6,7 @@ const RegisterModal = ({
   registerUser,
   openLoginModal,
   isLoading,
+  onSubmit,
 }) => {
   const [email, setEmail] = useState("");
   const handleEmailChange = (e) => {
