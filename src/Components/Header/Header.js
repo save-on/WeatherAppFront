@@ -1,5 +1,5 @@
 import "./Header.css";
-import logoImage from "../../Images/Logo.svg";
+import  LogoImage from "../../Images/Logo.svg";
 import avatarImage from "../../Images/avatar.svg"; // Not used?
 import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
@@ -19,7 +19,7 @@ const Header = ({ onCreateModal, city, loggedIn, onRegister, onLogin }) => {
       <div className="header__logo">
         <div>
           <Link to="/">
-            <img scr={logoImage} alt="logo" />
+            <img scr={LogoImage} alt="logo" />
           </Link>
         </div>
         <div className="header__date">

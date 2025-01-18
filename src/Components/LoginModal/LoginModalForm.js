@@ -35,7 +35,7 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
             type="email"
             name="email"
             minLength="1"
-            maxLendth="50"
+            maxLength="50"
             placeholder="Email"
             id="email"
             value={email}

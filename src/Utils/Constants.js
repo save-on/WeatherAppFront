@@ -1,3 +1,16 @@
+import { ReactComponent as SunnyDay } from "../Images/sunnyday.svg";
+import { ReactComponent as CloudyDay } from "../Images/cloudyday.svg";
+import { ReactComponent as CloudyNight } from "../Images/cloudynight.svg";
+import { ReactComponent as FogDay } from "../Images/fogday.svg";
+import { ReactComponent as FogNight } from "../Images/fognight.svg";
+import { ReactComponent as RainDay } from "../Images/rainday.svg";
+import { ReactComponent as RainNight } from "../Images/rainnight.svg";
+import { ReactComponent as SnowDay } from "../Images/snowday.svg";
+import { ReactComponent as SnowNight } from "../Images/snownight.svg";
+import { ReactComponent as StormDay } from "../Images/stormday.svg";
+import { ReactComponent as StormNight } from "../Images/stormnight.svg";
+import { ReactComponent as Moon } from "../Images/moon.svg";
+
 export const defaultClothingItems = [
   {
     _id: 0,
@@ -39,62 +52,62 @@ export const defaultClothingItems = [
 
 export const weatherOptions = [
   {
-    url: new URL("../Images/sunnyday.svg", import.meta.url),
+    component: <SunnyDay />,
     day: true,
     type: "sunny",
   },
   {
-    url: new URL("../Images/cloudyday.svg", import.meta.url),
+    component: <CloudyDay />,
     day: true,
     type: "cloudy",
   },
   {
-    url: new URL("../Images/fogday.svg", import.meta.url),
+    component: <FogDay />,
     day: true,
     type: "fog",
   },
   {
-    url: new URL("../Images/rainday.svg", import.meta.url),
+    component: <RainDay />,
     day: true,
     type: "rain",
   },
   {
-    url: new URL("../Images/snowday.svg", import.meta.url),
+    component: <SnowDay />,
     day: true,
     type: "snow",
   },
   {
-    url: new URL("../Images/stormday.svg", import.meta.url),
+    component: <StormDay />,
     day: true,
     type: "storm",
   },
   {
-    url: new URL("../Images/moon.svg", import.meta.url),
+    component: <Moon />,
     day: false,
     type: "moon",
   },
   {
-    url: new URL("../Images/cloudynight.svg", import.meta.url),
+    component: <CloudyNight />,
     day: false,
     type: "cloudynight",
   },
   {
-    url: new URL("../Images/fognight.svg", import.meta.url),
+    component: <FogNight />,
     day: false,
     type: "fognight",
   },
   {
-    url: new URL("../Images/rainnight.svg", import.meta.url),
+    component: <RainNight />,
     day: false,
     type: "rainnight",
   },
   {
-    url: new URL("../Images/snownight.svg", import.meta.url),
+    component: <SnowNight />,
     day: false,
     type: "snownight",
   },
   {
-    url: new URL("../Images/stormnight.svg", import.meta.url),
+    component: <StormNight />,
     day: false,
     type: "stormnight",
   },

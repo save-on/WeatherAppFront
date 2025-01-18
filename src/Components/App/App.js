@@ -274,12 +274,11 @@ function App() {
                 onCardLike={handleCardLike}
               />
             }
-          ></Route>
+          />
           <Route
             path="/profile"
-            loggedIn={loggedIn}
             element={
-              <ProtectedRoute>
+              <ProtectedRoute path="/profile" loggedIn={loggedIn}>
                 <Profile
                   onSelectCard={handleSelectedCard}
                   onCreate={handleCreateModal}
