@@ -12,7 +12,7 @@ export const processServerResponse = (res) => {
 };
 
 export function getItems() {
-  return fetch(`${baseUrl}/items`, {
+  return fetch(`${baseUrl}/clothing-items`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
