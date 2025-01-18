@@ -4,7 +4,7 @@ import { useContext } from "react";
 import likeButton from "../../Images/State=Default.svg";
 import likeButtonActive from "../../Images/State=Liked.svg";
 
-const ItemCard = ({ item, onSelectCard, onCardLike }) => {
+const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
   const currentUser = useContext(CurrentUserContext);
   // const isLiked = item.likes.some((user) => user === currentUser?._id);
   const id = item._id;
@@ -18,7 +18,7 @@ const ItemCard = ({ item, onSelectCard, onCardLike }) => {
       <img
         className="card_image"
         src={item.clothingimage_filepath}
-        onClick={() => onSelectCard(item)}
+        onClick={() => onSelectedCard(item)}
         alt={item.name}
       />
       <div className="card_container">
