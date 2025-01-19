@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 
 const EditProfileModal = ({ onClose, updateUser, isLoading }) => {

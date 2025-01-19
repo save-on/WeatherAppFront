@@ -12,6 +12,8 @@
 }
 
 .weather_image {
-  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: right top;
   border-radius: 12px;
 }

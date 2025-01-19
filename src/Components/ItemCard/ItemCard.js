@@ -1,4 +1,4 @@
-import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import "./ItemCard.css";
 import { useContext } from "react";
 import likeButton from "../../Images/State=Default.svg";

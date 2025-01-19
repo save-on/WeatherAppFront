@@ -5,7 +5,7 @@ import Profile from "../Profile/Profile.js";
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
-import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
@@ -25,13 +25,9 @@ import {
   removeCardLike,
 } from "../../Utils/Api.js";
 
-import {
-  login,
-  update,
-  register,
-  checkToken,
-  getUserData,
-} from "../../Utils/Auth.js";
+import { login, update, register, getUserData } from "../../Utils/Auth.js";
+
+import { checkLoggedIn } from "../../Utils/token.js";
 
 //Modal imports
 import DeleteItem from "../DeleteItem/DeleteItem.js";
@@ -118,19 +114,17 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function checkLoggedIn(token) {
-    return checkToken(token)
-      .then((res) => {
-        setLoggedIn(true);
-        setCurrentUser(res.data);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
-
   const registerUser = (values) => {
-    handleSubmit(() => register(values).then(() => loginUser(values)));
+    handleSubmit(() =>
+      register(values)
+        .then(() => loginUser(values))
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          setCurrentUser(values);
+        })
+    );
   };
 
   const loginUser = (user) => {
@@ -138,17 +132,19 @@ function App() {
 
     return login(user)
       .then((res) => {
+        console.log(res);
         checkLoggedIn(res.token);
         setToken(res.token);
         localStorage.setItem("jwt", res.token);
-        handleCloseModal();
-        history.push("/profile");
+        // history.push("/profile");
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
+        setCurrentUser(user);
         setIsLoading(false);
+        handleCloseModal();
       });
   };
 
@@ -219,30 +215,42 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
+  // useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   if (jwt) {
+  //     checkLoggedIn(jwt)
+  //       .then(() => {
+  //         setToken(jwt);
+  //         getUserData(jwt)
+  //           .then((res) => {
+  //             setCurrentUser(res.data);
+  //           })
+  //           .catch((err) => {
+  //             if (err.response && err.resonse.status === 401) {
+  //               console.error("Token invlaide or expired. Logging you out...");
+  //               onSignOut();
+  //             } else {
+  //               console.error("Error fetching user data:", err);
+  //             }
+  //           });
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   } else {
+  //     setLoggedIn(false);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = checkLoggedIn();
     if (jwt) {
-      checkLoggedIn(jwt)
-        .then(() => {
-          setToken(jwt);
-          getUserData(jwt)
-            .then((res) => {
-              setCurrentUser(res.data);
-            })
-            .catch((err) => {
-              if (err.response && err.resonse.status === 401) {
-                console.error("Token invlaide or expired. Logging you out...");
-                onSignOut();
-              } else {
-                console.error("Error fetching user data:", err);
-              }
-            });
+      getUserData(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setCurrentUser(res);
         })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      setLoggedIn(false);
+        .catch(console.error);
     }
   }, []);
 
@@ -299,7 +307,6 @@ function App() {
           <LoginModal
             onClose={handleCloseModal}
             loginUser={loginUser}
-            openLoginModal={handleOpenLoginModal}
             openRegisterModal={handleOpenRegisterModal}
           />
         )}
@@ -309,7 +316,6 @@ function App() {
             onClose={handleCloseModal}
             registerUser={registerUser}
             openLoginModal={handleOpenLoginModal}
-            openRegisterModal={handleOpenRegisterModal}
           />
         )}
 
