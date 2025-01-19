@@ -30,7 +30,7 @@ function Main({
   });
 
   return (
-    <main className="main">
+    <main className="main">     
       <WeatherCard day={false} type="cloudynight" weatherTemp={temp} />
       <section className="card_section">
         <p className="card_suggestion">
