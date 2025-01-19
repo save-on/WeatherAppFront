@@ -26,30 +26,34 @@ function Main({
   }, [weatherTemp]);
 
   const filteredCards = clothingItems.filter((items) => {
-    return items.weather === weatherType;
+    return items.weather_condition === weatherType;
   });
 
   return (
     <main className="main">
       <WeatherCard day={false} type="cloudynight" weatherTemp={temp} />
-      <section className="card_section" id="card-section">
-        Today is {temp}° {currentTemperatureUnit} / You may want to wear:
-        <div className="card_items">
-          {filteredCards.map((item, index) => {
-            return (
-              <ItemCard
-                key={`item-card=${index}`}
-                item={item}
-                onSelectedCard={onSelectCard}
-                id={item.id}
-                link={item.link}
-                name={item.name}
-                weather={item.weather}
-                onCardLike={onCardLike}
-                onDeleteClick={onDeleteClick}
-              />
-            );
-          })}
+      <section className="card_section">
+        <p className="card_suggestion">
+          Today is {temp}° {currentTemperatureUnit} / You may want to wear:
+        </p>
+        <div className="card_item-container">
+          <ul className="card_items">
+            {filteredCards.map((item, index) => {
+              return (
+                <ItemCard
+                  key={`item-card=${index}`}
+                  item={item}
+                  onSelectedCard={onSelectCard}
+                  id={item.id}
+                  link={item.link}
+                  name={item.name}
+                  weather={item.weather_condition}
+                  onCardLike={onCardLike}
+                  onDeleteClick={onDeleteClick}
+                />
+              );
+            })}
+          </ul>
         </div>
       </section>
     </main>

@@ -4,34 +4,35 @@ import { useContext } from "react";
 import likeButton from "../../Images/State=Default.svg";
 import likeButtonActive from "../../Images/State=Liked.svg";
 
-const ItemCard = ({ item, onSelectCard, onCardLike }) => {
+const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
   const currentUser = useContext(CurrentUserContext);
-  const isLiked = item.likes.some((user) => user === currentUser?._id);
+  // const isLiked = item.likes.some((user) => user === currentUser?._id);
   const id = item._id;
 
-  const handleLike = () => {
-    onCardLike(id, isLiked);
-  };
+  // const handleLike = () => {
+  //   onCardLike(id, isLiked);
+  // };
 
   return (
-    <div>
-      <div className="card_name">
-        {item.name}
-        <button className="card__like" onClick={handleLike}>
+    <li className="card">
+      <img
+        className="card_image"
+        src={item.clothingimage_filepath}
+        onClick={() => onSelectedCard(item)}
+        alt={item.name}
+      />
+      <div className="card_container">
+        <p className="card_name">{item.name}</p>
+        <button className="card__like" /*onClick={handleLike}*/>
           <img
             className="card_like-button"
-            src={isLiked ? likeButtonActive : likeButton}
+            // src={isLiked ? likeButtonActive : likeButton}
+            src={likeButton}
             alt="like-button"
           />
         </button>
       </div>
-      <img
-        className="card_image"
-        src={item.imageUrl}
-        onClick={() => onSelectCard(item)}
-        alt={item.name}
-      />
-    </div>
+    </li>
   );
 };
 
