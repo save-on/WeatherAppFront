@@ -150,7 +150,11 @@ function App() {
 
   const updateUser = (values) => {
     const jwt = localStorage.getItem("jwt");
-    handleSubmit(() => update(values, jwt).then((res) => setCurrentUser(res)));
+    handleSubmit(() =>
+      update(values, jwt).then((res) => {
+        setCurrentUser(res);
+      })
+    );
   };
 
   const onSignOut = () => {
@@ -341,10 +345,6 @@ function App() {
           <EditProfileModal
             isOpen={activeModal === "edit"}
             onClose={handleCloseModal}
-            // updateUser={(updateUser) => {
-            //   setCurrentUser(updateUser);
-            //   handleCloseModal();
-            // }}
             updateUser={updateUser}
           />
         )}

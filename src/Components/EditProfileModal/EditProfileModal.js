@@ -1,29 +1,23 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
-
+import { useForm } from "../../hooks/useForm.js";
 const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
   const currentUser = useContext(CurrentUserContext);
 
-  const [name, setName] = useState("");
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const [avatar, setAvatar] = useState("");
-  const handleAvatarChange = (e) => {
-    setAvatar(e.target.value);
-  };
+  const { values, handleChanges, setValues } = useForm({
+    name: "",
+    avatar: "",
+  });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    updateUser({ name, avatar });
+    updateUser(values);
   };
 
   useEffect(() => {
-    setName(currentUser.name);
-    setAvatar(currentUser.avatar);
-  }, [currentUser.name, currentUser.avatar]);
+    setValues(currentUser);
+  }, [currentUser]);
 
   return (
     <ModalWithForm
@@ -42,12 +36,13 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
             className="modal__input"
             id="name"
             type="text"
-            placeholder={name}
-            minlength="1"
-            maxlength="50"
+            name="name"
+            placeholder={values.name}
+            minLength="1"
+            maxLength="50"
             required
-            value={name}
-            onChange={handleNameChange}
+            value={values.name}
+            onChange={handleChanges}
           ></input>
         </li>
 
@@ -59,13 +54,13 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
             className="modal__input"
             id="avatar"
             type="url"
-            name="url"
-            placeholder={avatar}
-            minlength="1"
-            maxlength="400"
+            name="avatar"
+            placeholder={values.avatar}
+            minLength="1"
+            maxLength="400"
             required
-            value={avatar}
-            onChange={handleAvatarChange}
+            value={values.avatar}
+            onChange={handleChanges}
           ></input>
         </li>
       </ul>
