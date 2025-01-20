@@ -1,4 +1,4 @@
-import { processServerResponse } from "./Api.js";
+import { processServerRequest } from "./Api.js";
 
 // const baseUrl = "http://localhost:3001";
 const baseUrl =
@@ -7,29 +7,29 @@ const baseUrl =
     : "http://localhost:3001";
 
 export const register = ({ name, avatar, email, password }) => {
-  return fetch(`${baseUrl}/users/signup`, {
+  return processServerRequest(`${baseUrl}/users/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name, avatar, email, password }),
-  }).then(processServerResponse);
+  });
 };
 
 export const login = ({ email, password }) => {
-  return fetch(`${baseUrl}/users/signin`, {
+  return processServerRequest(`${baseUrl}/users/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then(processServerResponse);
+  });
 };
 
 export const update = ({ name, avatar }, token) => {
-  return fetch(`${baseUrl}/users/me`, {
+  return processServerRequest(`${baseUrl}/users/me`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
@@ -37,27 +37,27 @@ export const update = ({ name, avatar }, token) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name, avatar }),
-  }).then(processServerResponse);
+  });
 };
 
-export const checkToken = (token) => {
-  return fetch(`${baseUrl}/users/me`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  }).then(processServerResponse);
-};
+// export const checkToken = (token) => {
+//   return fetch(`${baseUrl}/users/me`, {
+//     method: "GET",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//   }).then(processServerRequest);
+// };
 
 export const getUserData = (token) => {
-  return fetch(`${baseUrl}/users/me`, {
+  return processServerRequest(`${baseUrl}/users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then(processServerResponse);
+  });
 };

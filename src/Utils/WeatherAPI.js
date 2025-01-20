@@ -1,4 +1,4 @@
-import { processServerResponse } from "./Api.js";
+import { processServerRequest } from "./Api.js";
 
 // const coordinates = ({ latitude, longitude });
 const APIKey = "8948385378cb8d6c557940f79b21048f";
@@ -6,13 +6,13 @@ const APIKey = "8948385378cb8d6c557940f79b21048f";
 
 // export const getForecastWeather = () => {
 //   const weatherApi = fetch(apiURL).then((res) => {
-//     return processServerResponse(res);
+//     return processServerRequest(res);
 //   });
 //   return weatherApi;
 // };
 
 export const getForecastWeather = (latitude, longitude) => {
-  return processServerResponse(
+  return processServerRequest(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
   );
 };

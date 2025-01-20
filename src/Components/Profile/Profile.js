@@ -8,7 +8,7 @@ const Profile = ({
   clothingItems,
   onSelectCard,
   onAddItem,
-  onCardLike,
+  // onCardLike,
   onEditProfile,
   onSignOut,
   onDeleteClick,
@@ -32,7 +32,7 @@ const Profile = ({
           onSelectCard={onSelectCard}
           onCreate={onCreate}
           onAddItem={onAddItem}
-          onCardLike={onCardLike}
+          // onCardLike={onCardLike}
           onDeleteClick={onDeleteClick}
         />
       </div>

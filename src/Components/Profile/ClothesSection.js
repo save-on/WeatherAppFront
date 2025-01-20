@@ -7,7 +7,7 @@ const ClothesSection = ({
   onCreate,
   clothingItems,
   onAddItem,
-  onCardLike,
+  // onCardLike,
   isLoggedIn,
 }) => {
   return (
@@ -20,7 +20,7 @@ const ClothesSection = ({
             onSelectCard={onSelectCard}
             onCreate={onCreate}
             onAddItem={onAddItem}
-            onCardLike={onCardLike}
+            // onCardLike={onCardLike}
             isLoggedIn={isLoggedIn}
           />
         );

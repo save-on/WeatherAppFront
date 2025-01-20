@@ -21,8 +21,8 @@ import {
   getItems,
   postItems,
   deleteItems,
-  addCardLike,
-  removeCardLike,
+  // addCardLike,
+  // removeCardLike,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
@@ -37,7 +37,6 @@ import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
-import * as api from "../../Utils/Api.js";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -61,13 +60,14 @@ function App() {
   };
 
   const handleDeleteCard = () => {
-    const id = selectedCard._id;
-    deleteItems(id, token)
+    deleteItems(selectedCard.id, token)
       .then(() => {
-        setClothingItems(clothingItems.filter((item) => item._id !== id));
+        setClothingItems(
+          clothingItems.filter((item) => item.id !== selectedCard.id)
+        );
         handleCloseModal();
       })
-      .catch((err) => console.log(err));
+      .catch(console.error);
   };
 
   const handleCloseModal = () => {
@@ -165,26 +165,26 @@ function App() {
     history.push("/");
   };
 
-  const handleCardLike = (id, isLiked) => {
-    const token = localStorage.getItem("jwt");
-    if (isLiked) {
-      removeCardLike(id, token)
-        .then((data) => {
-          setClothingItems((cards) =>
-            cards.map((c) => (c._id === id ? data.data : c))
-          );
-        })
-        .catch((err) => console.log(err));
-    } else {
-      addCardLike(id, token)
-        .then((data) => {
-          setClothingItems((cards) =>
-            cards.map((c) => (c._id === id ? data.data : c))
-          );
-        })
-        .catch((err) => console.log(err));
-    }
-  };
+  // const handleCardLike = (id, isLiked) => {
+  //   const token = localStorage.getItem("jwt");
+  //   if (isLiked) {
+  //     removeCardLike(id, token)
+  //       .then((data) => {
+  //         setClothingItems((cards) =>
+  //           cards.map((c) => (c._id === id ? data.data : c))
+  //         );
+  //       })
+  //       .catch((err) => console.log(err));
+  //   } else {
+  //     addCardLike(id, token)
+  //       .then((data) => {
+  //         setClothingItems((cards) =>
+  //           cards.map((c) => (c._id === id ? data.data : c))
+  //         );
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // };
 
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
@@ -288,9 +288,9 @@ function App() {
                 weatherTemp={temp}
                 onSelectCard={handleSelectedCard}
                 clothingItems={clothingItems}
-                handleCardLike={handleCardLike}
+                // handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
-                onCardLike={handleCardLike}
+                // onCardLike={handleCardLike}
               />
             }
           />
@@ -307,7 +307,7 @@ function App() {
                   onEditProfile={handleOpenEditProfileModal}
                   onSignOut={onSignOut}
                   onDeleteClick={handleDeleteCard}
-                  onCardLike={handleCardLike}
+                  // onCardLike={handleCardLike}
                 />
               </ProtectedRoute>
             }
