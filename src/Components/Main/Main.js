@@ -12,7 +12,7 @@ function Main({
   onDeleteClick,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 72;
+  const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 16;
   const tempInF = currentTemperatureUnit === "F" ? temp : temp * 1.8 + 32;
 
   const weatherType = useMemo(() => {
@@ -28,7 +28,7 @@ function Main({
   }, [clothingItems, weatherType]);
 
   return (
-    <main className="main">     
+    <main className="main">
       <WeatherCard day={true} type="snow" weatherTemp={temp} />
       <section className="card_section">
         <p className="card_suggestion">

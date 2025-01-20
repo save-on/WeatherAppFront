@@ -11,7 +11,7 @@ const APIKey = "8948385378cb8d6c557940f79b21048f";
 //   return weatherApi;
 // };
 
-export const getForecastWeather = ({ latitude, longitude}) => {
+export const getForecastWeather = (latitude, longitude) => {
   return processServerResponse(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
   );
