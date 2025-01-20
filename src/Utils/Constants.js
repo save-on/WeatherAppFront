@@ -11,6 +11,7 @@ import { ReactComponent as StormDay } from "../Images/stormday.svg";
 import { ReactComponent as StormNight } from "../Images/stormnight.svg";
 import { ReactComponent as Moon } from "../Images/moon.svg";
 
+
 export const defaultClothingItems = [
   {
     _id: 0,
@@ -87,7 +88,8 @@ export const weatherOptions = [
     type: "moon",
   },
   {
-    component: <CloudyNight />,
+    component:<CloudyNight>
+    </CloudyNight>, 
     day: false,
     type: "cloudynight",
   },
@@ -112,3 +114,4 @@ export const weatherOptions = [
     type: "stormnight",
   },
 ];
+

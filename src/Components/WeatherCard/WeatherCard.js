@@ -10,6 +10,12 @@ const weatherCard = ({ day, type, weatherTemp = "" }) => {
     return item.day === day && item.type === type;
   });
 
+  let filteredOption;
+
+  weatherOption === undefined
+  ? (filteredOption = weatherOptions[item.day ? "day" : "night"])
+  : (filteredOption = weatherOption);
+
   return (
     <section className="weather" id="weather">
       <div className="weather_info">
@@ -18,7 +24,9 @@ const weatherCard = ({ day, type, weatherTemp = "" }) => {
       {/* <img src={imageSrcUrl} className="weather_image" alt="weather"></img> */}
       {weatherOption.component}
     </section>
+    
   );
 };
+ 
 
 export default weatherCard;

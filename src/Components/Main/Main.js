@@ -28,8 +28,8 @@ function Main({
   }, [clothingItems, weatherType]);
 
   return (
-    <main className="main">
-      <WeatherCard day={false} type="cloudynight" weatherTemp={temp} />
+    <main className="main">     
+      <WeatherCard day={true} type="snow" weatherTemp={temp} />
       <section className="card_section">
         <p className="card_suggestion">
           Today is {temp}° {currentTemperatureUnit} / You may want to wear:
