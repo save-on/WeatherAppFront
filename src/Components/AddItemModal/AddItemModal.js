@@ -1,25 +1,16 @@
-import React, { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
+import { useForm } from "../../hooks/useForm.js";
 
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
-  const [name, setName] = useState("");
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const [imageUrl, setImageUrl] = useState("");
-  const handleUrlChange = (e) => {
-    setImageUrl(e.target.value);
-  };
+  const { values, handleChanges, setValues } = useForm({
+    name: "",
+    imagePath: "",
+    weather_condtion: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddItem({ name, imageUrl, weather: weatherType });
-  };
-
-  const [weatherType, setWeatherType] = useState("");
-  const handleWeatherTypeChange = (e) => {
-    setWeatherType(e.target.value);
+    onAddItem(values);
   };
 
   return (
@@ -31,7 +22,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
       buttonText="Add Garment"
     >
       <ul className="inputs">
-        <label className="input-header" htmlForm="name">
+        <label className="input-header" htmlFor="name">
           Name
         </label>
         <li>
@@ -43,8 +34,8 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             maxLength="30"
             placeholder="Name"
             id="name"
-            value={name}
-            onChange={handleNameChange}
+            value={values.name}
+            onChange={handleChanges}
           />
         </li>
         <label className="input-header" htmlFor="input-url">
@@ -54,11 +45,11 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
           <input
             className="input"
             type="url"
-            name="url"
+            name="imagePath"
             placeholder="Image Url"
             id="input-url"
-            value={imageUrl}
-            onChange={handleUrlChange}
+            value={values.imagePath}
+            onChange={handleChanges}
           />
         </li>
       </ul>
@@ -68,12 +59,12 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
         <div>
           <input
             className="weather-type-button"
-            name="weather-type-button"
+            name="weather_condition"
             type="radio"
             id="hot"
             value="hot"
-            checked={weatherType === "hot"}
-            onChange={handleWeatherTypeChange}
+            checked={values.weather_condition === "hot"}
+            onChange={handleChanges}
           />
           <label
             className="radio-label"
@@ -86,12 +77,12 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
         <div>
           <input
             className="weather-type-button"
-            name="weather-type-button"
+            name="weather_condition"
             type="radio"
             id="warm"
             value="warm"
-            checked={weatherType === "warm"}
-            onChange={handleWeatherTypeChange}
+            checked={values.weather_condition === "warm"}
+            onChange={handleChanges}
           />
           <label
             className="radio-label"
@@ -104,12 +95,12 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
         <div>
           <input
             className="weather-type-button"
-            name="weather-type-button"
+            name="weather_condition"
             type="radio"
             id="cold"
             value="cold"
-            checked={weatherType === "cold"}
-            onChange={handleWeatherTypeChange}
+            checked={values.weather_condition === "cold"}
+            onChange={handleChanges}
           />
           <label
             className="radio-label"

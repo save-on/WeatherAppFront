@@ -198,12 +198,16 @@ function App() {
   };
 
   const onAddItem = (values) => {
-    const res = postItems(values, token)
+    const token = localStorage.getItem("jwt");
+    postItems(values, token)
       .then((res) => {
-        setClothingItems((items) => [res.data, ...items]);
-        handleCloseModal();
+        setClothingItems((items) => [res, ...items]);
+        console.log(res);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        handleCloseModal();
+      });
   };
 
   useEffect(() => {
@@ -214,8 +218,11 @@ function App() {
         setTemp(temperature);
       })
       .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
     getItems()
-      .then((data) => setClothingItems(data))
+      .then((data) => setClothingItems(data.reverse()))
       .catch((err) => console.log(err));
   }, []);
 

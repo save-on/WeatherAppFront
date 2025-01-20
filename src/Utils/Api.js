@@ -21,7 +21,7 @@ export function getItems() {
 }
 
 export function postItems(item, token) {
-  return fetch(`${baseUrl}/items`, {
+  return fetch(`${baseUrl}/clothing-items`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -44,8 +44,6 @@ export function deleteItems(_id, token) {
 }
 
 export const addCardLike = (_id, token) => {
-  //const token = localStorage.getItem("jwt");
-
   return fetch(`${baseUrl}/items/${_id}/likes`, {
     method: "PUT",
     headers: {
@@ -57,8 +55,6 @@ export const addCardLike = (_id, token) => {
 };
 
 export const removeCardLike = (_id, token) => {
-  //const jwt = localStorage.getItem("jwt");
-
   return fetch(`${baseUrl}/items/${_id}/likes`, {
     method: "DELETE",
     headers: {

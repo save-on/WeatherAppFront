@@ -12,22 +12,20 @@ function Main({
   onDeleteClick,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 999;
+  const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 72;
   const tempInF = currentTemperatureUnit === "F" ? temp : temp * 1.8 + 32;
 
   const weatherType = useMemo(() => {
-    if (tempInF >= 86) {
-      return "hot";
-    } else if (tempInF >= 66 && tempInF <= 85) {
-      return "warm";
-    } else if (tempInF <= 65) {
-      return "cold";
-    }
-  }, [weatherTemp]);
+    if (tempInF >= 86) return "hot";
+    if (tempInF >= 66 && tempInF <= 85) return "warm";
+    if (tempInF <= 65) return "cold";
+  }, [tempInF]);
 
-  const filteredCards = clothingItems.filter((items) => {
-    return items.weather_condition === weatherType;
-  });
+  const filteredClothingItems = useMemo(() => {
+    return clothingItems.filter(
+      (item) => item.weather_condition === weatherType
+    );
+  }, [clothingItems, weatherType]);
 
   return (
     <main className="main">
@@ -38,21 +36,15 @@ function Main({
         </p>
         <div className="card_item-container">
           <ul className="card_items">
-            {filteredCards.map((item, index) => {
-              return (
-                <ItemCard
-                  key={`item-card=${index}`}
-                  item={item}
-                  onSelectedCard={onSelectCard}
-                  id={item.id}
-                  link={item.link}
-                  name={item.name}
-                  weather={item.weather_condition}
-                  onCardLike={onCardLike}
-                  onDeleteClick={onDeleteClick}
-                />
-              );
-            })}
+            {filteredClothingItems.map((item, index) => (
+              <ItemCard
+                key={`item-card=${index}`}
+                item={item}
+                onSelectedCard={onSelectCard}
+                onCardLike={onCardLike}
+                onDeleteClick={onDeleteClick}
+              />
+            ))}
           </ul>
         </div>
       </section>
