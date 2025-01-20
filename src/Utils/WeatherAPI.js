@@ -1,15 +1,20 @@
 import { processServerResponse } from "./Api.js";
 
-const coordinates = { latitude: 38.8816, longitude: -77.091 };
+// const coordinates = ({ latitude, longitude });
 const APIKey = "8948385378cb8d6c557940f79b21048f";
-const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&units=imperial&appid=${APIKey}`;
+// const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&units=imperial&appid=${APIKey}`;
 
-export const getForecastWeather = () => {
-  const weatherApi = fetch(apiURL).then((res) => {
-    return processServerResponse(res);
-  });
+// export const getForecastWeather = () => {
+//   const weatherApi = fetch(apiURL).then((res) => {
+//     return processServerResponse(res);
+//   });
+//   return weatherApi;
+// };
 
-  return weatherApi;
+export const getForecastWeather = ({ latitude, longitude}) => {
+  return processServerResponse(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
+  );
 };
 
 export const parseWeatherData = (data) => {

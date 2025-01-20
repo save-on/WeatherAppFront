@@ -1,6 +1,5 @@
 import { ReactComponent as SunnyDay } from "../Images/sunnyday.svg";
 import { ReactComponent as CloudyDay } from "../Images/cloudyday.svg";
-// import { ReactComponent as CloudyDay } from "../Videos/animated-rain.mp4";
 import { ReactComponent as CloudyNight } from "../Images/cloudynight.svg";
 import { ReactComponent as FogDay } from "../Images/fogday.svg";
 import { ReactComponent as FogNight } from "../Images/fognight.svg";
@@ -11,7 +10,7 @@ import { ReactComponent as SnowNight } from "../Images/snownight.svg";
 import { ReactComponent as StormDay } from "../Images/stormday.svg";
 import { ReactComponent as StormNight } from "../Images/stormnight.svg";
 import { ReactComponent as Moon } from "../Images/moon.svg";
-import { ReactComponent as AnimatedRain } from "../Videos/animated-rain.mp4";
+
 
 export const defaultClothingItems = [
   {
@@ -89,7 +88,8 @@ export const weatherOptions = [
     type: "moon",
   },
   {
-    component: <CloudyNight />,
+    component:<CloudyNight>
+    </CloudyNight>, 
     day: false,
     type: "cloudynight",
   },
@@ -114,3 +114,4 @@ export const weatherOptions = [
     type: "stormnight",
   },
 ];
+
