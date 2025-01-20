@@ -132,7 +132,6 @@ function App() {
 
     return login(user)
       .then((res) => {
-        console.log(res);
         checkLoggedIn(res.token);
         setToken(res.token);
         localStorage.setItem("jwt", res.token);
@@ -161,8 +160,7 @@ function App() {
     localStorage.removeItem("jwt");
     setCurrentUser({});
     setLoggedIn(false);
-    setCurrentUser(null);
-    history.push("/");
+    // history.push("/");
   };
 
   // const handleCardLike = (id, isLiked) => {
@@ -202,7 +200,6 @@ function App() {
     postItems(values, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
-        console.log(res);
       })
       .catch(console.error)
       .finally(() => {

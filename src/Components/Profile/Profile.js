@@ -15,7 +15,7 @@ const Profile = ({
 }) => {
   return (
     <div className="profile">
-      <SideBar onSignout={onSignOut} onEditProfile={onEditProfile} />
+      <SideBar onSignOut={onSignOut} onEditProfile={onEditProfile} />
       <div className="profile__items-container">
         <div className="profile__items-text">
           Your Clothing Items
