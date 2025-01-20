@@ -4,7 +4,7 @@ import { useForm } from "../../hooks/useForm.js";
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
-    imagePath: "",
+    clothingimage_filepath: "",
     weather_condtion: "",
   });
 
@@ -45,10 +45,10 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
           <input
             className="input"
             type="url"
-            name="imagePath"
+            name="clothingimage_filepath"
             placeholder="Image Url"
             id="input-url"
-            value={values.imagePath}
+            value={values.clothingimage_filepath}
             onChange={handleChanges}
           />
         </li>
