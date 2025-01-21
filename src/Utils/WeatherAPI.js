@@ -1,4 +1,5 @@
 import { processServerRequest } from "./Api.js";
+import { weatherOptions } from "./Constants.js";
 
 // const coordinates = ({ latitude, longitude });
 const APIKey = "8948385378cb8d6c557940f79b21048f";
@@ -11,12 +12,6 @@ const APIKey = "8948385378cb8d6c557940f79b21048f";
 //   return weatherApi;
 // };
 
-export const getForecastWeather = (latitude, longitude) => {
-  return processServerRequest(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
-  );
-};
-
 export const parseWeatherData = (data) => {
   const main = data.main;
   const temperature = main && main.temp;
@@ -27,4 +22,43 @@ export const parseWeatherData = (data) => {
     },
   };
   return weather;
+};
+
+export const getForecastWeather = (latitude, longitude) => {
+  return processServerRequest(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
+  )
+  .then((data) => {
+    const weatherCondition = data.weather[0].main.toLowerCase();
+    changeVideoBackground(weatherCondition);
+  })
+  .catch((error) => {
+    console.error('Failed to fetch weather data', error);
+  });
+};
+
+export const changeVideoBackground = (weatherCondition) => {
+  const videoElement = document.getElementById("background-video");
+  let videoSource = "";
+
+  switch (weatherCondition) {
+    case "sunny":
+      videoSource = "../Videos/Sunny-Day.mp4";
+      break;
+    case "rain":
+      videoSource = "../Vidoes/Animated-Rain.mp4";
+      break;
+    case "snow":
+      videoSource= "../Videos/Snow-Cabin.mp4";
+      break;
+    case "cloudy":
+      videoSource= "../Videos/Cloudy-Sky.mp4";
+      break;
+    default:
+      videoSource = "../Videos/Sunset-Train.mp4";
+  }
+
+  videoElement.src = videoSource;
+  videoElement.load();
+  videoElement.play();
 };

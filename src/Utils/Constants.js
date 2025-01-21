@@ -88,8 +88,7 @@ export const weatherOptions = [
     type: "moon",
   },
   {
-    component:<CloudyNight>
-    </CloudyNight>, 
+    component:<CloudyNight/>,
     day: false,
     type: "cloudynight",
   },

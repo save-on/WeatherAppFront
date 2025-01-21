@@ -22,7 +22,7 @@ const Header = ({ onCreateModal, city, loggedIn, onRegister, onLogin }) => {
           </Link>
         </div>
         <div className="header__date">
-          {currentDate}, {city}
+          {currentDate} {city}
         </div>
       </div>
       <div className="header__avatar-logo">

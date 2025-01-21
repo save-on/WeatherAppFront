@@ -7,7 +7,11 @@ export const baseUrl =
 export const processServerRequest = (url, options) => {
   return fetch(url, options).then((res) =>
     res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-  );
+  )
+  .catch((error) => {
+    console.error(error);
+    throw error;
+  });
 };
 
 export function getItems() {
