@@ -5,7 +5,7 @@ import Profile from "../Profile/Profile.js";
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
-import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
+import  CurrentUserContext  from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
@@ -220,8 +220,9 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data.reverse()))
-      .catch((err) => console.log(err));
+      .catch((error) => console.log(error));
   }, []);
+ 
 
   // useEffect(() => {
   //   const jwt = localStorage.getItem("jwt");

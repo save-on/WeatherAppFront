@@ -2,25 +2,25 @@
 export const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://api.wtwrexample.crabdance.com"
-    : "http://localhost:3001";
+    : "http://localhost:3000";
 
 export const processServerRequest = (url, options) => {
   return fetch(url, options).then((res) =>
     res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-  )
-  .catch((error) => {
-    console.error(error);
-    throw error;
-  });
+  );
 };
 
+
 export function getItems() {
-  return processServerRequest(`${baseUrl}/clothing-items`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return processServerRequest(`${baseUrl}/clothing-items`, 
+  //   {
+  //   method: "GET",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //   },
+  // }
+);
 }
 
 export function postItems(item, token) {

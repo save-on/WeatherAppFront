@@ -1,6 +1,5 @@
 import "./Header.css";
 import LogoImage from "../../Images/Logo.svg";
-import avatarImage from "../../Images/avatar.svg"; // Not used?
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
 import { Link } from "react-router";
@@ -18,7 +17,7 @@ const Header = ({ onCreateModal, city, loggedIn, onRegister, onLogin }) => {
       <div className="header__logo">
         <div>
           <Link to="/">
-            <img scr={LogoImage} alt="logo" />
+            <img src={LogoImage} alt="logo" />
           </Link>
         </div>
         <div className="header__date">
