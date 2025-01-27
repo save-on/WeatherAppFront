@@ -11,6 +11,7 @@ export const processServerRequest = (url, options) => {
 };
 
 
+
 export function getItems() {
   return processServerRequest(`${baseUrl}/clothing-items`, 
   //   {

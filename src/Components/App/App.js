@@ -207,15 +207,15 @@ function App() {
       });
   };
 
-  // useEffect(() => {
-  //   getForecastWeather()
-  //     .then((data) => {
-  //       setCity(data.name);
-  //       const temperature = parseWeatherData(data);
-  //       setTemp(temperature);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    getForecastWeather()
+      .then((data) => {
+        setCity(data.name);
+        const temperature = parseWeatherData(data);
+        setTemp(temperature);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     getItems()

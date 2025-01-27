@@ -39,14 +39,14 @@ export const getForecastWeather = (latitude, longitude) => {
 
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");
-  let videoSource = "";
+  let videoSource = "../Videos/Sunset-Train.mp4";
 
   switch (weatherCondition) {
     case "sunny":
       videoSource = "../Videos/Sunny-Day.mp4";
       break;
     case "rain":
-      videoSource = "../Vidoes/Animated-Rain.mp4";
+      videoSource = "../Videos/Animated-Rain.mp4";
       break;
     case "snow":
       videoSource= "../Videos/Snow-Cabin.mp4";
@@ -55,10 +55,14 @@ export const changeVideoBackground = (weatherCondition) => {
       videoSource= "../Videos/Cloudy-Sky.mp4";
       break;
     default:
-      videoSource = "../Videos/Sunset-Train.mp4";
+      console.warn(`Unknown weather condition: ${WeatherCondition}`);
   }
-
+if (videoElement) {
   videoElement.src = videoSource;
   videoElement.load();
   videoElement.play();
+} else {
+  console.error("Video element not found.");
+};
+  
 };
