@@ -220,7 +220,7 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data.reverse()))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   // useEffect(() => {
