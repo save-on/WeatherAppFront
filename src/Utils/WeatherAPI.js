@@ -12,16 +12,32 @@ const APIKey = "8948385378cb8d6c557940f79b21048f";
 //   return weatherApi;
 // };
 
+// export const parseWeatherData = (data) => {
+//   const main = data.main;
+//   const temperature = main && main.temp;
+//   const weather = {
+//     temperature: {
+//       F: Math.round(temperature),
+//       C: Math.round(((temperature - 32) * 5) / 9),
+//     },
+//   };
+//   return weather;
+// };
+
 export const parseWeatherData = (data) => {
   const main = data.main;
   const temperature = main && main.temp;
-  const weather = {
+
+  // Extract the weather condition from the API data
+  const condition = data.weather[0].main.toLowerCase(); // e.g., "rain", "snow", etc.
+
+  return {
     temperature: {
       F: Math.round(temperature),
       C: Math.round(((temperature - 32) * 5) / 9),
     },
+    condition, // Include condition in the returned object
   };
-  return weather;
 };
 
 export const getForecastWeather = (latitude, longitude) => {
@@ -55,7 +71,7 @@ export const changeVideoBackground = (weatherCondition) => {
       videoSource= "../Videos/Cloudy-Sky.mp4";
       break;
     default:
-      console.warn(`Unknown weather condition: ${WeatherCondition}`);
+      console.warn(`Unknown weather condition: ${weatherCondition}`);
   }
 if (videoElement) {
   videoElement.src = videoSource;

@@ -12,14 +12,26 @@ function Main({
   onDeleteClick,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-  const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 16;
-  const tempInF = currentTemperatureUnit === "F" ? temp : temp * 1.8 + 32;
+
+  // const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 16;
+  const temp = useMemo(() => {
+    if (currentTemperatureUnit === "F") {
+      return weatherTemp?.temperature?.F || 16;
+    } else {
+      return weatherTemp?.temperature?.C || Math.round((16 - 32) * (5 / 9));
+    }
+  }, [weatherTemp, currentTemperatureUnit]);
+
+
+  const tempInF = currentTemperatureUnit === "F" ? temp : Math.round(temp * 1.8 + 32);
 
   const weatherType = useMemo(() => {
     if (tempInF >= 86) return "hot";
     if (tempInF >= 66 && tempInF <= 85) return "warm";
-    if (tempInF <= 65) return "cold";
+    return "cold";
   }, [tempInF]);
+
+  const weatherCondition = weatherTemp?.condition || "sunny";
 
   const filteredClothingItems = useMemo(() => {
     return clothingItems.filter(
@@ -29,7 +41,7 @@ function Main({
 
   return (
     <main className="main">
-      <WeatherCard day={true} type="snow" weatherTemp={temp} />
+      <WeatherCard day={true} type={weatherCondition} weatherTemp={temp} />
       <section className="card_section">
         <p className="card_suggestion">
           Today is {temp}° {currentTemperatureUnit} / You may want to wear:
