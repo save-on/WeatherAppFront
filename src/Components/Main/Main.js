@@ -31,7 +31,7 @@ function Main({
     return "cold";
   }, [tempInF]);
 
-  const weatherCondition = weatherTemp?.condition || "sunny";
+  const weatherCondition = weatherTemp?.condition || "cloudy";
 
   const filteredClothingItems = useMemo(() => {
     return clothingItems.filter(
