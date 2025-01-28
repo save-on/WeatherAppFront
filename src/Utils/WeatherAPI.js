@@ -45,7 +45,7 @@ export const changeVideoBackground = (weatherCondition) => {
   let videoSource = "../Videos/Sunset-Train.mp4";
 
   switch (weatherCondition) {
-    case "sunny":
+    case "clear":
       videoSource = "../Videos/Sunny-Day.mp4";
       break;
     case "rain":

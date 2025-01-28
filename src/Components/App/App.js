@@ -350,6 +350,7 @@ function App() {
             onDeleteClick={handleDeleteModal}
             onClose={handleCloseModal}
             loggedIn={loggedIn}
+            weatherData={weatherData}
           />
         )}
         {activeModal === "edit" && (

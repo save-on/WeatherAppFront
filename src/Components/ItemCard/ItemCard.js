@@ -6,7 +6,6 @@ import likeButtonActive from "../../Images/State=Liked.svg";
 
 const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
   const currentUser = useContext(CurrentUserContext);
-  const { _id, name, clothingimage_filepath } = item;
 
   // const isLiked = item.likes.some((user) => user === currentUser?._id);
   const id = item._id;
@@ -19,12 +18,12 @@ const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
     <li className="card">
       <img
         className="card_image"
-        src={clothingimage_filepath}
+        src={item.clothingimage_filepath}
         onClick={() => onSelectedCard(item)}
-        alt={name}
+        alt={item.name}
       />
       <div className="card_container">
-        <p className="card_name">{name}</p>
+        <p className="card_name">{item.name}</p>
         <button className="card__like" /*onClick={handleLike}*/>
           <img
             className="card_like-button"
@@ -39,5 +38,3 @@ const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
 };
 
 export default ItemCard;
-
-// Image doesn't pop up when adding new items
