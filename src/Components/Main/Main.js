@@ -5,7 +5,7 @@ import "./Main.css";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
 function Main({
-  weatherTemp,
+  weatherData,
   onSelectCard,
   clothingItems,
   onCardLike,
@@ -13,38 +13,22 @@ function Main({
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
-  // const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 16;
-  const temp = useMemo(() => {
-    if (currentTemperatureUnit === "F") {
-      return weatherTemp?.temperature?.F || 16;
-    } else {
-      return weatherTemp?.temperature?.C || Math.round((16 - 32) * (5 / 9));
-    }
-  }, [weatherTemp, currentTemperatureUnit]);
-
-
-  const tempInF = currentTemperatureUnit === "F" ? temp : Math.round(temp * 1.8 + 32);
-
-  const weatherType = useMemo(() => {
-    if (tempInF >= 86) return "hot";
-    if (tempInF >= 66 && tempInF <= 85) return "warm";
-    return "cold";
-  }, [tempInF]);
-
-  const weatherCondition = weatherTemp?.condition || "cloudy";
-
   const filteredClothingItems = useMemo(() => {
     return clothingItems.filter(
-      (item) => item.weather_condition === weatherType
+      (item) => item.weather_condition === weatherData.type
     );
-  }, [clothingItems, weatherType]);
+  }, [clothingItems, weatherData.type]);
 
   return (
     <main className="main">
-      <WeatherCard day={true} type={weatherCondition} weatherTemp={temp} />
+      <WeatherCard weatherData={weatherData} />
       <section className="card_section">
         <p className="card_suggestion">
-          Today is {temp}° {currentTemperatureUnit} / You may want to wear:
+          Today is{" "}
+          {currentTemperatureUnit === "F"
+            ? weatherData.temp[currentTemperatureUnit]
+            : weatherData.temp[currentTemperatureUnit]}
+          / You may want to wear:
         </p>
         <div className="card_item-container">
           <ul className="card_items">

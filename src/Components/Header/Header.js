@@ -10,7 +10,13 @@ const currentDate = new Date().toLocaleString("default", {
   day: "numeric",
 });
 
-const Header = ({ onCreateModal, city, loggedIn, onRegister, onLogin }) => {
+const Header = ({
+  onCreateModal,
+  weatherData,
+  loggedIn,
+  onRegister,
+  onLogin,
+}) => {
   const currentUser = useContext(CurrentUserContext);
   return (
     <header className="header">
@@ -21,7 +27,7 @@ const Header = ({ onCreateModal, city, loggedIn, onRegister, onLogin }) => {
           </Link>
         </div>
         <div className="header__date">
-          {currentDate} {city}
+          {currentDate} {weatherData.city}
         </div>
       </div>
       <div className="header__avatar-logo">

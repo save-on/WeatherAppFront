@@ -1,6 +1,4 @@
-import { CurrentUserContext } from "../../Contexts/CurrentUserContext.js";
 import "./ItemModal.css";
-import React, { useContext } from "react";
 
 const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
   return (
@@ -13,7 +11,7 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
         ></button>
         <img
           className="image-preview"
-          src={selectedCard.imageUrl}
+          src={selectedCard.clothingimage_filepath}
           alt="image-preview"
         ></img>
         <div className="preview-image-name">
@@ -25,8 +23,7 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
           )}
         </div>
         <div className="preview-image-weather-type">
-          {" "}
-          Weather Type: {selectedCard.weather}{" "}
+          Weather Type: {selectedCard.weather_condition}{" "}
         </div>
       </div>
     </div>

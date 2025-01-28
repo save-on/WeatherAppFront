@@ -1,62 +1,43 @@
 import { processServerRequest } from "./Api.js";
-import { weatherOptions } from "./Constants.js";
 
-// const coordinates = ({ latitude, longitude });
 const APIKey = "8948385378cb8d6c557940f79b21048f";
-// const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${APIKey}`;
 
-// export const getForecastWeather = () => {
-//   const weatherApi = fetch(apiURL).then((res) => {
-//     return processServerRequest(res);
-//   });
-//   return weatherApi;
-// };
-
-// export const parseWeatherData = (data) => {
-//   const main = data.main;
-//   const temperature = main && main.temp;
-//   const weather = {
-//     temperature: {
-//       F: Math.round(temperature),
-//       C: Math.round(((temperature - 32) * 5) / 9),
-//     },
-//   };
-//   return weather;
-// };
-
-export const parseWeatherData = (data) => {
-  const main = data.main;
-  const temperature = main && main.temp;
-
-  // Extract the weather condition from the API data
-  const condition = data.weather[0].main.toLowerCase(); // e.g., "rain", "snow", etc.
-
-  return {
-    temperature: {
-      F: Math.round(temperature),
-      C: Math.round(((temperature - 32) * 5) / 9),
-    },
-    condition, // Include condition in the returned object
-  };
+export const getForecastWeather = ({ longitude, latitude }) => {
+  return processServerRequest(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
+  );
 };
 
+export const filterWeatherData = (data) => {
+  const { name, main, weather, sys } = data;
+  const result = {};
+  result.city = name;
+  result.temp = {
+    F: `${Math.round(main.temp)}°F`,
+    C: `${tempConversion(main.temp)}°C`,
+  };
+  result.type = setWeatherType(main.temp);
+  result.condition = weather[0].main.toLowerCase();
+  result.isDay = isDay(sys, Date.now());
+  return result;
+};
 
-export const getForecastWeather = (lat, lon) => {
-  if (!lat || !lon) {
-    console.error("Latitude and longitude are required to fetch weather data.");
-    return Promise.reject("Invalid coordinates");
+const isDay = ({ sunrise, sunset }, now) => {
+  return sunrise * 1000 < now && now < sunset * 1000;
+};
+
+const setWeatherType = (temp) => {
+  if (temp >= 86) {
+    return "hot";
+  } else if (temp < 86 && temp >= 66) {
+    return "warm";
+  } else {
+    return "cold";
   }
-  const url =`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${APIKey}`;
-  console.log("Fetching weather data from: ", url);
-  return processServerRequest(url)
-  .then((data) => {
-    console.log("Weather data received: ", data);
-    const weatherCondition = data.weather[0].main.toLowerCase();
-    // changeVideoBackground(weatherCondition);
-  })
-  .catch((error) => {
-    console.error('Failed to fetch weather data', error);
-  });
+};
+
+const tempConversion = (temp) => {
+  return Math.round((temp - 32) * (5 / 9));
 };
 
 
@@ -68,27 +49,26 @@ export const changeVideoBackground = (weatherCondition) => {
   let videoSource = "../Videos/Sunset-Train.mp4";
 
   switch (weatherCondition) {
-    case "sunny":
+    case "clear":
       videoSource = "../Videos/Sunny-Day.mp4";
       break;
     case "rain":
       videoSource = "../Videos/Animated-Rain.mp4";
       break;
     case "snow":
-      videoSource= "../Videos/Snow-Cabin.mp4";
+      videoSource = "../Videos/Snow-Cabin.mp4";
       break;
     case "cloudy":
-      videoSource= "../Videos/Cloudy-Sky.mp4";
+      videoSource = "../Videos/Cloudy-Sky.mp4";
       break;
     default:
       console.warn(`Unknown weather condition: ${weatherCondition}`);
   }
-if (videoElement) {
-  videoElement.src = videoSource;
-  videoElement.load();
-  videoElement.play();
-} else {
-  console.error("Video element not found.");
-};
-  
+  if (videoElement) {
+    videoElement.src = videoSource;
+    videoElement.load();
+    videoElement.play();
+  } else {
+    console.error("Video element not found.");
+  }
 };

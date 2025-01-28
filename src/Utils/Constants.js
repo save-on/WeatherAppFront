@@ -11,7 +11,6 @@ import { ReactComponent as StormDay } from "../Images/stormday.svg";
 import { ReactComponent as StormNight } from "../Images/stormnight.svg";
 import { ReactComponent as Moon } from "../Images/moon.svg";
 
-
 export const defaultClothingItems = [
   {
     _id: 0,
@@ -55,7 +54,7 @@ export const weatherOptions = [
   {
     component: <SunnyDay />,
     day: true,
-    type: "sunny",
+    type: "clear",
   },
   {
     component: <CloudyDay />,
@@ -80,37 +79,36 @@ export const weatherOptions = [
   {
     component: <StormDay />,
     day: true,
-    type: "storm",
+    type: "thunderstorm",
   },
   {
     component: <Moon />,
     day: false,
-    type: "moon",
+    type: "clear",
   },
   {
-    component:<CloudyNight/>,
+    component: <CloudyNight />,
     day: false,
-    type: "cloudynight",
+    type: "clouds",
   },
   {
     component: <FogNight />,
     day: false,
-    type: "fognight",
+    type: "fog",
   },
   {
     component: <RainNight />,
     day: false,
-    type: "rainnight",
+    type: "rain",
   },
   {
     component: <SnowNight />,
     day: false,
-    type: "snownight",
+    type: "snow",
   },
   {
     component: <StormNight />,
     day: false,
-    type: "stormnight",
+    type: "thunderstorm",
   },
 ];
-

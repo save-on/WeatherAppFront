@@ -14,7 +14,7 @@ import { Routes, Route, useNavigate } from "react-router";
 //Utility imports
 import {
   getForecastWeather,
-  parseWeatherData,
+  filterWeatherData,
 } from "../../Utils/WeatherAPI.js";
 
 import {
@@ -28,6 +28,7 @@ import {
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 
 import { checkLoggedIn } from "../../Utils/token.js";
+import coords from "../../Utils/geolocationapi.js";
 
 //Modal imports
 import DeleteItem from "../DeleteItem/DeleteItem.js";
@@ -41,8 +42,11 @@ import AddItemModal from "../AddItemModal/AddItemModal.js";
 function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [temp, setTemp] = useState(0);
-  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState({
+    type: "",
+    temp: { F: 999, C: 999 },
+    city: "",
+  });
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -206,21 +210,26 @@ function App() {
   };
 
   useEffect(() => {
-    getForecastWeather()
+    getForecastWeather(coords)
       .then((data) => {
-        console.log("Data", data);
-        setCity(data.name);
-        const temperature = parseWeatherData(data);
-        setTemp(temperature);
-        console.log(data.name);
+        const filteredData = filterWeatherData(data);
+        setWeatherData(filteredData);
       })
-      .catch((err) => console.log(err));
+      .catch(console.error);
   }, []);
+
+  // .then((data) => {
+  //   const weatherCondition = data.weather[0].main.toLowerCase();
+  //   changeVideoBackground(weatherCondition);
+  // })
+  // .catch((error) => {
+  //   console.error("Failed to fetch weather data", error);
+  // });
 
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data.reverse()))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }, []);
 
   // useEffect(() => {
@@ -269,12 +278,10 @@ function App() {
       >
         <Header
           onCreateModal={handleCreateModal}
-          city={city}
-          temp={temp}
+          weatherData={weatherData}
           loggedIn={loggedIn}
           onLogin={handleOpenLoginModal}
           onRegister={handleOpenRegisterModal}
-          user={currentUser}
         />
         <Routes>
           <Route
@@ -282,7 +289,7 @@ function App() {
             path="/"
             element={
               <Main
-                weatherTemp={temp}
+                weatherData={weatherData}
                 onSelectCard={handleSelectedCard}
                 clothingItems={clothingItems}
                 // handleCardLike={handleCardLike}
@@ -343,6 +350,7 @@ function App() {
             onDeleteClick={handleDeleteModal}
             onClose={handleCloseModal}
             loggedIn={loggedIn}
+            weatherData={weatherData}
           />
         )}
         {activeModal === "edit" && (
