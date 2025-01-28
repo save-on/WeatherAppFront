@@ -5,7 +5,7 @@ import Profile from "../Profile/Profile.js";
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
-import  CurrentUserContext  from "../../Contexts/CurrentUserContext.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 //React imports
 import { useEffect, useState } from "react";
@@ -59,12 +59,10 @@ function App() {
     setActiveModal("delete");
   };
 
-  const handleDeleteCard = () => {
-    deleteItems(selectedCard.id, token)
+  const handleDeleteCard = (card) => {
+    deleteItems(card.id, token)
       .then(() => {
-        setClothingItems(
-          clothingItems.filter((item) => item.id !== selectedCard.id)
-        );
+        setClothingItems(clothingItems.filter((item) => item.id !== card.id));
         handleCloseModal();
       })
       .catch(console.error);
@@ -129,19 +127,19 @@ function App() {
 
   const loginUser = (user) => {
     setIsLoading(true);
-
-    return login(user)
+    login(user)
       .then((res) => {
         checkLoggedIn(res.token);
         setToken(res.token);
         localStorage.setItem("jwt", res.token);
+        setCurrentUser(res);
         // history.push("/profile");
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        setCurrentUser(user);
+        setLoggedIn(true);
         setIsLoading(false);
         handleCloseModal();
       });
@@ -219,14 +217,11 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
- 
-
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data.reverse()))
-      .catch((error) => console.log(error));
+      .catch((err) => console.error(err));
   }, []);
- 
 
   // useEffect(() => {
   //   const jwt = localStorage.getItem("jwt");

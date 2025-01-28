@@ -12,18 +12,8 @@ export const processServerRequest = (url, options) => {
   );
 };
 
-
-
 export function getItems() {
-  return processServerRequest(`${baseUrl}/clothing-items`, 
-  //   {
-  //   method: "GET",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-  //   },
-  // }
-);
+  return processServerRequest(`${baseUrl}/clothing-items`);
 }
 
 export function postItems(item, token) {
