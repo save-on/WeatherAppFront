@@ -130,7 +130,7 @@ function App() {
   const loginUser = (user) => {
     setIsLoading(true);
 
-    return login(user)
+    login(user)
       .then((res) => {
         checkLoggedIn(res.token);
         setToken(res.token);
