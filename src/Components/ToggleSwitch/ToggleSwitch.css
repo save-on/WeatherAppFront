@@ -25,6 +25,7 @@
   text-align: center;
   cursor: pointer;
   position: absolute;
+  top: 3px;
 }
 
 .switch__slider-F {
@@ -44,7 +45,7 @@
 .switch__temp-C {
   position: absolute;
   top: -5px;
-  left: 14px;
+  left: 10px;
   color: #fff;
   text-align: center;
   font-family: "Cabinet Grotesk", sans-serif;

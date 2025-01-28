@@ -12,16 +12,32 @@ const APIKey = "8948385378cb8d6c557940f79b21048f";
 //   return weatherApi;
 // };
 
+// export const parseWeatherData = (data) => {
+//   const main = data.main;
+//   const temperature = main && main.temp;
+//   const weather = {
+//     temperature: {
+//       F: Math.round(temperature),
+//       C: Math.round(((temperature - 32) * 5) / 9),
+//     },
+//   };
+//   return weather;
+// };
+
 export const parseWeatherData = (data) => {
   const main = data.main;
   const temperature = main && main.temp;
-  const weather = {
+
+  // Extract the weather condition from the API data
+  const condition = data.weather[0].main.toLowerCase(); // e.g., "rain", "snow", etc.
+
+  return {
     temperature: {
       F: Math.round(temperature),
       C: Math.round(((temperature - 32) * 5) / 9),
     },
+    condition, // Include condition in the returned object
   };
-  return weather;
 };
 
 export const getForecastWeather = (latitude, longitude) => {
@@ -39,14 +55,14 @@ export const getForecastWeather = (latitude, longitude) => {
 
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");
-  let videoSource = "";
+  let videoSource = "../Videos/Sunset-Train.mp4";
 
   switch (weatherCondition) {
     case "sunny":
       videoSource = "../Videos/Sunny-Day.mp4";
       break;
     case "rain":
-      videoSource = "../Vidoes/Animated-Rain.mp4";
+      videoSource = "../Videos/Animated-Rain.mp4";
       break;
     case "snow":
       videoSource= "../Videos/Snow-Cabin.mp4";
@@ -55,10 +71,14 @@ export const changeVideoBackground = (weatherCondition) => {
       videoSource= "../Videos/Cloudy-Sky.mp4";
       break;
     default:
-      videoSource = "../Videos/Sunset-Train.mp4";
+      console.warn(`Unknown weather condition: ${weatherCondition}`);
   }
-
+if (videoElement) {
   videoElement.src = videoSource;
   videoElement.load();
   videoElement.play();
+} else {
+  console.error("Video element not found.");
+};
+  
 };
