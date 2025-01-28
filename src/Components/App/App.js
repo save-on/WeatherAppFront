@@ -127,19 +127,19 @@ function App() {
 
   const loginUser = (user) => {
     setIsLoading(true);
-
     login(user)
       .then((res) => {
         checkLoggedIn(res.token);
         setToken(res.token);
         localStorage.setItem("jwt", res.token);
+        setCurrentUser(res);
         // history.push("/profile");
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        setCurrentUser(user);
+        setLoggedIn(true);
         setIsLoading(false);
         handleCloseModal();
       });
