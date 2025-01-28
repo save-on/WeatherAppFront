@@ -3,7 +3,7 @@ import { weatherOptions } from "./Constants.js";
 
 // const coordinates = ({ latitude, longitude });
 const APIKey = "8948385378cb8d6c557940f79b21048f";
-// const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longitude}&units=imperial&appid=${APIKey}`;
+// const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${APIKey}`;
 
 // export const getForecastWeather = () => {
 //   const weatherApi = fetch(apiURL).then((res) => {
@@ -40,18 +40,28 @@ export const parseWeatherData = (data) => {
   };
 };
 
-export const getForecastWeather = (latitude, longitude) => {
-  return processServerRequest(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
-  )
+
+export const getForecastWeather = (lat, lon) => {
+  if (!lat || !lon) {
+    console.error("Latitude and longitude are required to fetch weather data.");
+    return Promise.reject("Invalid coordinates");
+  }
+  const url =`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${APIKey}`;
+  console.log("Fetching weather data from: ", url);
+  return processServerRequest(url)
   .then((data) => {
+    console.log("Weather data received: ", data);
     const weatherCondition = data.weather[0].main.toLowerCase();
-    changeVideoBackground(weatherCondition);
+    // changeVideoBackground(weatherCondition);
   })
   .catch((error) => {
     console.error('Failed to fetch weather data', error);
   });
 };
+
+
+
+
 
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");

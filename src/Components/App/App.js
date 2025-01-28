@@ -210,9 +210,11 @@ function App() {
   useEffect(() => {
     getForecastWeather()
       .then((data) => {
+        console.log("Data", data);
         setCity(data.name);
         const temperature = parseWeatherData(data);
         setTemp(temperature);
+        console.log(data.name);
       })
       .catch((err) => console.log(err));
   }, []);
