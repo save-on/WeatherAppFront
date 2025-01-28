@@ -40,6 +40,10 @@ const tempConversion = (temp) => {
   return Math.round((temp - 32) * (5 / 9));
 };
 
+
+
+
+
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");
   let videoSource = "../Videos/Sunset-Train.mp4";

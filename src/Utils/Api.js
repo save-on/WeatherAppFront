@@ -4,6 +4,8 @@ export const baseUrl =
     ? "https://api.wtwrexample.crabdance.com"
     : "http://localhost:3001";
 
+   
+
 export const processServerRequest = (url, options) => {
   return fetch(url, options).then((res) =>
     res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
