@@ -59,12 +59,10 @@ function App() {
     setActiveModal("delete");
   };
 
-  const handleDeleteCard = () => {
-    deleteItems(selectedCard.id, token)
+  const handleDeleteCard = (card) => {
+    deleteItems(card.id, token)
       .then(() => {
-        setClothingItems(
-          clothingItems.filter((item) => item.id !== selectedCard.id)
-        );
+        setClothingItems(clothingItems.filter((item) => item.id !== card.id));
         handleCloseModal();
       })
       .catch(console.error);
