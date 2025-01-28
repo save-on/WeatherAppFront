@@ -3,30 +3,36 @@ import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants.js";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
-const weatherCard = ({ day, type, weatherTemp = "" }) => {
+const weatherCard = ({ weatherData }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const weatherOption = weatherOptions.find((item) => {
-    return item.day === day && item.type === type;
+    return (
+      item.day === weatherData.isDay && item.type === weatherData.condition
+    );
   });
 
   let filteredOption;
 
   weatherOption === undefined
-  ? (filteredOption = weatherOptions[item.day ? "day" : "night"])
-  : (filteredOption = weatherOption);
+    ? (filteredOption = weatherOptions[weatherData.isDay ? "day" : "night"])
+    : (filteredOption = weatherOption);
 
   return (
     <section className="weather" id="weather">
       <div className="weather_info">
-        {weatherTemp}° {currentTemperatureUnit}
+        {currentTemperatureUnit === "F"
+          ? weatherData.temp[currentTemperatureUnit]
+          : weatherData.temp[currentTemperatureUnit]}
       </div>
-      {/* <img src={imageSrcUrl} className="weather_image" alt="weather"></img> */}
-      {weatherOption.component}
+      <img
+        src={weatherOption?.url}
+        className="weather_image"
+        alt={weatherOption?.condition}
+      ></img>
+      {weatherOption?.component}
     </section>
-    
   );
 };
- 
 
 export default weatherCard;
