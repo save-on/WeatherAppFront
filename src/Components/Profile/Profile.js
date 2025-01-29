@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import "./Profile.css";

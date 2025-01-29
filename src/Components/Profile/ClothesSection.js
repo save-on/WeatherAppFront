@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import ItemCard from "../ItemCard/ItemCard.js";
 import "./ClothesSection.css";
 

@@ -7,21 +7,21 @@ const RegisterModal = ({
   openLoginModal,
   isLoading,
 }) => {
-  const { values, handleChanges, setValues } = useForm({
+  const { values, handleChanges } = useForm({
     email: "",
     password: "",
     name: "",
     avatar: "",
   });
 
-  const handleInputReset = () => {
-    setValues({
-      email: "",
-      password: "",
-      name: "",
-      avatar: "",
-    });
-  };
+  // const handleInputReset = () => {
+  //   setValues({
+  //     email: "",
+  //     password: "",
+  //     name: "",
+  //     avatar: "",
+  //   });
+  // };
 
   const onRegister = (e) => {
     e.preventDefault();

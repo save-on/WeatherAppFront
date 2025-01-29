@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import avatar from "../../Images/avatar.svg"; // Not Used?
+// import React, { useContext } from "react";
+// import avatar from "../../Images/avatar.svg";
 import "./SideBar.css";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 

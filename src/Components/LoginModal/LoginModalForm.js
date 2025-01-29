@@ -7,12 +7,12 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
     password: "",
   });
 
-  const handleInputReset = () => {
-    setValues({
-      name: "",
-      password: "",
-    });
-  };
+  // const handleInputReset = () => {
+  //   setValues({
+  //     name: "",
+  //     password: "",
+  //   });
+  // };
 
   const onLogin = (e) => {
     e.preventDefault();

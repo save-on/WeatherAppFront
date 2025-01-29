@@ -1,5 +1,5 @@
-import ModalWithForm from "../ModalWithForm/ModalWithForm.js"; // Not used?
-import React from "react";
+// import ModalWithForm from "../ModalWithForm/ModalWithForm.js"; // Not used?
+// import React from "react";
 import close from "../../Images/close.svg";
 import "./DeleteItem.css";
 
