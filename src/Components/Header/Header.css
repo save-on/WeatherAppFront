@@ -1,0 +1,72 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px;
+  padding: 0 20px;
+  color: #000;
+  font-family: Cabinet Groestk, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.header__logo {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  height: 89px;
+  width: auto;
+}
+
+.header__avatar-logo {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.header__avatar-image {
+  margin-left: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.header__name {
+  color: #000;
+  font-family: "Cabinet Grotesk";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.header__button {
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  background: none;
+  border: none;
+}
+
+.header__button:hover {
+  cursor: pointer;
+}
+
+.header__date {
+  display: flex;
+  justify-content: baseline;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar-logo {
+  padding-left: 12px;
+}

@@ -1,0 +1,69 @@
+.card {
+  position: relative;
+  width: 325px;
+  height: 328px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.card_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+}
+
+.card_container {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  top: 15px;
+}
+
+.card_name {
+  background-color: #fff;
+  opacity: 0.6;
+  padding: 2px 12px;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.card_image:hover {
+  cursor: pointer;
+}
+
+.card_section {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+}
+
+.cards__suggestion {
+  font-size: 20px;
+  line-height: 24px;
+  margin: 40px 0 34px;
+}
+
+.card_item-container {
+  display: flex;
+}
+
+.card_items {
+  display: grid;
+  max-width: 100%;
+  grid-template-columns: repeat(auto-fit, 325px);
+  grid-gap: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.card__like {
+  width: 18px;
+  height: 15px;
+  border: none;
+  background-color: #fff;
+}

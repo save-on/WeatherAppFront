@@ -1,0 +1,73 @@
+.delete__modal-container {
+  height: 280px;
+  width: 670px;
+  background-color: #fff;
+  border-radius: 20px;
+  border: 1px;
+  margin: 0;
+}
+
+.delete__modal-header {
+  margin: 0;
+}
+
+.delete__modal-close {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: #fff;
+  padding: 0;
+  display: flex;
+  position: relative;
+  margin-top: 20px;
+  margin-left: 630px;
+}
+
+.delete__modal-button {
+  display: flex;
+  justify-content: center;
+}
+
+.delete__modal-text {
+  color: #000;
+  text-align: center;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-top: 60px;
+  margin-bottom: 0;
+}
+
+.delete__button-confirm {
+  border: none;
+  background-color: #fff;
+  color: #ff4d00;
+  font-family: "Cabinet Grotestk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-top: 40px;
+}
+
+.delete__button-confim:hover {
+  cursor: pointer;
+}
+
+.delete__button-cancel {
+  border: none;
+  background-color: #fff;
+  color: #000;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  margin-top: 24px;
+}
+
+.delete__button-cancel:hover {
+  cursor: pointer;
+}
