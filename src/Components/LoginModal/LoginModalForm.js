@@ -2,7 +2,7 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 
 const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
-  const { values, handleChanges, setValues } = useForm({
+  const { values, handleChanges,} = useForm({
     email: "",
     password: "",
   });
