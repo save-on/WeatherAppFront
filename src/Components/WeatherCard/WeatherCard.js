@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants.js";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
-const weatherCard = ({ weatherData, coords }) => {
+const WeatherCard = ({ weatherData, coords }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const weatherOption = weatherOptions.find((item) => {
@@ -30,9 +30,11 @@ const weatherCard = ({ weatherData, coords }) => {
         className="weather_image"
         alt={weatherOption?.condition}
       ></img>
-      {coords === null ? weatherOptions[0].component : weatherOption?.component}
+      {coords === null
+        ? weatherOptions[0].component
+        : filteredOption?.component}
     </section>
   );
 };
 
-export default weatherCard;
+export default WeatherCard;
