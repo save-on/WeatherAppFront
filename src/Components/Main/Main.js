@@ -10,6 +10,7 @@ function Main({
   clothingItems,
   onCardLike,
   onDeleteClick,
+  coords,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -21,7 +22,7 @@ function Main({
 
   return (
     <main className="main">
-      <WeatherCard weatherData={weatherData} />
+      <WeatherCard weatherData={weatherData} coords={coords} />
       <section className="card_section">
         <p className="card_suggestion">
           Today is{" "}

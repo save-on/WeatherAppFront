@@ -28,7 +28,7 @@ import {
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 
 import { checkLoggedIn } from "../../Utils/token.js";
-import coords from "../../Utils/geolocationapi.js";
+import getCoords from "../../Utils/geolocationapi.js";
 
 //Modal imports
 import DeleteItem from "../DeleteItem/DeleteItem.js";
@@ -44,7 +44,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [weatherData, setWeatherData] = useState({
     type: "",
-    temp: { F: 999, C: 999 },
+    temp: { F: undefined, C: undefined },
     city: "",
   });
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
@@ -54,6 +54,7 @@ function App() {
   // const history = useNavigate("");
   const [token, setToken] = useState(localStorage.getItem("jwt") || "");
   const [isLoading, setIsLoading] = useState(false);
+  const [coords, setCoords] = useState(null);
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -209,14 +210,27 @@ function App() {
       });
   };
 
+  const handleGetCoords = async () => {
+    try {
+      const data = await getCoords();
+      setCoords(data);
+    } catch (error) {
+      console.error("Error getting coordinates:", error);
+    }
+  };
+
   useEffect(() => {
-    getForecastWeather(coords)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
-      })
-      .catch(console.error);
-  }, []);
+    if (coords === null) {
+      handleGetCoords();
+    } else {
+      getForecastWeather(coords)
+        .then((data) => {
+          const filteredData = filterWeatherData(data);
+          setWeatherData(filteredData);
+        })
+        .catch(console.error);
+    }
+  }, [coords]);
 
   // .then((data) => {
   //   const weatherCondition = data.weather[0].main.toLowerCase();
@@ -292,6 +306,7 @@ function App() {
                 weatherData={weatherData}
                 onSelectCard={handleSelectedCard}
                 clothingItems={clothingItems}
+                coords={coords}
                 // handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
                 // onCardLike={handleCardLike}

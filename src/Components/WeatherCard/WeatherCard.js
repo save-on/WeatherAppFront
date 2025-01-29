@@ -3,7 +3,7 @@ import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants.js";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
-const weatherCard = ({ weatherData }) => {
+const weatherCard = ({ weatherData, coords }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const weatherOption = weatherOptions.find((item) => {
@@ -30,7 +30,7 @@ const weatherCard = ({ weatherData }) => {
         className="weather_image"
         alt={weatherOption?.condition}
       ></img>
-      {weatherOption?.component}
+      {coords === null ? weatherOptions[0].component : weatherOption?.component}
     </section>
   );
 };

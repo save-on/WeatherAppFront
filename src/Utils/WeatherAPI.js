@@ -2,7 +2,7 @@ import { processServerRequest } from "./Api.js";
 
 const APIKey = "8948385378cb8d6c557940f79b21048f";
 
-export const getForecastWeather = ({ longitude, latitude }) => {
+export const getForecastWeather = ({ latitude, longitude }) => {
   return processServerRequest(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIKey}`
   );
