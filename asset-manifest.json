@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/save-on/WeatherAppFront/static/css/main.406edaad.css",
+    "main.js": "/save-on/WeatherAppFront/static/js/main.6f8425d7.js",
+    "static/js/488.44f13e05.chunk.js": "/save-on/WeatherAppFront/static/js/488.44f13e05.chunk.js",
+    "static/media/snowday.svg": "/save-on/WeatherAppFront/static/media/snowday.91deb49805a457b1125fb9ce6018ce37.svg",
+    "static/media/snownight.svg": "/save-on/WeatherAppFront/static/media/snownight.62399599e4bc2b02a377c6d0193c8895.svg",
+    "static/media/stormday.svg": "/save-on/WeatherAppFront/static/media/stormday.58c2d1362f17bdebee4c2fe9b9cf4a96.svg",
+    "static/media/stormnight.svg": "/save-on/WeatherAppFront/static/media/stormnight.71d7d80c1ce1c3c8fadb8c4a7776cf34.svg",
+    "static/media/rainday.svg": "/save-on/WeatherAppFront/static/media/rainday.3c9ca4e68e286284e53f88e641760561.svg",
+    "static/media/rainnight.svg": "/save-on/WeatherAppFront/static/media/rainnight.65654022a3c594bc4f5c045754e9ae00.svg",
+    "static/media/fogday.svg": "/save-on/WeatherAppFront/static/media/fogday.e1d635f3bb75a2d9641b2503ba5680f1.svg",
+    "static/media/fognight.svg": "/save-on/WeatherAppFront/static/media/fognight.846e570fefa5bc1b1fa7f4b3a2426ffd.svg",
+    "static/media/Logo.svg": "/save-on/WeatherAppFront/static/media/Logo.680b54a3d7ea1deb779a22177ba7913f.svg",
+    "index.html": "/save-on/WeatherAppFront/index.html",
+    "static/media/State=Default.svg": "/save-on/WeatherAppFront/static/media/State=Default.e95d46cee9b48b3274ae4e03b55494b7.svg",
+    "static/media/cloudynight.svg": "/save-on/WeatherAppFront/static/media/cloudynight.375d54ff80748e9e06f98a1e0e734396.svg",
+    "static/media/cloudyday.svg": "/save-on/WeatherAppFront/static/media/cloudyday.c6f2009009e13c6ec13f45acfcce3d61.svg",
+    "static/media/close.svg": "/save-on/WeatherAppFront/static/media/close.8032ef052958c54a78a19dce66f28743.svg",
+    "static/media/preview-close.svg": "/save-on/WeatherAppFront/static/media/preview-close.5e4dca2e07b094144990.svg",
+    "static/media/moon.svg": "/save-on/WeatherAppFront/static/media/moon.94c0f6f992836f9d41bb02d04b09a959.svg",
+    "static/media/sunnyday.svg": "/save-on/WeatherAppFront/static/media/sunnyday.54fae7d1cdd7f1c926f072b2a3543417.svg",
+    "main.406edaad.css.map": "/save-on/WeatherAppFront/static/css/main.406edaad.css.map",
+    "main.6f8425d7.js.map": "/save-on/WeatherAppFront/static/js/main.6f8425d7.js.map",
+    "488.44f13e05.chunk.js.map": "/save-on/WeatherAppFront/static/js/488.44f13e05.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.406edaad.css",
+    "static/js/main.6f8425d7.js"
+  ]
+}
