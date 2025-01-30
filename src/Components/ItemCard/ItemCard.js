@@ -23,7 +23,7 @@ const ItemCard = ({ item, onSelectedCard }) => {
         alt={item.name}
       />
       <div className="card_container">
-        <p className="card_name">{item.name}</p>
+      <p className="card_name">{item.name}</p>
         <button className="card__like" /*onClick={handleLike}*/>
           <img
             className="card_like-button"
@@ -33,7 +33,9 @@ const ItemCard = ({ item, onSelectedCard }) => {
           />
         </button>
       </div>
+ 
     </li>
+    
   );
 };
 

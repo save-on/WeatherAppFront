@@ -5,6 +5,7 @@
   border-radius: 20px;
   overflow: hidden;
   list-style: none;
+  padding-top: 40px;
 }
 
 .card_image {
@@ -31,6 +32,7 @@
   padding: 2px 12px;
   border-radius: 4px;
   margin: 0;
+  color: #000;
 }
 
 .card_image:hover {
