@@ -59,7 +59,7 @@ export const weatherOptions = [
   {
     component: <CloudyDay />,
     day: true,
-    type: "cloudy",
+    type: "clouds",
   },
   {
     component: <FogDay />,
