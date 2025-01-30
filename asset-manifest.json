@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/WeatherAppFront/static/css/main.e19a3f1f.css",
-    "main.js": "/WeatherAppFront/static/js/main.015512dc.js",
+    "main.js": "/WeatherAppFront/static/js/main.4a05097c.js",
     "static/js/488.44f13e05.chunk.js": "/WeatherAppFront/static/js/488.44f13e05.chunk.js",
     "static/media/snowday.svg": "/WeatherAppFront/static/media/snowday.91deb49805a457b1125fb9ce6018ce37.svg",
     "static/media/snownight.svg": "/WeatherAppFront/static/media/snownight.62399599e4bc2b02a377c6d0193c8895.svg",
@@ -21,11 +21,11 @@
     "static/media/moon.svg": "/WeatherAppFront/static/media/moon.94c0f6f992836f9d41bb02d04b09a959.svg",
     "static/media/sunnyday.svg": "/WeatherAppFront/static/media/sunnyday.54fae7d1cdd7f1c926f072b2a3543417.svg",
     "main.e19a3f1f.css.map": "/WeatherAppFront/static/css/main.e19a3f1f.css.map",
-    "main.015512dc.js.map": "/WeatherAppFront/static/js/main.015512dc.js.map",
+    "main.4a05097c.js.map": "/WeatherAppFront/static/js/main.4a05097c.js.map",
     "488.44f13e05.chunk.js.map": "/WeatherAppFront/static/js/488.44f13e05.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e19a3f1f.css",
-    "static/js/main.015512dc.js"
+    "static/js/main.4a05097c.js"
   ]
 }
