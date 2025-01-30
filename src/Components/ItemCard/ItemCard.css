@@ -4,6 +4,7 @@
   height: 328px;
   border-radius: 20px;
   overflow: hidden;
+  list-style: none;
 }
 
 .card_image {

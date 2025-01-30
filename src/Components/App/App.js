@@ -304,7 +304,7 @@ function App() {
             element={
               <Main
                 weatherData={weatherData}
-                onSelectCard={handleSelectedCard}
+                onSelectedCard={handleSelectedCard}
                 clothingItems={clothingItems}
                 coords={coords}
                 // handleCardLike={handleCardLike}
