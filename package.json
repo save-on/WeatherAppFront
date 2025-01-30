@@ -1,5 +1,4 @@
 {
-  "homepage": "http://save-on.github.io/WeatherAppFront",
   "name": "weatherappfront",
   "private": true,
   "version": "0.0.0",
@@ -9,9 +8,7 @@
     "dev": "nodemon app.js",
     "build": "react-scripts build",
     "lint": "eslint .",
-    "preview": "react-scripts preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "preview": "react-scripts preview"
   },
   "dependencies": {
     "react": "^18.0.0",
