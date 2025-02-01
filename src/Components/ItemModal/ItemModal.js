@@ -11,7 +11,7 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
         ></button>
         <img
           className="image-preview"
-          src={selectedCard.clothingimage_filepath}
+          src={selectedCard.clothing_image}
           alt="image-preview"
         ></img>
         <div className="preview-image-name">
