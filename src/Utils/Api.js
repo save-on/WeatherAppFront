@@ -1,5 +1,5 @@
-// export const baseUrl = "http://localhost:3001";
-export const baseUrl = "http://localhost:3001";
+export const baseUrl =
+  "https://travelwear-aa3b8a7cc158.herokuapp.com/" || "http://localhost:3001";
 
 export const processServerRequest = (url, options) => {
   return fetch(url, options).then((res) =>

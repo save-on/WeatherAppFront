@@ -1,7 +1,5 @@
 import { processServerRequest } from "./Api.js";
-
-// const baseUrl = "http://localhost:3001";
-const baseUrl = "http://localhost:3001";
+import { baseUrl } from "./Api.js";
 
 export const register = ({ name, avatar, email, password }) => {
   return processServerRequest(`${baseUrl}/users/signup`, {
