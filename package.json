@@ -1,5 +1,4 @@
 {
-  "homepage": "https://save-on.github.io/WeatherAppFront/",
   "name": "weatherappfront",
   "private": true,
   "version": "0.0.0",
@@ -34,7 +33,7 @@
     "gh-pages": "^6.3.0",
     "globals": "^15.14.0"
   },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "description": "",
   "main": "eslint.config.js",
   "keywords": [],
   "author": "",
