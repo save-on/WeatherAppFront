@@ -5,12 +5,9 @@ import App from "./Components/App/App.js";
 import ReportWebVitals from "./ReportWebVitals.js";
 import { BrowserRouter } from "react-router";
 
-const isProduction = process.env.NODE_ENV === "production";
-const basename = isProduction ? "/WeatherAppFront" : "";
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode basename={basename}>
+  <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
