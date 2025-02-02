@@ -1,6 +1,6 @@
 export const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://travelwear-aa3b8a7cc158.herokuapp.com"
+    ? "https://travelwear-aa3b8a7cc158.herokuapp.com/"
     : "http://localhost:3001";
 
 export const processServerRequest = (url, options) => {
@@ -10,11 +10,11 @@ export const processServerRequest = (url, options) => {
 };
 
 export function getItems() {
-  return processServerRequest(`${baseUrl}/clothing-items`);
+  return processServerRequest(`${baseUrl}clothing-items`);
 }
 
 export function postItems(item, token) {
-  return processServerRequest(`${baseUrl}/clothing-items`, {
+  return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -26,7 +26,7 @@ export function postItems(item, token) {
 }
 
 export function deleteItems(_id, token) {
-  return processServerRequest(`${baseUrl}/clothing-items/${_id}`, {
+  return processServerRequest(`${baseUrl}clothing-items/${_id}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
