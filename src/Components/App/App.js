@@ -1,3 +1,4 @@
+import "./App.css";
 import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
@@ -15,6 +16,7 @@ import { Routes, Route } from "react-router";
 import {
   getForecastWeather,
   filterWeatherData,
+  changeVideoBackground,
 } from "../../Utils/WeatherAPI.js";
 
 import {
@@ -227,6 +229,10 @@ function App() {
         .then((data) => {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
+
+          if (filteredData.condition) {
+            changeVideoBackground(filteredData.condition);
+          }
         })
         .catch(console.error);
     }
@@ -287,9 +293,19 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+         <video
+        id="background-video"
+        autoPlay
+        loop
+        muted
+        className="background-video"
+        >
+          <source src="../../src/Utils/Videos" type="video/mp4" />
+        </video>
       <CurrentTemperatureUnitContext.Provider
         value={{ currentTemperatureUnit, handleToggleSwitchChange }}
       >
+     
         <Header
           onCreateModal={handleCreateModal}
           weatherData={weatherData}
