@@ -1,10 +1,8 @@
 import { processServerRequest } from "./Api.js";
-
-// const baseUrl = "http://localhost:3001";
-const baseUrl = "http://localhost:3001";
+import { baseUrl } from "./Api.js";
 
 export const register = ({ name, avatar, email, password }) => {
-  return processServerRequest(`${baseUrl}/users/signup`, {
+  return processServerRequest(`${baseUrl}users/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -15,7 +13,7 @@ export const register = ({ name, avatar, email, password }) => {
 };
 
 export const login = ({ email, password }) => {
-  return processServerRequest(`${baseUrl}/users/signin`, {
+  return processServerRequest(`${baseUrl}users/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -26,7 +24,7 @@ export const login = ({ email, password }) => {
 };
 
 export const update = ({ name, avatar }, token) => {
-  return processServerRequest(`${baseUrl}/users/me`, {
+  return processServerRequest(`${baseUrl}users/me`, {
     method: "PATCH",
     headers: {
       Accept: "application/json",
@@ -49,7 +47,7 @@ export const update = ({ name, avatar }, token) => {
 // };
 
 export const getUserData = (token) => {
-  return processServerRequest(`${baseUrl}/users/me`, {
+  return processServerRequest(`${baseUrl}users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
