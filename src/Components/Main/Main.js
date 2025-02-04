@@ -6,7 +6,7 @@ import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperature
 
 function Main({
   weatherData,
-  onSelectCard,
+  onSelectedCard,
   clothingItems,
   handleCardLike,
   onDeleteClick,
@@ -38,7 +38,7 @@ function Main({
               <ItemCard
                 key={`item-card=${index}`}
                 item={item}
-                onSelectedCard={onSelectCard}
+                onSelectedCard={onSelectedCard}
                 onCardLike={handleCardLike}
                 onDeleteClick={onDeleteClick}
                 loggedIn={loggedIn}

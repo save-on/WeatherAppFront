@@ -70,6 +70,7 @@
   font-weight: 700;
   line-height: 20px;
   padding: 0;
+  display: flex;
 }
 
 .input-header {
@@ -82,10 +83,12 @@
   font-style: normal;
   font-weight: 700;
   line-height: 20px;
+  display: flex;
 }
 
 .weather-type-header {
   margin-bottom: 0;
+  display: block;
 }
 
 .weather-inputs {
