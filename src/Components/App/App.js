@@ -42,7 +42,6 @@ import { login, update, register, getUserData } from "../../Utils/Auth.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
 
-//Modal imports
 import DeleteItem from "../DeleteItem/DeleteItem.js";
 import ItemModal from "../ItemModal/ItemModal.js";
 import LoginModal from "../LoginModal/LoginModalForm.js";
@@ -92,7 +91,6 @@ function App() {
 
   useEffect(() => {
     if (!activeModal) return;
-
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
         handleCloseModal();

@@ -18,7 +18,7 @@ const ItemCard = ({ item, onSelectedCard }) => {
     <li className="card">
       <img
         className="card_image"
-        src={item.clothingimage_filepath}
+        src={item.clothing_image}
         onClick={() => onSelectedCard(item)}
         alt={item.name}
       />

@@ -77,3 +77,5 @@ export const changeVideoBackground = (weatherCondition) => {
     console.error("Video element not found.");
   }
 };
+
+

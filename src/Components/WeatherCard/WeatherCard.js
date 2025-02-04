@@ -32,6 +32,8 @@ const WeatherCard = ({ weatherData, coords }) => {
       ></img>
       {coords === null
         ? weatherOptions[0].component
+        : filteredOption?.component === undefined
+        ? weatherOptions[0].component
         : filteredOption?.component}
     </section>
   );
