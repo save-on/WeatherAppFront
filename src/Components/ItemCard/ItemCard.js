@@ -4,7 +4,7 @@ import { useContext } from "react";
 import likeButton from "../../Images/State=Default.svg";
 import likeButtonActive from "../../Images/State=Liked.svg";
 
-const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
+const ItemCard = ({ item, onSelectedCard, onCardLike, loggedIn }) => {
   const currentUser = useContext(CurrentUserContext);
 
   const isLiked = item.likes.some((user) => user === currentUser._id);
@@ -12,6 +12,10 @@ const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
   const handleLike = () => {
     onCardLike(item.id, isLiked);
   };
+
+  const likeBtnClassName = `card_like ${
+    loggedIn ? "card_like-visible" : "card_like-hidden"
+  }`;
 
   return (
     <li className="card">
@@ -23,7 +27,7 @@ const ItemCard = ({ item, onSelectedCard, onCardLike }) => {
       />
       <div className="card_container">
         <p className="card_name">{item.name}</p>
-        <button className="card__like" onClick={handleLike}>
+        <button className={likeBtnClassName} onClick={handleLike}>
           <img
             className="card_like-button"
             src={isLiked ? likeButtonActive : likeButton}

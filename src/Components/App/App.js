@@ -51,7 +51,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   // const history = useNavigate("");
-  const [token, setToken] = useState(localStorage.getItem("jwt") || "");
+  const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
 
@@ -133,24 +133,25 @@ function App() {
     setIsLoading(true);
     login(user)
       .then((res) => {
-        checkLoggedIn(res.token);
-        setToken(res.token);
-        localStorage.setItem("jwt", res.token);
-        setCurrentUser(res);
+        if (res.token) {
+          setToken(res.token);
+          localStorage.setItem("jwt", res.token);
+          setCurrentUser(res);
+          setLoggedIn(true);
+        }
         // history.push("/profile");
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        setLoggedIn(true);
         setIsLoading(false);
         handleCloseModal();
       });
   };
 
   const updateUser = (values) => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = checkLoggedIn();
     handleSubmit(() =>
       update(values, jwt).then((res) => {
         setCurrentUser(res);
@@ -166,7 +167,7 @@ function App() {
   };
 
   const handleCardLike = (id, isLiked) => {
-    const token = localStorage.getItem("jwt");
+    const token = checkLoggedIn();
     !isLiked
       ? addCardLike(id, token)
           .then((updatedCard) => {
@@ -196,7 +197,7 @@ function App() {
   };
 
   const onAddItem = (values) => {
-    const token = localStorage.getItem("jwt");
+    const token = checkLoggedIn();
     postItems(values, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
@@ -271,7 +272,7 @@ function App() {
                 coords={coords}
                 handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
-                // onCardLike={handleCardLike}
+                loggedIn={loggedIn}
               />
             }
           />
