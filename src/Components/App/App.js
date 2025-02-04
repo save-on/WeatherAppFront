@@ -235,10 +235,10 @@ function App() {
     Rain: Rain,
     Snow: SnowCabin,
     Clouds: Clouds,
-    NightMountain: NightMountain, 
+    NightMountain: NightMountain,
     SunsetCastle: SunsetCastle,
     SunsetLake: SunsetLake,
-  }
+  };
 
   useEffect(() => {
     if (coords === null) {
@@ -310,19 +310,18 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-         <video
+      <video
         id="background-video"
         autoPlay
         loop
         muted
         className="background-video"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
       <CurrentTemperatureUnitContext.Provider
         value={{ currentTemperatureUnit, handleToggleSwitchChange }}
       >
-     
         <Header
           onCreateModal={handleCreateModal}
           weatherData={weatherData}
