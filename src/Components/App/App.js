@@ -91,7 +91,6 @@ function App() {
 
   useEffect(() => {
     if (!activeModal) return;
-
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
         handleCloseModal();
