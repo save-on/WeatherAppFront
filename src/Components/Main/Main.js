@@ -8,7 +8,7 @@ function Main({
   weatherData,
   onSelectCard,
   clothingItems,
-  onCardLike,
+  handleCardLike,
   onDeleteClick,
   coords,
 }) {
@@ -38,7 +38,7 @@ function Main({
                 key={`item-card=${index}`}
                 item={item}
                 onSelectedCard={onSelectCard}
-                onCardLike={onCardLike}
+                onCardLike={handleCardLike}
                 onDeleteClick={onDeleteClick}
               />
             ))}

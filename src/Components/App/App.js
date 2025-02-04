@@ -165,26 +165,24 @@ function App() {
     // history.push("/");
   };
 
-  // const handleCardLike = (id, isLiked) => {
-  //   const token = localStorage.getItem("jwt");
-  //   if (isLiked) {
-  //     removeCardLike(id, token)
-  //       .then((data) => {
-  //         setClothingItems((cards) =>
-  //           cards.map((c) => (c._id === id ? data.data : c))
-  //         );
-  //       })
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     addCardLike(id, token)
-  //       .then((data) => {
-  //         setClothingItems((cards) =>
-  //           cards.map((c) => (c._id === id ? data.data : c))
-  //         );
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
+  const handleCardLike = (id, isLiked) => {
+    const token = localStorage.getItem("jwt");
+    !isLiked
+      ? addCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item.id === id ? updatedCard : item))
+            );
+          })
+          .catch(console.error)
+      : removeCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item.id === id ? updatedCard : item))
+            );
+          })
+          .catch(console.error);
+  };
 
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
@@ -231,46 +229,11 @@ function App() {
     }
   }, [coords]);
 
-  // .then((data) => {
-  //   const weatherCondition = data.weather[0].main.toLowerCase();
-  //   changeVideoBackground(weatherCondition);
-  // })
-  // .catch((error) => {
-  //   console.error("Failed to fetch weather data", error);
-  // });
-
   useEffect(() => {
     getItems()
-      .then((data) => setClothingItems(data.reverse()))
+      .then((data) => setClothingItems(data))
       .catch(console.error);
   }, []);
-
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   if (jwt) {
-  //     checkLoggedIn(jwt)
-  //       .then(() => {
-  //         setToken(jwt);
-  //         getUserData(jwt)
-  //           .then((res) => {
-  //             setCurrentUser(res.data);
-  //           })
-  //           .catch((err) => {
-  //             if (err.response && err.resonse.status === 401) {
-  //               console.error("Token invlaide or expired. Logging you out...");
-  //               onSignOut();
-  //             } else {
-  //               console.error("Error fetching user data:", err);
-  //             }
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   } else {
-  //     setLoggedIn(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const jwt = checkLoggedIn();
@@ -306,7 +269,7 @@ function App() {
                 onSelectCard={handleSelectedCard}
                 clothingItems={clothingItems}
                 coords={coords}
-                // handleCardLike={handleCardLike}
+                handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
                 // onCardLike={handleCardLike}
               />
