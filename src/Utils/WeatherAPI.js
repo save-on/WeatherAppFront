@@ -42,28 +42,37 @@ const tempConversion = (temp) => {
 
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");
-  let videoSource = "../Videos/Sunset-Train.mp4";
+  let videoSource = "./Videos/Sunset-Train.mp4";
 
   switch (weatherCondition) {
     case "clear":
-      videoSource = "../Videos/Sunny-Day.mp4";
+      videoSource = "./Videos/Sunny-Day.mp4";
       break;
     case "rain":
-      videoSource = "../Videos/Animated-Rain.mp4";
+      videoSource = "./Videos/Animated-Rain.mp4";
       break;
     case "snow":
-      videoSource = "../Videos/Snow-Cabin.mp4";
+      videoSource = "./Videos/Snow-Cabin.mp4";
       break;
-    case "cloudy":
-      videoSource = "../Videos/Cloudy-Sky.mp4";
+    case "clouds":
+      videoSource = "./Videos/Cloudy-Sky.mp4";
       break;
     default:
       console.warn(`Unknown weather condition: ${weatherCondition}`);
   }
   if (videoElement) {
-    videoElement.src = videoSource;
+    videoElement.pause();
+    videoElement.innerHTML = `<source src="${videoSource}" type="video/mp4">`;
     videoElement.load();
-    videoElement.play();
+    if (!videoElement.paused) {
+      videoElement.play().catch((error) => {
+        if (error.name === "AbortError") {
+          console.error("Playback interrupted by a new load request");
+        } else {
+          console.error("Playback Failed: ", error);
+        }
+      });
+    }
   } else {
     console.error("Video element not found.");
   }
