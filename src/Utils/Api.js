@@ -36,24 +36,24 @@ export function deleteItems(_id, token) {
   });
 }
 
-// export const addCardLike = (_id, token) => {
-//   return fetch(`${baseUrl}/items/${_id}/likes`, {
-//     method: "PUT",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//   }).then(processServerResponse);
-// };
+export const addCardLike = (_id, token) => {
+  return processServerRequest(`${baseUrl}clothing-items/${_id}/likes`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
-// export const removeCardLike = (_id, token) => {
-//   return fetch(`${baseUrl}/items/${_id}/likes`, {
-//     method: "DELETE",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//   }).then(processServerResponse);
-// };
+export const removeCardLike = (_id, token) => {
+  return processServerRequest(`${baseUrl}clothing-items/${_id}/likes`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

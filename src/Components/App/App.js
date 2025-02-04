@@ -33,8 +33,8 @@ import {
   getItems,
   postItems,
   deleteItems,
-  // addCardLike,
-  // removeCardLike,
+  addCardLike,
+  removeCardLike,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
@@ -64,7 +64,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   // const history = useNavigate("");
-  const [token, setToken] = useState(localStorage.getItem("jwt") || "");
+  const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
 
@@ -145,24 +145,25 @@ function App() {
     setIsLoading(true);
     login(user)
       .then((res) => {
-        checkLoggedIn(res.token);
-        setToken(res.token);
-        localStorage.setItem("jwt", res.token);
-        setCurrentUser(res);
+        if (res.token) {
+          setToken(res.token);
+          localStorage.setItem("jwt", res.token);
+          setCurrentUser(res);
+          setLoggedIn(true);
+        }
         // history.push("/profile");
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        setLoggedIn(true);
         setIsLoading(false);
         handleCloseModal();
       });
   };
 
   const updateUser = (values) => {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = checkLoggedIn();
     handleSubmit(() =>
       update(values, jwt).then((res) => {
         setCurrentUser(res);
@@ -177,26 +178,24 @@ function App() {
     // history.push("/");
   };
 
-  // const handleCardLike = (id, isLiked) => {
-  //   const token = localStorage.getItem("jwt");
-  //   if (isLiked) {
-  //     removeCardLike(id, token)
-  //       .then((data) => {
-  //         setClothingItems((cards) =>
-  //           cards.map((c) => (c._id === id ? data.data : c))
-  //         );
-  //       })
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     addCardLike(id, token)
-  //       .then((data) => {
-  //         setClothingItems((cards) =>
-  //           cards.map((c) => (c._id === id ? data.data : c))
-  //         );
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
+  const handleCardLike = (id, isLiked) => {
+    const token = checkLoggedIn();
+    !isLiked
+      ? addCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item.id === id ? updatedCard : item))
+            );
+          })
+          .catch(console.error)
+      : removeCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item.id === id ? updatedCard : item))
+            );
+          })
+          .catch(console.error);
+  };
 
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
@@ -210,7 +209,7 @@ function App() {
   };
 
   const onAddItem = (values) => {
-    const token = localStorage.getItem("jwt");
+    const token = checkLoggedIn();
     postItems(values, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
@@ -255,46 +254,11 @@ function App() {
     }
   }, [coords]);
 
-  // .then((data) => {
-  //   const weatherCondition = data.weather[0].main.toLowerCase();
-  //   changeVideoBackground(weatherCondition);
-  // })
-  // .catch((error) => {
-  //   console.error("Failed to fetch weather data", error);
-  // });
-
   useEffect(() => {
     getItems()
-      .then((data) => setClothingItems(data.reverse()))
+      .then((data) => setClothingItems(data))
       .catch(console.error);
   }, []);
-
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   if (jwt) {
-  //     checkLoggedIn(jwt)
-  //       .then(() => {
-  //         setToken(jwt);
-  //         getUserData(jwt)
-  //           .then((res) => {
-  //             setCurrentUser(res.data);
-  //           })
-  //           .catch((err) => {
-  //             if (err.response && err.resonse.status === 401) {
-  //               console.error("Token invlaide or expired. Logging you out...");
-  //               onSignOut();
-  //             } else {
-  //               console.error("Error fetching user data:", err);
-  //             }
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   } else {
-  //     setLoggedIn(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const jwt = checkLoggedIn();
@@ -339,9 +303,9 @@ function App() {
                 onSelectedCard={handleSelectedCard}
                 clothingItems={clothingItems}
                 coords={coords}
-                // handleCardLike={handleCardLike}
+                handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
-                // onCardLike={handleCardLike}
+                loggedIn={loggedIn}
               />
             }
           />

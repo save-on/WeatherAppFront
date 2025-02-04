@@ -8,9 +8,10 @@ function Main({
   weatherData,
   onSelectedCard,
   clothingItems,
-  onCardLike,
+  handleCardLike,
   onDeleteClick,
   coords,
+  loggedIn,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -38,8 +39,9 @@ function Main({
                 key={`item-card=${index}`}
                 item={item}
                 onSelectedCard={onSelectedCard}
-                onCardLike={onCardLike}
+                onCardLike={handleCardLike}
                 onDeleteClick={onDeleteClick}
+                loggedIn={loggedIn}
               />
             ))}
           </ul>

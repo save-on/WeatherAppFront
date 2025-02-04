@@ -64,9 +64,17 @@
   margin: 0 auto;
 }
 
-.card__like {
+.card_like {
   width: 18px;
   height: 15px;
   border: none;
   background-color: transparent;
+}
+
+.card_like-visible {
+  visibility: visible;
+}
+
+.card_like-hidden {
+  visibility: hidden;
 }
