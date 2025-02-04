@@ -75,6 +75,7 @@
   font-weight: 700;
   line-height: 20px;
   padding-bottom: 8px;
+  display:flex;
 }
 
 .modal__input {
@@ -92,6 +93,7 @@
 
 .modal__inputs {
   padding-bottom: 24px;
+  display: flex;
 }
 
 .modal__input-container-button {

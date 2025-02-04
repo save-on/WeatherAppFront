@@ -6,7 +6,7 @@ import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperature
 
 function Main({
   weatherData,
-  onSelectCard,
+  onSelectedCard,
   clothingItems,
   handleCardLike,
   onDeleteClick,
