@@ -4,6 +4,16 @@ import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 
+//Videos
+import Clouds from "../../Videos/Cloudy-Sky.mp4";
+import NightMountain from "../../Videos/Night-Mountain.mp4";
+import SnowCabin from "../../Videos/Snow-Cabin.mp4";
+import SunnyDay from "../../Videos/Sunny-Day.mp4";
+import SunsetCastle from "../../Videos/Sunset-Castle.mp4";
+import SunsetLake from "../../Videos/Sunset-Lake.mp4";
+import SunsetTrain from "../../Videos/Sunset-Train.mp4";
+import Rain from "../../Videos/Animated-Rain.mp4";
+
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
@@ -49,6 +59,7 @@ function App() {
     temp: { F: undefined, C: undefined },
     city: "",
   });
+  const [videoSrc, setVideoSrc] = useState(Clouds);
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -221,6 +232,16 @@ function App() {
     }
   };
 
+  const videoMapping = {
+    SunnyDay: SunnyDay,
+    Rain: Rain,
+    Snow: SnowCabin,
+    Clouds: Clouds,
+    NightMountain: NightMountain, 
+    SunsetCastle: SunsetCastle,
+    SunsetLake: SunsetLake,
+  }
+
   useEffect(() => {
     if (coords === null) {
       handleGetCoords();
@@ -230,9 +251,7 @@ function App() {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
 
-          if (filteredData.condition) {
-            changeVideoBackground(filteredData.condition);
-          }
+          setVideoSrc(videoMapping[filteredData.type] || SunnyDay);
         })
         .catch(console.error);
     }
@@ -300,7 +319,7 @@ function App() {
         muted
         className="background-video"
         >
-          <source src="../../src/Utils/Videos" type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       <CurrentTemperatureUnitContext.Provider
         value={{ currentTemperatureUnit, handleToggleSwitchChange }}
