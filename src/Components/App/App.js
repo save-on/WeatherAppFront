@@ -21,8 +21,8 @@ import {
   getItems,
   postItems,
   deleteItems,
-  // addCardLike,
-  // removeCardLike,
+  addCardLike,
+  removeCardLike,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
