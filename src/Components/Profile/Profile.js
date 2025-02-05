@@ -6,9 +6,9 @@ import "./Profile.css";
 const Profile = ({
   onCreate,
   clothingItems,
-  onSelectCard,
+  onSelectedCard,
   onAddItem,
-  // onCardLike,
+  handleCardLike,
   onEditProfile,
   onSignOut,
   onDeleteClick,
@@ -29,10 +29,10 @@ const Profile = ({
         </div>
         <ClothesSection
           clothingItems={clothingItems}
-          onSelectCard={onSelectCard}
+          onSelectedCard={onSelectedCard}
           onCreate={onCreate}
           onAddItem={onAddItem}
-          // onCardLike={onCardLike}
+          onCardLike={handleCardLike}
           onDeleteClick={onDeleteClick}
         />
       </div>

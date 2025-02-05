@@ -314,7 +314,7 @@ function App() {
             element={
               <ProtectedRoute path="/profile" loggedIn={loggedIn}>
                 <Profile
-                  onSelectCard={handleSelectedCard}
+                  onSelectedCard={handleSelectedCard}
                   onCreate={handleCreateModal}
                   clothingItems={clothingItems}
                   handleOpenItemModal={handleOpenItemModal}
@@ -322,7 +322,7 @@ function App() {
                   onEditProfile={handleOpenEditProfileModal}
                   onSignOut={onSignOut}
                   onDeleteClick={handleDeleteCard}
-                  // onCardLike={handleCardLike}
+                  handleCardLike={handleCardLike}
                 />
               </ProtectedRoute>
             }
