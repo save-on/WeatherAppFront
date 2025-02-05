@@ -27,9 +27,9 @@ function Main({
         <p className="card_suggestion">
           Today is{" "}
           {currentTemperatureUnit === "F"
-            ? weatherData.temp[currentTemperatureUnit]
-            : weatherData.temp[currentTemperatureUnit]}
-          / You may want to wear:
+            ? weatherData.temp[currentTemperatureUnit] + " "
+            : weatherData.temp[currentTemperatureUnit] + " "} 
+           / You may want to wear:
         </p>
         <div className="card_item-container">
           <ul className="card_items">

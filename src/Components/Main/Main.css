@@ -1,3 +1,9 @@
 .main {
   padding: 0 20px;
 }
+
+.card_suggestion {
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+}
