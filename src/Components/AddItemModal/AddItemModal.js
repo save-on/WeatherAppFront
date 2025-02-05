@@ -5,7 +5,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges } = useForm({
     name: "",
     clothing_image: "",
-    weather_condtion: "",
+    weather_condition: "",
   });
 
   const handleSubmit = (e) => {
