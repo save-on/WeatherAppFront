@@ -250,6 +250,7 @@ function App() {
           setWeatherData(filteredData);
 
           setVideoSrc(videoMapping[filteredData.type] || SunnyDay);
+          console.log(videoMapping);
         })
         .catch(console.error);
     }
