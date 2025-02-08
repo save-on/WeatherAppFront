@@ -4,6 +4,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
 import { Link } from "react-router";
 import { useContext } from "react";
+import defaultAvatar from "../../Images/default-avatar.jpg";
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -46,7 +47,7 @@ const Header = ({
             </Link>
             <img
               className="header__avatar-image"
-              src={currentUser?.avatar} // logics of image change is here
+              src={currentUser?.avatar || defaultAvatar}
               alt="avatar"
             />
           </div>

@@ -97,7 +97,6 @@ const RegisterModal = ({
           id="avatar"
           type="url"
           placeholder="Avatar URL"
-          required
           value={values.avatar}
           onChange={handleChanges}
         ></input>

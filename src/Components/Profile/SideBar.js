@@ -2,6 +2,7 @@ import { useContext } from "react";
 // import avatar from "../../Images/avatar.svg";
 import "./SideBar.css";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
+import defaultAvatar from "../../Images/default-avatar.jpg";
 
 const SideBar = ({ onSignOut, onEditProfile }) => {
   const currentUser = useContext(CurrentUserContext);
@@ -12,7 +13,7 @@ const SideBar = ({ onSignOut, onEditProfile }) => {
       <div className="profile__logo">
         <img
           className="profile__avatar-image"
-          src={currentUser?.avatar}
+          src={currentUser?.avatar || defaultAvatar}
           alt="Avatar"
         />
         <p className="profile__user-name">{userName}</p>
