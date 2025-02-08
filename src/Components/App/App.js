@@ -150,6 +150,7 @@ function App() {
           localStorage.setItem("jwt", res.token);
           setCurrentUser(res);
           setLoggedIn(true);
+          handleCloseModal();
         }
         // history.push("/profile");
       })
@@ -158,7 +159,6 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
-        handleCloseModal();
       });
   };
 
