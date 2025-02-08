@@ -18,6 +18,7 @@ export const filterWeatherData = (data) => {
   };
   result.type = setWeatherType(main.temp);
   result.condition = weather[0].main.toLowerCase();
+  console.log("result condition: ", result.condition);
   result.isDay = isDay(sys, Date.now());
   return result;
 };
@@ -47,17 +48,22 @@ export const changeVideoBackground = (weatherCondition) => {
   switch (weatherCondition) {
     case "clear":
       videoSource = "./Videos/Sunny-Day.mp4";
+      
       break;
     case "rain":
       videoSource = "./Videos/Animated-Rain.mp4";
+      
       break;
     case "snow":
       videoSource = "./Videos/Snow-Cabin.mp4";
+      
       break;
     case "clouds":
       videoSource = "./Videos/Cloudy-Sky.mp4";
+      
       break;
     default:
+      
       console.warn(`Unknown weather condition: ${weatherCondition}`);
   }
   if (videoElement) {

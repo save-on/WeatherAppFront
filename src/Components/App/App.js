@@ -33,8 +33,8 @@ import {
   getItems,
   postItems,
   deleteItems,
-  // addCardLike,
-  // removeCardLike,
+  addCardLike,
+  removeCardLike,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
@@ -57,6 +57,8 @@ function App() {
     type: "",
     temp: { F: undefined, C: undefined },
     city: "",
+    condition: "",
+    
   });
   const [videoSrc, setVideoSrc] = useState(Clouds);
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
@@ -231,30 +233,70 @@ function App() {
   };
 
   const videoMapping = {
-    SunnyDay: SunnyDay,
-    Rain: Rain,
-    Snow: SnowCabin,
-    Clouds: Clouds,
-    NightMountain: NightMountain, 
-    SunsetCastle: SunsetCastle,
-    SunsetLake: SunsetLake,
+    "sunny": SunnyDay,
+    "rain": Rain,
+    "snow": SnowCabin,
+    "clouds": Clouds,
+    "nightmountain": NightMountain, 
+    "sunsetcastle": SunsetCastle,
+    "sunsetlake": SunsetLake,
   }
 
+  const weatherMapping = {
+    "clear sky" : "Clear",
+    "few clouds": "Clouds", 
+    "scattered clouds": "Clouds", 
+    "broken clouds": "Clouds", 
+    "shower rain": "Rain",
+    "rain": "Rain", 
+    "thunderstorm": "Thunderstorm", 
+    "snow": "Snow", 
+    "mist": "fog",
+  }
+  
+
+    // useEffect(() => {
+    //   if (coords) {
+    //     getForecastWeather(coords)
+    //     .then((data) => {
+    //       const filteredData = filterWeatherData(data);
+    //       setWeatherData(filteredData);
+
+    //       const newVideo = videoMapping[filteredData.type] || SunnyDay;
+    //       setVideoSrc(newVideo);
+    //     })
+    //     .catch(console.error);
+    //   }
+    // }, [coords, weatherData.type]);
+
   useEffect(() => {
+    console.log("Weather Type from Api: ", weatherData.type);
+    
+
+    const availableKeys = Object.keys(videoMapping);
+    console.log("Available keys in VideoMapping: ", availableKeys);
     if (coords === null) {
       handleGetCoords();
     } else {
       getForecastWeather(coords)
         .then((data) => {
-          const filteredData = filterWeatherData(data);
+          const filteredData = filterWeatherData(data);;
           setWeatherData(filteredData);
 
-          setVideoSrc(videoMapping[filteredData.type] || SunnyDay);
-          console.log(videoMapping);
+          // const newVideo = (videoMapping[filteredData.type]);
+          // console.log("filteredData: ", filteredData);
+          // console.log("videoMapping[weatherData.type: ", videoMapping[weatherData.type]);
+          // setVideoSrc(newVideo);
+          const normalizedType = weatherData.type.trim().toLowerCase();
+          console.log("Normalized Type: ", normalizedType);
+          const mappedType = weatherMapping[normalizedType] || "Clouds";
+          console.log("Weather Mapping: ", weatherMapping[normalizedType]);
+          setVideoSrc(videoMapping[mappedType] || Clouds);
+       
         })
         .catch(console.error);
     }
-  }, [coords]);
+  }, [coords, weatherData.type]);
 
   // .then((data) => {
   //   const weatherCondition = data.weather[0].main.toLowerCase();
