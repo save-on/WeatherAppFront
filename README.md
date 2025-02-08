@@ -1,125 +1,126 @@
-# Getting Started with Create React App
+# [TravelWear](https://save-on.github.io/WeatherAppFront/) Requirements Document
 
-Live Site [TravelWear](https://save-on.github.io/WeatherAppFront/)
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-# Backend Link To Mongo DB
+The WeatherApp is a web-based application that provides users with **clothing recommendations based on current weather conditions** in their area. Users can **create accounts**, **add clothing items**, and **view recommendations from others**. The app will include **interactive weather animations** and offers the ability to **switch between Fahrenheit and Celsius temperatures**.
 
-This link is used to access the backend: https://github.com/MrSurge87/se_project_express
+---
 
-# General Information
+## Core Features
 
-This app allows you to see what clothes garments you should wear for the current weather setting you are located in. You can add garments to the page so when the API determines the weather it will auto select which clothes
-garments are best suited for the current weather.
+### 1. User Registration/Login
 
-## Components
+Users should be able to **sign up, log in, and log out** securely.
 
-This section holds all components of the project categorized by sections on the page
+#### Functional Requirements:
 
-### App
+- User registration requires **name, email, password, and optional avatar upload**.
+- Passwords must be securely hashed.
+- Users can update their profile, including their **name, avatar, and location**.
+- Users can update their profile, including their **name, avatar, and location**. <!-- Updating location will be in a later feature -->
+- Use **JWT-based authentication** for session management.
 
-This component is the main component that holds the HTML and css of the page. It imports all other components.
+---
 
-### Footer
+### 2. Clothing Card Creation/Deletion
 
-This component states the developer of the app and the year
+Users can **add and delete clothing items** they’ve created.
 
-### Header
+#### Functional Requirements:
 
-This component shows the logo, weather API call, location, and the add garment button and form
+- A clothing card includes **name, weather condition, affiliate link, image, and isLiked status**.
+- **Liking and like counting** <!-- Will be a later feature -->
+- Users can **upload images to AWS S3** and store the image URLs in the database.
+- Only the **owner of a card** can delete.
 
-### ItemCard
+---
 
-This component shows the garment item that the user should wear depending on the current weather. You can add item cards with the +Add Garment button function.
+### 3. User Profile Management
 
-### ItemModal
+Each user has a **personal page** showing their uploaded clothing cards.
 
-This component opens when an item card is clicked on. It previews an image of the garment selected, shows the name of the garment, and what type of weather it is used for.
+#### Functional Requirements:
 
-### Main
+- Users can **view all clothing items they’ve posted**.
+- Users can also **view other users' profiles and items**.
+- Profiles should display **total number of cards and liked items**. <!-- Will be a later feature -->
 
-This component contains all the main items of the page. From the item cards to the weather card and the information contained within.
+---
 
-### ModalWithForm
+### 4. Initial Card List Fetch
 
-This component handles the form when adding a new garment to the page.
+When users log in, they should be able to see a **list of clothing cards** based on their location’s weather condition.
 
-### WeatherCard
+#### Functional Requirements:
 
-This component handles the type of weather for the current location. It will display a different weather type depending on the user's location.
+- The system fetches weather data from a **third-party weather API**.
+- The clothing card list is filtered based on **matching weather conditions**.
+- Cards should be **sortable by date posted and most liked**. <!-- Will be a later feature -->
 
-### Images
+---
 
-Contains all the images needed for the page.
+### 5. Temperature Unit Switch (Fahrenheit/Celsius)
 
-### Utils
+Users can switch between **Fahrenheit (°F)** and **Celsius (°C)** temperatures.
 
-This contains the weather api for the weather card and the constants for all the images used that are exported to other components.
+#### Functional Requirements:
 
-## Available Scripts
+- Temperature units should default to **user's location preference** but be **manually adjustable**. <!-- Will be a later feature -->
+- Switching the unit updates **all temperature displays** across the app.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+### 6. Weather Condition Animations
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The app should display **animated weather visuals** that match the current weather condition. <!-- Will be a later feature -->
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Functional Requirements:
 
-### `npm test`
+- Weather conditions like **rain, snow, clear skies, or thunderstorms** should trigger **different animations**. <!-- Will be a later feature -->
+- The animations should be **optimized for both desktop and mobile devices**. <!-- Will be a later feature -->
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Non-Functional Requirements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Performance
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Images should be **stored on AWS S3** and **cached using Redis**. <!-- Will be a later feature -->
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Security
 
-### `npm run eject`
+- Passwords must be **hashed using bcrypt**.
+- All API routes must be **protected using JWT authentication**.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Scalability
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- The backend is built with **Postgresql** for managing user data and clothing items.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Usability
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- The app must be **responsive** across desktop, tablet, and mobile devices. <!-- Will be a later feature -->
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Image Storage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Images will be **uploaded to AWS S3**. <!-- Will be a later feature -->
 
-### Code Splitting
+#### S3 Requirements:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Store images in **separate folders** by user ID. <!-- Will be a later feature -->
+- Image URLs will be **saved in the SQL database**.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API Endpoints Overview
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+| **Endpoint**            | **Method** | **Description**            |
+| ----------------------- | ---------- | -------------------------- |
+| /user/signup            | POST       | Register a new user        |
+| /user/signin            | POST       | Log in a user              |
+| /users/me               | GET        | Get current user profile   |
+| /users/me               | PATCH      | Update Current User        |
+| /clothing-items         | GET        | Fetch clothing items       |
+| /clothing-items         | POST       | Create a new clothing card |
+| /clothing-items/:itemId | DELETE     | Delete a clothing card     |
