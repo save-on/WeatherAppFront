@@ -80,7 +80,7 @@ The app should display **animated weather visuals** that match the current weath
 - The animations should be **optimized for both desktop and mobile devices**. <!-- Will be a later feature -->
 
 ---
-### 72. Packing List (Pinterest-style Board)
+### 7. Packing List (Pinterest-style Board)
 
 Users should be able to **create, share, and manage packing lists** for their trips.
 
