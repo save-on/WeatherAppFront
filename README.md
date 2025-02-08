@@ -80,6 +80,32 @@ The app should display **animated weather visuals** that match the current weath
 - The animations should be **optimized for both desktop and mobile devices**. <!-- Will be a later feature -->
 
 ---
+### 72. Packing List (Pinterest-style Board)
+
+Users should be able to **create, share, and manage packing lists** for their trips.
+
+#### Functional Requirements:
+
+- Users can **create a new packing list** by adding clothing items and accessories.
+- Each packing list can have a **title** and **description**.
+- Users can **add/remove items** from their packing list.
+- Packing lists can be **shared with other users**, allowing them to view or collaborate.
+- Users can **organize packing lists** into categories (e.g., clothes, toiletries, gear). <!-- Maybe in a later feature -->
+- **Pins** on the list should represent different clothing items, similar to Pinterest boards. <!-- Maybe in a later feature -->
+
+---
+
+### 8. Search for Weather in Other Locations
+
+Users should be able to **search for weather** in different locations globally.
+
+#### Functional Requirements:
+
+- Users can **search by city name** or **country** to view weather conditions.
+- Weather information should include **temperature**, **precipitation**, and **clothing recommendations**.
+- **Autocomplete functionality** for location search. <!-- Maybe in a later feature -->
+- Users can **save favorite locations** for quick access in the future. <!-- Maybe in a later feature -->
+- Users can view the **weather for multiple locations** at once on a comparison screen. <!-- Maybe in a later feature -->
 
 ## Non-Functional Requirements
 
@@ -115,12 +141,14 @@ Images will be **uploaded to AWS S3**. <!-- Will be a later feature -->
 
 ## API Endpoints Overview
 
-| **Endpoint**            | **Method** | **Description**            |
-| ----------------------- | ---------- | -------------------------- |
-| /user/signup            | POST       | Register a new user        |
-| /user/signin            | POST       | Log in a user              |
-| /users/me               | GET        | Get current user profile   |
-| /users/me               | PATCH      | Update Current User        |
-| /clothing-items         | GET        | Fetch clothing items       |
-| /clothing-items         | POST       | Create a new clothing card |
-| /clothing-items/:itemId | DELETE     | Delete a clothing card     |
+| **Endpoint**                  | **Method** | **Description**            |
+| ----------------------------- | ---------- | -------------------------- |
+| /user/signup                  | POST       | Register a new user        |
+| /user/signin                  | POST       | Log in a user              |
+| /users/me                     | GET        | Get current user profile   |
+| /users/me                     | PATCH      | Update Current User        |
+| /clothing-items               | GET        | Fetch clothing items       |
+| /clothing-items               | POST       | Create a new clothing card |
+| /clothing-items/:itemId       | DELETE     | Delete a clothing card     |
+| /clothing-items/:itemId/likes | DELETE     | Dislike a clothing item    |
+| /clothing-items/:itemId/likes | PUT        | Like a clothing item       |
