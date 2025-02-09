@@ -19,7 +19,7 @@ import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperature
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 //React imports
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Routes, Route } from "react-router";
 
 //Utility imports
@@ -69,6 +69,7 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("jwt") || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
+  const videoRef = useRef();
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -298,6 +299,12 @@ function App() {
     }
   }, [coords, weatherData.type]);
 
+  useEffect(() => {
+    if (weatherData.type) {
+      changeVideoBackground(weatherData.type);
+    }
+  }, [weatherData.type]);
+
   // .then((data) => {
   //   const weatherCondition = data.weather[0].main.toLowerCase();
   //   changeVideoBackground(weatherCondition);
@@ -307,37 +314,14 @@ function App() {
   // });
 
   useEffect(() => {
+    videoRef.current?.load();
+  }, [videoSrc]);
+
+  useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data.reverse()))
       .catch(console.error);
   }, []);
-
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   if (jwt) {
-  //     checkLoggedIn(jwt)
-  //       .then(() => {
-  //         setToken(jwt);
-  //         getUserData(jwt)
-  //           .then((res) => {
-  //             setCurrentUser(res.data);
-  //           })
-  //           .catch((err) => {
-  //             if (err.response && err.resonse.status === 401) {
-  //               console.error("Token invlaide or expired. Logging you out...");
-  //               onSignOut();
-  //             } else {
-  //               console.error("Error fetching user data:", err);
-  //             }
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   } else {
-  //     setLoggedIn(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const jwt = checkLoggedIn();
@@ -359,6 +343,7 @@ function App() {
         loop
         muted
         className="background-video"
+        ref={videoRef}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>

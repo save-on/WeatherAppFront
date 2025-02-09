@@ -1,5 +1,14 @@
 import { processServerRequest } from "./Api.js";
 
+//Videos
+import SunnyDay from "../Videos/Sunny-Day.mp4";
+import Rain from "../Videos/Animated-Rain.mp4";
+import Snow from "../Videos/Snow-Cabin.mp4";
+import Clouds from "../Videos/Cloudy-Sky.mp4";
+// import Storm from "../Videos/Storm.mp4";
+// import Fog from "../Videos/Fog.mp4";
+import DefaultVideo from "../Videos/Sunset-Train.mp4";
+
 const APIKey = "8948385378cb8d6c557940f79b21048f";
 
 export const getForecastWeather = ({ latitude, longitude }) => {
@@ -16,9 +25,8 @@ export const filterWeatherData = (data) => {
     F: `${Math.round(main.temp)}°F`,
     C: `${tempConversion(main.temp)}°C`,
   };
-  result.type = setWeatherType(main.temp);
-  result.condition = weather[0].main.toLowerCase();
-  console.log("result condition: ", result.condition);
+  result.type = setWeatherType(weather[0].main.toLowerCase());
+  // result.condition = weather[0].main.toLowerCase();
   result.isDay = isDay(sys, Date.now());
   return result;
 };
@@ -27,14 +35,28 @@ const isDay = ({ sunrise, sunset }, now) => {
   return sunrise * 1000 < now && now < sunset * 1000;
 };
 
-const setWeatherType = (temp) => {
-  if (temp >= 86) {
-    return "hot";
-  } else if (temp < 86 && temp >= 66) {
-    return "warm";
-  } else {
-    return "cold";
-  }
+// const setWeatherType = (temp) => {
+//   if (temp >= 86) {
+//     return "hot";
+//   } else if (temp < 86 && temp >= 66) {
+//     return "warm";
+//   } else {
+//     return "cold";
+//   }
+// };
+
+const setWeatherType = (condition) => {
+  const weatherTypes = {
+    clear: "clear",
+    rain: "rain", 
+    snow: "snow", 
+    clouds: "clouds", 
+    thunderstorm: "storm", 
+    drizzle: "rain", 
+    mist: "fog", 
+    haze: "fog",
+  };
+  return weatherTypes[condition] || "default";
 };
 
 const tempConversion = (temp) => {
@@ -43,45 +65,29 @@ const tempConversion = (temp) => {
 
 export const changeVideoBackground = (weatherCondition) => {
   const videoElement = document.getElementById("background-video");
-  let videoSource = "./Videos/Sunset-Train.mp4";
-
-  switch (weatherCondition) {
-    case "clear":
-      videoSource = "./Videos/Sunny-Day.mp4";
-      
-      break;
-    case "rain":
-      videoSource = "./Videos/Animated-Rain.mp4";
-      
-      break;
-    case "snow":
-      videoSource = "./Videos/Snow-Cabin.mp4";
-      
-      break;
-    case "clouds":
-      videoSource = "./Videos/Cloudy-Sky.mp4";
-      
-      break;
-    default:
-      
-      console.warn(`Unknown weather condition: ${weatherCondition}`);
-  }
-  if (videoElement) {
-    videoElement.pause();
-    videoElement.innerHTML = `<source src="${videoSource}" type="video/mp4">`;
-    videoElement.load();
-    if (!videoElement.paused) {
-      videoElement.play().catch((error) => {
-        if (error.name === "AbortError") {
-          console.error("Playback interrupted by a new load request");
-        } else {
-          console.error("Playback Failed: ", error);
-        }
-      });
-    }
-  } else {
+  if (!videoElement) {
     console.error("Video element not found.");
+    return;
   }
+
+  const videoSources = {
+    clear: SunnyDay,
+    rain: Rain,
+    snow: Snow,
+    clouds: Clouds,
+    // storm: Storm,
+    // fog: Fog, 
+    default: DefaultVideo,
+  }
+
+  const videoSource = videoSources[weatherCondition] || videoSources.default;
+  
+  videoElement.pause();
+  videoElement.src = videoSource;
+  videoElement.load();
+  videoElement.play().catch((error) => {
+    console.error("Playback Failed: ", error);
+  });
 };
 
 
