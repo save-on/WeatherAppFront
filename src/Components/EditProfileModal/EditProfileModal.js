@@ -58,7 +58,7 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
             placeholder={values.avatar || "Enter Avatar image URL"}
             minLength="1"
             maxLength="400"
-            value={values.avatar}
+            value={values.avatar || ""}
             onChange={handleChanges}
           ></input>
         </li>
