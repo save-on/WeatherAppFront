@@ -1,3 +1,20 @@
 .main {
   padding: 0 20px;
 }
+
+.card_suggestion {
+  font-size: 35px;
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 1000px) {
+  .card_suggestion {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .card_suggestion {
+    font-size: 20px;
+  }
+}
