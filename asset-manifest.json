@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/WeatherAppFront/static/css/main.8849414a.css",
-    "main.js": "/WeatherAppFront/static/js/main.947c592a.js",
+    "main.js": "/WeatherAppFront/static/js/main.36908476.js",
     "static/js/488.44f13e05.chunk.js": "/WeatherAppFront/static/js/488.44f13e05.chunk.js",
     "static/media/Sunset-Castle.mp4": "/WeatherAppFront/static/media/Sunset-Castle.c6252b9a9dcd1edd28a7.mp4",
     "static/media/Snow-Cabin.mp4": "/WeatherAppFront/static/media/Snow-Cabin.3b11f6078909a51d264e.mp4",
@@ -11,6 +11,7 @@
     "static/media/Cloudy-Sky.mp4": "/WeatherAppFront/static/media/Cloudy-Sky.3b3dfe9b9ce066541d79.mp4",
     "static/media/Sunset-Lake.mp4": "/WeatherAppFront/static/media/Sunset-Lake.2647213ccf1c9e68bda3.mp4",
     "static/media/Animated-Rain.mp4": "/WeatherAppFront/static/media/Animated-Rain.b1818103d0f46dd93531.mp4",
+    "static/media/default-avatar.jpg": "/WeatherAppFront/static/media/default-avatar.c725b17d50823cfada17.jpg",
     "static/media/snowday.svg": "/WeatherAppFront/static/media/snowday.91deb49805a457b1125fb9ce6018ce37.svg",
     "static/media/snownight.svg": "/WeatherAppFront/static/media/snownight.62399599e4bc2b02a377c6d0193c8895.svg",
     "static/media/stormday.svg": "/WeatherAppFront/static/media/stormday.58c2d1362f17bdebee4c2fe9b9cf4a96.svg",
@@ -30,11 +31,11 @@
     "static/media/moon.svg": "/WeatherAppFront/static/media/moon.94c0f6f992836f9d41bb02d04b09a959.svg",
     "static/media/sunnyday.svg": "/WeatherAppFront/static/media/sunnyday.54fae7d1cdd7f1c926f072b2a3543417.svg",
     "main.8849414a.css.map": "/WeatherAppFront/static/css/main.8849414a.css.map",
-    "main.947c592a.js.map": "/WeatherAppFront/static/js/main.947c592a.js.map",
+    "main.36908476.js.map": "/WeatherAppFront/static/js/main.36908476.js.map",
     "488.44f13e05.chunk.js.map": "/WeatherAppFront/static/js/488.44f13e05.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8849414a.css",
-    "static/js/main.947c592a.js"
+    "static/js/main.36908476.js"
   ]
 }
