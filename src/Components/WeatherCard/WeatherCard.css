@@ -28,3 +28,25 @@
     left: 80px;
   }
 }
+
+@media screen and (max-width: 720px) {
+  .weather_info {
+    font-size: 25px;
+    left: 60px;
+    top: 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .weather_info {
+    font-size: 15px;
+    left: 40px;
+    top: 30px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .weather {
+    max-width: 100%;
+  }
+}

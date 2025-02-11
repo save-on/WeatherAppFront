@@ -41,7 +41,7 @@
 .header__name {
   color: #000;
   font-family: "Cabinet Grotesk";
-  font-size: 20px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -84,7 +84,16 @@
     font-size: 25px;
   }
 
+  .header__buttons {
+    display: flex;
+    align-items: center;
+  }
+
   .header__button {
+    font-size: 25px;
+  }
+
+  .header__name {
     font-size: 25px;
   }
 
@@ -109,4 +118,24 @@
     font-size: 20px;
   }
 
+  .header__avatar-logo {
+    gap: 0;
+  
+   }
+
+   .header__logo {
+    gap: 10px;
+   }
+
+}
+
+@media screen and (max-width: 500px) {
+ .header__logo {
+  gap: 0;
+ }
+
+ .header__avatar-logo {
+  display: grid;
+  grid-template-columns: min-content;
+ }
 }
