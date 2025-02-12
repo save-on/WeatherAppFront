@@ -1,6 +1,8 @@
+import { Link } from "react-router";
 import "./ItemModal.css";
 
 const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
+  console.log(selectedCard);
   return (
     <div className={"modal"}>
       <div className="preview-image-content">
@@ -22,8 +24,21 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
             </button>
           )}
         </div>
-        <div className="preview-image-weather-type">
-          Weather Type: {selectedCard.weather_condition}{" "}
+        <div className="preview-image_info-container">
+          <p className="preview-image-weather-type">
+            Weather Type: {selectedCard.weather_condition}
+          </p>
+          {selectedCard.affiliate_link === null ? null : (
+            <Link
+              to={selectedCard.affiliate_link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="preview-image_purchase-button">
+                Purchase
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
