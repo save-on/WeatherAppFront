@@ -5,14 +5,18 @@ import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 
 //Videos
-import Clouds from "../../Videos/Cloudy-Sky.mp4";
-import NightMountain from "../../Videos/Night-Mountain.mp4";
-import SnowCabin from "../../Videos/Snow-Cabin.mp4";
-import SunnyDay from "../../Videos/Sunny-Day.mp4";
-import SunsetCastle from "../../Videos/Sunset-Castle.mp4";
-import SunsetLake from "../../Videos/Sunset-Lake.mp4";
-import SunsetTrain from "../../Videos/Sunset-Train.mp4";
-import Rain from "../../Videos/Animated-Rain.mp4";
+import clearDay from "../../Videos/clear-day.mp4";
+import cloudsDay from "../../Videos/clear-day.mp4";
+import fogDay from "../../Videos/fog-day.mp4";
+import rainDay from "../../Videos/rain-day.mp4";
+import snowDay from "../../Videos/Snow-Cabin.mp4";
+import thunderStormday from "../../Videos/thunderstorm-day.mp4";
+import clearNight from "../../Videos/clear-night.mp4";
+import cloudsnight from "../../Videos/clouds-night.mp4";
+import fogNight from "../../Videos/fog-night.mp4";
+import rainNight from "../../Videos/rain-night.mp4";
+import snowNight from "../../Videos/snow-night.mp4";
+import thunderstormNight from "../../Videos/thunderstorm-night.mp4";
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
@@ -26,7 +30,6 @@ import { Routes, Route } from "react-router";
 import {
   getForecastWeather,
   filterWeatherData,
-  changeVideoBackground,
 } from "../../Utils/WeatherAPI.js";
 
 import {
@@ -58,7 +61,7 @@ function App() {
     temp: { F: undefined, C: undefined },
     city: "",
   });
-  const [videoSrc, setVideoSrc] = useState(Clouds);
+  const [videoSrc, setVideoSrc] = useState("");
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -229,16 +232,6 @@ function App() {
     }
   };
 
-  const videoMapping = {
-    SunnyDay: SunnyDay,
-    Rain: Rain,
-    Snow: SnowCabin,
-    Clouds: Clouds,
-    NightMountain: NightMountain,
-    SunsetCastle: SunsetCastle,
-    SunsetLake: SunsetLake,
-  };
-
   useEffect(() => {
     if (coords === null) {
       handleGetCoords();
@@ -247,8 +240,6 @@ function App() {
         .then((data) => {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
-
-          setVideoSrc(videoMapping[filteredData.type] || SunnyDay);
         })
         .catch(console.error);
     }
@@ -272,9 +263,31 @@ function App() {
     }
   }, []);
 
+  const videoMapping = {
+    ["clear-day"]: clearDay,
+    ["clouds-day"]: cloudsDay,
+    ["fog-day"]: fogDay,
+    ["rain-day"]: rainDay,
+    ["snow-day"]: snowDay,
+    ["thunderstorm-day"]: thunderStormday,
+    ["clear-night"]: clearNight,
+    ["clouds-night"]: cloudsnight,
+    ["fog-night"]: fogNight,
+    ["rain-night"]: rainNight,
+    ["snow-night"]: snowNight,
+    ["thunderstorm-night"]: thunderstormNight,
+  };
+
+  const handleBackgroundVideoChange = (option) => {
+    setVideoSrc(
+      videoMapping[`${option?.type}-${option?.day ? "day" : "night"}`]
+    );
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <video
+        key={videoSrc}
         id="background-video"
         autoPlay
         loop
@@ -306,6 +319,7 @@ function App() {
                 handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
                 loggedIn={loggedIn}
+                handleBackgroundVideoChange={handleBackgroundVideoChange}
               />
             }
           />
