@@ -1,5 +1,6 @@
 import "./Header.css";
 import LogoImage from "../../Images/Logo.svg";
+import TravelWearLogo from "../../Images/TravelWearLogo.PNG"
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
 import { Link } from "react-router";
@@ -24,7 +25,7 @@ const Header = ({
       <div className="header__logo">
         <div>
           <Link to="/">
-            <img src={LogoImage} alt="logo" />
+            <img src={TravelWearLogo} alt="logo" className="header__logo-image" />
           </Link>
         </div>
         <div className="header__date">

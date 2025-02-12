@@ -20,6 +20,11 @@
   width: auto;
 }
 
+.header__logo-image {
+  width: 100px;
+  height: 70px;
+}
+
 .header__avatar-logo {
   display: flex;
   gap: 20px;
@@ -36,7 +41,7 @@
 .header__name {
   color: #000;
   font-family: "Cabinet Grotesk";
-  font-size: 20px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -45,7 +50,7 @@
 .header__button {
   color: #000;
   font-family: "Cabinet Grotesk", sans-serif;
-  font-size: 20px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 700;
   line-height: 24px;
@@ -60,6 +65,8 @@
 .header__date {
   display: flex;
   justify-content: baseline;
+  font-size: 35px;
+  opacity: 0.8;
 }
 
 .header-buttons {
@@ -70,3 +77,55 @@
 .header-avatar-logo {
   padding-left: 12px;
 }
+
+
+@media screen and (max-width: 1000px) {
+  .header__date {
+    font-size: 25px;
+  }
+
+  .header__buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__button {
+    font-size: 25px;
+  }
+
+  .header__name {
+    font-size: 25px;
+  }
+
+  .header__logo-image {
+    width: 70px;
+    height: 50px;
+  }
+  
+}
+
+@media screen and (max-width: 720px) {
+  .header__date {
+    font-size: 20px;
+  }
+
+  .header__logo-image {
+    width: 60px;
+    height: 40px;
+  }
+
+  .header__button {
+    font-size: 20px;
+  }
+
+  .header__avatar-logo {
+    gap: 0;
+  
+   }
+
+   .header__logo {
+    gap: 10px;
+   }
+
+}
+
