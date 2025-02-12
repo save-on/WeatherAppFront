@@ -6,7 +6,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges } = useForm({
     name: "",
     clothing_image: "",
-    affliate_link: "",
+    affiliate_link: "",
     weather_condition: "",
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
@@ -79,7 +79,6 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
           />
         </li>
       </ul>
-
       <p className="weather-type-header input-header">Select Weather Type:</p>
       <div className="weather-inputs">
         <div>
