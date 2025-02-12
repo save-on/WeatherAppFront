@@ -6,6 +6,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges } = useForm({
     name: "",
     clothing_image: "",
+    affliate_link: "",
     weather_condition: "",
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
@@ -62,6 +63,20 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
           {errors.clothing_image && (
             <p className="modal-form_input-error">{errors.clothing_image}</p>
           )}
+        </li>
+        <label className="input-header" htmlFor="input_link">
+          Affiliate Link
+        </label>
+        <li>
+          <input
+            className="input"
+            type="url"
+            name="affiliate_link"
+            placeholder="Insert link (Optional)"
+            id="input_link"
+            value={values.affiliate_link}
+            onChange={handleChanges}
+          />
         </li>
       </ul>
 
