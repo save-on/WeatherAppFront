@@ -129,13 +129,3 @@
 
 }
 
-@media screen and (max-width: 500px) {
- .header__logo {
-  gap: 0;
- }
-
- .header__avatar-logo {
-  display: grid;
-  grid-template-columns: min-content;
- }
-}
