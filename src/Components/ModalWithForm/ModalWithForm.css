@@ -13,7 +13,7 @@
 .modal__content {
   background-color: white;
   max-width: 496px;
-  height: 436px;
+  height: fit-content;
   width: 100%;
   border-radius: 20px;
   margin: auto;
@@ -116,6 +116,7 @@
   font-weight: 700;
   line-height: 20px;
   padding: 0;
+  margin: 0 0 40px;
   background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -146,8 +147,8 @@
   display: flex;
 }
 
-.modal__login {
-  background-color: #fff;
+.modal__signup {
+  background-color: transparent;
   color: rgba(0, 0, 0, 0.5);
   font-family: "Cabinet Grotesk", sans-serif;
   font-size: 16px;
@@ -156,6 +157,7 @@
   line-height: 20px;
   border: 0;
   padding: 10px;
+  margin: 0 0 40px;
   justify-content: center;
   align-items: center;
   cursor: pointer;

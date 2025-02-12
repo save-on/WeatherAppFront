@@ -18,7 +18,12 @@ const ModalWithForm = ({
           {title}
           <button className="close" type="button" onClick={onClose}></button>
         </h3>
-        <form ref={formRef} className="modal-form" onSubmit={onSubmit}>
+        <form
+          ref={formRef}
+          noValidate
+          className="modal-form"
+          onSubmit={onSubmit}
+        >
           {children}
         </form>
       </div>

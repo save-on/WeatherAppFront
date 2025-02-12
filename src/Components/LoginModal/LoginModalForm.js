@@ -1,11 +1,13 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
+import { useFormValidator } from "../../hooks/useFormValidator.js";
 
 const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
-  const { values, handleChanges,} = useForm({
+  const { values, handleChanges } = useForm({
     email: "",
     password: "",
   });
+  const { formRef, errors, isDisabled } = useFormValidator(values);
 
   // const handleInputReset = () => {
   //   setValues({
@@ -26,6 +28,7 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
       onSubmit={onLogin}
       buttonText="Log In"
       name="login"
+      formRef={formRef}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="email">
@@ -44,6 +47,9 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
             onChange={handleChanges}
             required
           />
+          {errors.email && (
+            <p className="modal-form_input-error">{errors.email}</p>
+          )}
         </li>
         <label className="input-header" htmlFor="password">
           Password
@@ -55,20 +61,27 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
             name="password"
             placeholder="Password"
             id="password"
-            minLength="1"
+            minLength="6"
             maxLength="50"
             value={values.password}
             onChange={handleChanges}
             required
           />
+          {errors.password && (
+            <p className="modal-form_input-error">{errors.password}</p>
+          )}
         </li>
       </ul>
       <div className="modal-form-buttons">
-        <button className="modal-form-submit" type="submit">
+        <button
+          className="modal-form-submit"
+          disabled={isDisabled}
+          type="submit"
+        >
           {isLoading ? "Logging In..." : "Log In"}
         </button>
         <button
-          className="modal__login"
+          className="modal__signup"
           type="button"
           onClick={openRegisterModal}
         >
