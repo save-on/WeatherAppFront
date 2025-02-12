@@ -17,6 +17,8 @@ import fogNight from "../../Videos/fog-night.mp4";
 import rainNight from "../../Videos/rain-night.mp4";
 import snowNight from "../../Videos/snow-night.mp4";
 import thunderstormNight from "../../Videos/thunderstorm-night.mp4";
+import mistDay from "../../Videos/mist-day.mp4";
+import mistNight from "../../Videos/mist-night.mp4";
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
@@ -276,6 +278,8 @@ function App() {
     ["rain-night"]: rainNight,
     ["snow-night"]: snowNight,
     ["thunderstorm-night"]: thunderstormNight,
+    ["mist-day"]: mistDay,
+    ["mist-night"]: mistNight,
   };
 
   const handleBackgroundVideoChange = (option) => {
