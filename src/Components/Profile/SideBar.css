@@ -46,6 +46,20 @@
   cursor: pointer;
 }
 
+.sidebar__packing_list {
+  background-color: transparent;
+  border: none;
+  margin-top: 8px;
+  display: flex;
+  color: #000;
+  font-family: "Cabinet Grotesk";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  padding: 0;
+}
+
 .profile__logo {
   font-family: "Familjen Grotesk", sans-serif;
   display: flex;
@@ -113,3 +127,5 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+

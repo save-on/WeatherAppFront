@@ -25,6 +25,9 @@ const SideBar = ({ onSignOut, onEditProfile }) => {
           >
             Change Profile Data{" "}
           </button>
+          <button className="sidebar__packing_list">
+            Packing List
+          </button>
           <button className="sidebar__logout-button" onClick={onSignOut}>
             Log Out
           </button>
