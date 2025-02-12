@@ -12,6 +12,7 @@ function Main({
   onDeleteClick,
   coords,
   loggedIn,
+  handleBackgroundVideoChange,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -23,7 +24,11 @@ function Main({
 
   return (
     <main className="main">
-      <WeatherCard weatherData={weatherData} coords={coords} />
+      <WeatherCard
+        weatherData={weatherData}
+        coords={coords}
+        handleBackgroundVideoChange={handleBackgroundVideoChange}
+      />
       <section className="card_section">
         <p className="card_suggestion">
           Today is{" "}
