@@ -1,5 +1,6 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
+import { useFormValidator } from "../../hooks/useFormValidator.js";
 
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges } = useForm({
@@ -7,6 +8,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
     clothing_image: "",
     weather_condition: "",
   });
+  const { formRef, errors, isDisabled } = useFormValidator(values);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
       isOpen={isOpen}
       onSubmit={handleSubmit}
       buttonText="Add Garment"
+      formRef={formRef}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="name">
@@ -30,13 +33,17 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             className="input"
             type="text"
             name="name"
-            minLength="1"
+            minLength="2"
             maxLength="30"
+            required
             placeholder="Name"
             id="name"
             value={values.name}
             onChange={handleChanges}
           />
+          {errors.name && (
+            <p className="modal-form_input-error">{errors.name}</p>
+          )}
         </li>
         <label className="input-header" htmlFor="input-url">
           Image
@@ -46,11 +53,15 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             className="input"
             type="url"
             name="clothing_image"
+            required
             placeholder="Image Url"
             id="input-url"
             value={values.clothing_image}
             onChange={handleChanges}
           />
+          {errors.clothing_image && (
+            <p className="modal-form_input-error">{errors.clothing_image}</p>
+          )}
         </li>
       </ul>
 
@@ -63,6 +74,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="hot"
             value="hot"
+            required
             checked={values.weather_condition === "hot"}
             onChange={handleChanges}
           />
@@ -81,6 +93,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="warm"
             value="warm"
+            required
             checked={values.weather_condition === "warm"}
             onChange={handleChanges}
           />
@@ -99,6 +112,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="cold"
             value="cold"
+            required
             checked={values.weather_condition === "cold"}
             onChange={handleChanges}
           />
@@ -110,7 +124,11 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             Cold
           </label>
           <div className="button-container">
-            <button type="submit" className="modal-form-submit">
+            <button
+              disabled={isDisabled}
+              type="submit"
+              className="modal-form-submit"
+            >
               Add Garment
             </button>
           </div>

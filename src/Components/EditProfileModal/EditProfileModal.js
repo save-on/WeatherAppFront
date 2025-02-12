@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
+import { useFormValidator } from "../../hooks/useFormValidator.js";
 const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
   const currentUser = useContext(CurrentUserContext);
 
@@ -9,6 +10,8 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
     name: "",
     avatar: "",
   });
+
+  const { formRef, errors, isDisabled } = useFormValidator(values);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -26,32 +29,36 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
       onClose={onClose}
       buttonText="Save Changes"
       onSubmit={onSubmit}
+      formRef={formRef}
     >
-      <ul className="edit-modal__input-container">
-        <label className="modal__input-title" htmlFor="name">
+      <ul className="inputs">
+        <label className="input-header" htmlFor="name">
           Name *
         </label>
-        <li className="modal__inputs">
+        <li>
           <input
-            className="modal__input"
+            className="input"
             id="name"
             type="text"
             name="name"
             placeholder={values.name}
-            minLength="1"
-            maxLength="50"
+            minLength="2"
+            maxLength="30"
             required
             value={values.name}
             onChange={handleChanges}
-          ></input>
+          />
+          {errors.name && (
+            <p className="modal-form_input-error">{errors.name}</p>
+          )}
         </li>
 
-        <label className="modal__input-title" htmlFor="avatar">
+        <label className="input-header" htmlFor="avatar">
           Avatar *
         </label>
-        <li className="modal__inputs">
+        <li>
           <input
-            className="modal__input"
+            className="input"
             id="avatar"
             type="url"
             name="avatar"
@@ -60,11 +67,15 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
             maxLength="400"
             value={values.avatar || ""}
             onChange={handleChanges}
-          ></input>
+          />
         </li>
       </ul>
       <div>
-        <button className="modal__input-container-button" type="submit">
+        <button
+          disabled={isDisabled}
+          className="modal-form-submit"
+          type="submit"
+        >
           {isLoading ? "Saving" : "Save Changes"}
         </button>
       </div>
