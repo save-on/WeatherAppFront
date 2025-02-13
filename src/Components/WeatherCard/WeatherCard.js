@@ -1,22 +1,28 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants.js";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
-const WeatherCard = ({ weatherData, coords }) => {
+const WeatherCard = ({ weatherData, coords, handleBackgroundVideoChange }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const [filteredOption, setFilteredOption] = useState();
 
   const weatherOption = weatherOptions.find((item) => {
     return (
-      item.day === weatherData.isDay && item.type === weatherData.condition
+      item.day === weatherData?.isDay && item.type === weatherData?.condition
     );
   });
 
-  let filteredOption;
-
-  weatherOption === undefined
-    ? (filteredOption = weatherOptions[weatherData.isDay ? "day" : "night"])
-    : (filteredOption = weatherOption);
+  useEffect(() => {
+    if (weatherOption === undefined) {
+      setFilteredOption(weatherOptions[0]);
+      handleBackgroundVideoChange(weatherOptions[0]);
+    } else {
+      setFilteredOption(weatherOption);
+      handleBackgroundVideoChange(weatherOption);
+    }
+  }, [weatherData]);
+ 
 
   return (
     <section className="weather" id="weather">
@@ -28,7 +34,7 @@ const WeatherCard = ({ weatherData, coords }) => {
       <img
         src={weatherOption?.url}
         className="weather_image"
-        alt={weatherOption?.condition}
+        alt={weatherOption?.type}
       ></img>
       {coords === null
         ? weatherOptions[0].component
