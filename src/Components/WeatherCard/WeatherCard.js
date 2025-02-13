@@ -22,7 +22,7 @@ const WeatherCard = ({ weatherData, coords, handleBackgroundVideoChange }) => {
       handleBackgroundVideoChange(weatherOption);
     }
   }, [weatherData]);
-  console.log(weatherData);
+ 
 
   return (
     <section className="weather" id="weather">
