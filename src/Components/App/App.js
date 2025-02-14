@@ -3,6 +3,7 @@ import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
+import PackingListsSection from "../Profile/PackingListsSection.js";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -344,7 +345,25 @@ function App() {
                 />
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          <Route
+          path="/packing-lists"
+          element={
+            <ProtectedRoute path="/packing-lists" loggedIn={loggedIn}>
+              <PackingListsSection
+              onSelectedCard={handleSelectedCard}
+              onCreate={handleCreateModal}
+              clothingItems={clothingItems}
+              handleOpenItemModal={handleOpenItemModal}
+              loggedIn={loggedIn}
+              onEditProfile={handleOpenEditProfileModal}
+              onSignOut={onSignOut}
+              onDeleteClick={handleDeleteCard}
+              handleCardLike={handleCardLike}
+              />
+            </ProtectedRoute>
+          }
+          />
         </Routes>
 
         {activeModal === "login" && (

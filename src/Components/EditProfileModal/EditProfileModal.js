@@ -3,6 +3,8 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
+
+
 const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
   const currentUser = useContext(CurrentUserContext);
 

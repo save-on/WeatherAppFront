@@ -1,9 +1,8 @@
-// import React from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import "./Profile.css";
 
-const Profile = ({
+const PackingListsSection = ({
   onCreate,
   clothingItems,
   onSelectedCard,
@@ -12,14 +11,13 @@ const Profile = ({
   onEditProfile,
   onSignOut,
   onDeleteClick,
-  
 }) => {
   return (
     <div className="profile">
       <SideBar onSignOut={onSignOut} onEditProfile={onEditProfile} />
       <div className="profile__items-container">
         <div className="profile__items-text">
-          Your Clothing Items
+          Create Packing List
           <button
             className="profile__add-button"
             onClick={onCreate}
@@ -41,4 +39,4 @@ const Profile = ({
   );
 };
 
-export default Profile;
+export default PackingListsSection ;

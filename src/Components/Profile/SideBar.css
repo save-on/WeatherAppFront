@@ -46,7 +46,7 @@
   cursor: pointer;
 }
 
-.sidebar__packing_list {
+.sidebar__packing-lists__link {
   background-color: transparent;
   border: none;
   margin-top: 8px;
@@ -58,6 +58,7 @@
   font-weight: 700;
   line-height: normal;
   padding: 0;
+  text-decoration: none;
 }
 
 .profile__logo {
