@@ -347,9 +347,9 @@ function App() {
             }
           />
           <Route
-          path="/packing-lists"
+          path="/profile/packing-lists"
           element={
-            <ProtectedRoute path="/packing-lists" loggedIn={loggedIn}>
+            <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
               <PackingListsSection
               onSelectedCard={handleSelectedCard}
               onCreate={handleCreateModal}
