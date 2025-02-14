@@ -55,6 +55,7 @@ import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
+import PackingListsModal from "../PackingListsModal/PackingListsModal.js";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -74,6 +75,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
 
+  const handleCreatePackingList = () => {
+    setActiveModal("create packing list");
+  }
   const handleCreateModal = () => {
     setActiveModal("create");
   };
@@ -352,7 +356,7 @@ function App() {
             <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
               <PackingListsSection
               onSelectedCard={handleSelectedCard}
-              onCreate={handleCreateModal}
+              onCreate={handleCreatePackingList}
               clothingItems={clothingItems}
               handleOpenItemModal={handleOpenItemModal}
               loggedIn={loggedIn}
@@ -384,6 +388,12 @@ function App() {
 
         <Footer />
 
+        {activeModal === "create packing list" &&(
+          <PackingListsModal 
+          isOpen={activeModal === "create packing list"}
+          />
+        ) }
+        
         {activeModal === "create" && (
           <AddItemModal
             handleCloseModal={handleCloseModal}

@@ -1,6 +1,7 @@
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import "./Profile.css";
+import "./PackingListsSection.css"; 
 
 const PackingListsSection = ({
   onCreate,
@@ -15,15 +16,14 @@ const PackingListsSection = ({
   return (
     <div className="profile">
       <SideBar onSignOut={onSignOut} onEditProfile={onEditProfile} />
-      <div className="profile__items-container">
-        <div className="profile__items-text">
-          Create Packing List
+      <div className="packing__lists-container">
+        <div className="packing__lists-text">
           <button
-            className="profile__add-button"
+            className="packing__lists-button"
             onClick={onCreate}
             type="button"
           >
-            + Add New
+            Create Packing List
           </button>
         </div>
         <ClothesSection
