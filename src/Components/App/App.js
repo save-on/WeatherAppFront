@@ -391,6 +391,7 @@ function App() {
         {activeModal === "create packing list" &&(
           <PackingListsModal 
           isOpen={activeModal === "create packing list"}
+          onClose={handleCloseModal}
           />
         ) }
         

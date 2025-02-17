@@ -4,11 +4,11 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
-const PackingListsModal = ({ handleCloseModal, onAddPackingList, isOpen }) => {
+const PackingListsModal = ({ onClose, onAddPackingList, isOpen}) => {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, handleChanges, setValues } = useForm({
-    name: "",
+    packingList_name: "",
     clothing_image: "",
     affiliate_link: "",
     weather_condition: "",
@@ -26,21 +26,21 @@ const PackingListsModal = ({ handleCloseModal, onAddPackingList, isOpen }) => {
   return (
     <ModalWithForm
       title="Create a packing list"
-      onClose={handleCloseModal}
+      onClose={onClose}
       isOpen={isOpen}
       buttonText="Save Packing List"
       onSubmit={handleSubmit}
       formRef={formRef}
     >
       <ul className="inputs">
-        <label className="input-header" htmlFor="name">
+        <label className="input-header" htmlFor="name" >
           Packing List Name
         </label>
         <li>
           <input
             className="input"
             type="text"
-            name="packing list name"
+            name="packingList_name"
             minLength="2"
             maxLength="30"
             required
@@ -53,9 +53,9 @@ const PackingListsModal = ({ handleCloseModal, onAddPackingList, isOpen }) => {
             <p className="modal-form_input-error">{errors.name}</p>
           )}
         </li>
-        <lable className="input-header" htmlFor="input-url">
+        <label className="input-header" htmlFor="input-url">
           Clothing Item Image
-        </lable>
+        </label>
         <li>
           <input
             className="input"
@@ -82,16 +82,16 @@ const PackingListsModal = ({ handleCloseModal, onAddPackingList, isOpen }) => {
             placeholder="Insert Link (Optional)"
             id="input_link"
             value={values.affiliate_link}
-            onChange={handleChanges}
+            onChange={handleChanges} 
           />
         </li>
-        <label className="input-header" htmlFor="name">
+        <label className="input-header" htmlFor="location" >
           Location
         </label>
         <input
           className="input"
           type="text"
-          name="packing list location"
+          name="location"
           minLength="2"
           maxLength="30"
           required
