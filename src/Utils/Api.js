@@ -25,6 +25,18 @@ export function postItems(item, token) {
   });
 }
 
+export function postPackingList(packingList, token) {
+  return processServerRequest(`${baseUrl}packing-lists`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(packingList),
+  });
+}
+
 export function deleteItems(_id, token) {
   return processServerRequest(`${baseUrl}clothing-items/${_id}`, {
     method: "DELETE",

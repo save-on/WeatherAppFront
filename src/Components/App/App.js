@@ -38,6 +38,7 @@ import {
 import {
   getItems,
   postItems,
+  postPackingList,
   deleteItems,
   addCardLike,
   removeCardLike,
@@ -68,6 +69,7 @@ function App() {
   const [videoSrc, setVideoSrc] = useState("");
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
+  const [packkingLists, setPackingLists] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   // const history = useNavigate("");
@@ -228,6 +230,18 @@ function App() {
       .finally(() => {
         handleCloseModal();
       });
+  };
+
+  const onAddPackingList = (values) => {
+    const token = checkLoggedIn();
+    postPackingList(values, token)
+    .then((res) => {
+      setPackingLists((packingList) => [res, ...packingList]);
+    })
+    .catch(console.error)
+    .finally(() => {
+      handleCloseModal();
+    });
   };
 
   const handleGetCoords = async () => {
@@ -392,6 +406,8 @@ function App() {
           <PackingListsModal 
           isOpen={activeModal === "create packing list"}
           onClose={handleCloseModal}
+          isLoading={isLoading}
+          onAddPackingList={onAddPackingList}
           />
         ) }
         

@@ -4,7 +4,12 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
-const PackingListsModal = ({ onClose, onAddPackingList, isOpen}) => {
+const PackingListsModal = ({
+  onClose,
+  onAddPackingList,
+  isOpen,
+  isLoading,
+}) => {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, handleChanges, setValues } = useForm({
@@ -33,7 +38,7 @@ const PackingListsModal = ({ onClose, onAddPackingList, isOpen}) => {
       formRef={formRef}
     >
       <ul className="inputs">
-        <label className="input-header" htmlFor="name" >
+        <label className="input-header" htmlFor="name">
           Packing List Name
         </label>
         <li>
@@ -82,10 +87,10 @@ const PackingListsModal = ({ onClose, onAddPackingList, isOpen}) => {
             placeholder="Insert Link (Optional)"
             id="input_link"
             value={values.affiliate_link}
-            onChange={handleChanges} 
+            onChange={handleChanges}
           />
         </li>
-        <label className="input-header" htmlFor="location" >
+        <label className="input-header" htmlFor="location">
           Location
         </label>
         <input
@@ -165,7 +170,7 @@ const PackingListsModal = ({ onClose, onAddPackingList, isOpen}) => {
               type="submit"
               className="modal-form-submit"
             >
-              Save Packing List
+              {isLoading ? "Saving" : "Save Packing List"}
             </button>
           </div>
         </div>

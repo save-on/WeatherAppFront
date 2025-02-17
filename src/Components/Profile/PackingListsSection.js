@@ -1,7 +1,7 @@
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import "./Profile.css";
-import "./PackingListsSection.css"; 
+import "./PackingListsSection.css";
 
 const PackingListsSection = ({
   onCreate,
@@ -26,8 +26,8 @@ const PackingListsSection = ({
             Create Packing List
           </button>
         </div>
-        <ClothesSection
-          clothingItems={clothingItems}
+        <PackingListsSection
+        clothingItems={clothingItems}
           onSelectedCard={onSelectedCard}
           onCreate={onCreate}
           onAddItem={onAddItem}
@@ -39,4 +39,4 @@ const PackingListsSection = ({
   );
 };
 
-export default PackingListsSection ;
+export default PackingListsSection;
