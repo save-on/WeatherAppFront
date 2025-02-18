@@ -2,12 +2,9 @@ import "./ModalWithForm.css";
 
 const ModalWithForm = ({
   children,
-  // buttonText = "",
   title,
   onClose,
   name,
-  // handleSubmit,
-  // isOpen,
   onSubmit,
   formRef,
 }) => {

@@ -9,6 +9,7 @@ export const processServerRequest = (url, options) => {
   );
 };
 
+//Clothing Items
 export function getItems() {
   return processServerRequest(`${baseUrl}clothing-items`);
 }
@@ -25,18 +26,6 @@ export function postItems(item, token) {
   });
 }
 
-export function postPackingList(packingList, token) {
-  return processServerRequest(`${baseUrl}packing-lists`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(packingList),
-  });
-}
-
 export function deleteItems(_id, token) {
   return processServerRequest(`${baseUrl}clothing-items/${_id}`, {
     method: "DELETE",
@@ -47,6 +36,24 @@ export function deleteItems(_id, token) {
     },
   });
 }
+
+//Packing Lists
+export function getPackingLists() {
+  return processServerRequest(`${baseUrl}profile/packing-lists`);
+}
+export function postPackingList(packingList, token) {
+  return processServerRequest(`${baseUrl}profile/packing-lists`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(packingList),
+  });
+}
+
+//Card Likes
 
 export const addCardLike = (_id, token) => {
   return processServerRequest(`${baseUrl}clothing-items/${_id}/likes`, {

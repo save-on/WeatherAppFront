@@ -26,8 +26,8 @@ const PackingListsSection = ({
             Create Packing List
           </button>
         </div>
-        <PackingListsSection
-        clothingItems={clothingItems}
+        <ClothesSection
+          clothingItems={clothingItems}
           onSelectedCard={onSelectedCard}
           onCreate={onCreate}
           onAddItem={onAddItem}
