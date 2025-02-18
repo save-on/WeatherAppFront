@@ -57,6 +57,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
 import PackingListsModal from "../PackingListsModal/PackingListsModal.js";
+import AddPackingList from "../AddPackingList/AddPackingList.js";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -403,9 +404,9 @@ function App() {
         <Footer />
 
         {activeModal === "create packing list" &&(
-          <PackingListsModal 
+          <AddPackingList
           isOpen={activeModal === "create packing list"}
-          onClose={handleCloseModal}
+          handleCloseModal={handleCloseModal}
           isLoading={isLoading}
           onAddPackingList={onAddPackingList}
           />

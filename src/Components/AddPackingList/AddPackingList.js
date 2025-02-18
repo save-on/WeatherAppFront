@@ -1,57 +1,58 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
-import { useFormValidator } from "../../hooks/useFormValidator.js";
+import { useFormValidator, useValidator } from "../../hooks/useFormValidator.js";
 
-const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
-  const { values, handleChanges } = useForm({
-    name: "",
-    clothing_image: "",
-    affiliate_link: "",
-    weather_condition: "",
-  });
-  const { formRef, errors, isDisabled } = useFormValidator(values);
+const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading }) => {
+    const {values, handleChanges } = useForm({
+        name: "",
+        packingList_image: "",
+        affiliate_link: "",
+        weather_condition: "",
+    });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onAddItem(values);
-  };
+    const { formRef, errors, isDisabled } = useFormValidator(values);
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onLoaded = () => {
-            handleChanges({
-                target: {name: "packingList_imaeg", value: reader.result},
-            });
-        };
-        reader.readAsDataURL(file);
-    }
-};
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onAddPackingList(values);
+    };
 
-  return (
-    <ModalWithForm
-      title="New Garment"
-      onClose={handleCloseModal}
-      isOpen={isOpen}
-      onSubmit={handleSubmit}
-      buttonText="Add Garment"
-      formRef={formRef}
-    >
-      <ul className="inputs">
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onLoaded = () => {
+                handleChanges({
+                    target: {name: "packingList_imaeg", value: reader.result},
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    
+    return (
+        <ModalWithForm 
+        title="New Packing List"
+        onClose={handleCloseModal}
+        isOpen={isOpen}
+        onSubmit={handleSubmit}
+        buttonText="Add Packing List"
+        formRef={formRef}
+        >
+          <ul className="inputs">
         <label className="input-header" htmlFor="name">
-          Name
+          Packing List Name
         </label>
         <li>
           <input
             className="input"
             type="text"
-            name="name"
+            name="packingList_name"
             minLength="2"
             maxLength="30"
             required
-            placeholder="Name"
-            id="name"
+            placeholder="Packing List Name"
+            id="packing list name"
             value={values.name}
             onChange={handleChanges}
           />
@@ -59,22 +60,22 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             <p className="modal-form_input-error">{errors.name}</p>
           )}
         </li>
-        <label className="input-header" htmlFor="file_input">
-          Image
+        <label className="input-header" htmlFor="packingList_image">
+          Packing List Image
         </label>
         <li>
           <input
             className="input"
+            id="packingList_image"
             type="file"
-            name="clothing_image"
+            name="packingList_image"
             required
-            placeholder="Image Url"
-            id="file_input"
+            placeholder="Packing List Image"
             accept="image/*"
-            value={values.clothing_image}
             onChange={(e) => handleFileUpload(e)}
+            value={values.packingList_image}
           />
-          {errors.clothing_image && (
+          {errors.cloting_image && (
             <p className="modal-form_input-error">{errors.clothing_image}</p>
           )}
         </li>
@@ -86,12 +87,27 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             className="input"
             type="url"
             name="affiliate_link"
-            placeholder="Insert link (Optional)"
+            placeholder="Insert Link (Optional)"
             id="input_link"
             value={values.affiliate_link}
             onChange={handleChanges}
           />
         </li>
+        <label className="input-header" htmlFor="location">
+          Location
+        </label>
+        <input
+          className="input"
+          type="text"
+          name="location"
+          minLength="2"
+          maxLength="30"
+          required
+          placeholder="Location"
+          id="location"
+          value={values.location}
+          onChange={handleChanges}
+        />
       </ul>
       <p className="weather-type-header input-header">Select Weather Type:</p>
       <div className="weather-inputs">
@@ -157,13 +173,14 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
               type="submit"
               className="modal-form-submit"
             >
-              Add Garment
+              {isLoading ? "Saving" : "Save Packing List"}
             </button>
           </div>
         </div>
       </div>
-    </ModalWithForm>
-  );
+        </ModalWithForm>
+    )
+
 };
 
-export default AddItemModal;
+export default AddPackingList;
