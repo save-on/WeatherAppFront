@@ -21,19 +21,6 @@
   outline: none;
 }
 
-.location_search-btn {
-  position: absolute;
-  right: 0;
-  height: 100%;
-  width: 40px;
-  border: 1px solid #000;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  transition: background-color 0.15s linear 0s;
-  cursor: pointer;
-  background: no-repeat #ceb29a 40%/50% url("../../Images/search-icon.svg");
-}
-
 .location_search-dropbox {
   position: absolute;
   top: 40px;

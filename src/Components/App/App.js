@@ -355,7 +355,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/search/results" element={"some component"} />
         </Routes>
 
         {activeModal === "login" && (

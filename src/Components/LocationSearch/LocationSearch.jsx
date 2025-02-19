@@ -2,12 +2,14 @@ import "./LocationSearch.css";
 import SearchBar from "../SearchBar/SearchBar";
 import { useForm } from "../../hooks/useForm";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
   const { values, handleChanges } = useForm({
     location: "",
   });
   const [hideDropBox, setHideDropBox] = useState(true);
+  const navigate = useNavigate();
 
   const handleSearchInfo = (result) => {
     console.log(result);
@@ -25,10 +27,7 @@ const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (values.location !== "") {
-      handleGetCityWeather(values);
-    }
-    return;
+    navigate("/search/results");
   };
 
   useEffect(() => {
@@ -51,11 +50,6 @@ const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
             placeholder="Search city weather"
             value={values.location}
             onChange={handleChanges}
-          />
-          <button
-            type="submit"
-            className="location_search-btn"
-            // disabled={location === "" ? false : true}
           />
         </div>
         {hideDropBox ? null : (

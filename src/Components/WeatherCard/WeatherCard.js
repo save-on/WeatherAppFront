@@ -34,7 +34,7 @@ const WeatherCard = ({ weatherData, coords, handleBackgroundVideoChange }) => {
         src={weatherOption?.url}
         className="weather_image"
         alt={weatherOption?.type}
-      ></img>
+      />
       {coords === null
         ? weatherOptions[0].component
         : filteredOption?.component === undefined
