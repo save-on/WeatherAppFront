@@ -40,6 +40,7 @@ import {
   deleteItems,
   addCardLike,
   removeCardLike,
+  getCityLocationData,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
@@ -72,6 +73,7 @@ function App() {
   const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -202,6 +204,12 @@ function App() {
           .catch(console.error);
   };
 
+  const handleGetCityWeather = (search) => {
+    getCityLocationData(search).then((res) => {
+      setSearchResults(res);
+    });
+  };
+
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
@@ -324,6 +332,8 @@ function App() {
                 handleOpenItemModal={handleOpenItemModal}
                 loggedIn={loggedIn}
                 handleBackgroundVideoChange={handleBackgroundVideoChange}
+                handleGetCityWeather={handleGetCityWeather}
+                searchResults={searchResults}
               />
             }
           />
@@ -344,7 +354,8 @@ function App() {
                 />
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          <Route path="/search/results" element={"some component"} />
         </Routes>
 
         {activeModal === "login" && (

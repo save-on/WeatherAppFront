@@ -3,6 +3,7 @@ import ItemCard from "../ItemCard/ItemCard.js";
 import { useMemo, useContext } from "react";
 import "./Main.css";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
+import LocationSearch from "../LocationSearch/LocationSearch.jsx";
 
 function Main({
   weatherData,
@@ -13,6 +14,8 @@ function Main({
   coords,
   loggedIn,
   handleBackgroundVideoChange,
+  handleGetCityWeather,
+  searchResults,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -28,6 +31,10 @@ function Main({
         weatherData={weatherData}
         coords={coords}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
+      />
+      <LocationSearch
+        handleGetCityWeather={handleGetCityWeather}
+        searchResults={searchResults}
       />
       <section className="card_section">
         <p className="card_suggestion">

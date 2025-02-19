@@ -7,11 +7,12 @@
 .weather_info {
   position: relative;
   top: 15px;
-  left: 100px;
+  left: 40px;
   bottom: 20px;
   color: white;
   font-size: 36px;
   height: 40px;
+  width: 0;
 }
 
 .weather_image {
@@ -20,7 +21,6 @@
   object-position: right top;
   border-radius: 12px;
 }
-
 
 @media screen and (max-width: 1000px) {
   .weather_info {
@@ -35,6 +35,10 @@
     left: 60px;
     top: 20px;
   }
+
+  .weather {
+    max-width: 100%;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -42,11 +46,5 @@
     font-size: 15px;
     left: 40px;
     top: 30px;
-  }
-}
-
-@media screen and (max-width: 720px) {
-  .weather {
-    max-width: 100%;
   }
 }
