@@ -4,21 +4,21 @@ import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 
-//Videos
-import clearDay from "../../Videos/clear-day.mp4";
-import cloudsDay from "../../Videos/clear-day.mp4";
-import fogDay from "../../Videos/fog-day.mp4";
-import rainDay from "../../Videos/rain-day.mp4";
-import snowDay from "../../Videos/Snow-Cabin.mp4";
-import thunderStormday from "../../Videos/thunderstorm-day.mp4";
-import clearNight from "../../Videos/clear-night.mp4";
-import cloudsnight from "../../Videos/clouds-night.mp4";
-import fogNight from "../../Videos/fog-night.mp4";
-import rainNight from "../../Videos/rain-night.mp4";
-import snowNight from "../../Videos/snow-night.mp4";
-import thunderstormNight from "../../Videos/thunderstorm-night.mp4";
-import mistDay from "../../Videos/mist-day.mp4";
-import mistNight from "../../Videos/mist-night.mp4";
+// Video paths relative to public directory
+const getVideoPath = (condition, isDay) => {
+  const basePath = process.env.PUBLIC_URL + "/Videos/";
+  const timeOfDay = isDay ? "day" : "night";
+  const videoMap = {
+    "clear": `${basePath}clear-${timeOfDay}.mp4`,
+    "clouds": `${basePath}clouds-${timeOfDay}.mp4`,
+    "fog": `${basePath}fog-${timeOfDay}.mp4`,
+    "rain": `${basePath}rain-${timeOfDay}.mp4`,
+    "snow": isDay ? `${basePath}Snow-Cabin.mp4` : `${basePath}snow-${timeOfDay}.mp4`,
+    "thunderstorm": `${basePath}thunderstorm-${timeOfDay}.mp4`,
+    "mist": `${basePath}mist-${timeOfDay}.mp4`
+  };
+  return videoMap[condition] || `${basePath}Sunset-Lake.mp4`;
+};
 
 //Context imports
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
@@ -265,27 +265,10 @@ function App() {
     }
   }, []);
 
-  const videoMapping = {
-    ["clear-day"]: clearDay,
-    ["clouds-day"]: cloudsDay,
-    ["fog-day"]: fogDay,
-    ["rain-day"]: rainDay,
-    ["snow-day"]: snowDay,
-    ["thunderstorm-day"]: thunderStormday,
-    ["clear-night"]: clearNight,
-    ["clouds-night"]: cloudsnight,
-    ["fog-night"]: fogNight,
-    ["rain-night"]: rainNight,
-    ["snow-night"]: snowNight,
-    ["thunderstorm-night"]: thunderstormNight,
-    ["mist-day"]: mistDay,
-    ["mist-night"]: mistNight,
-  };
-
   const handleBackgroundVideoChange = (option) => {
-    setVideoSrc(
-      videoMapping[`${option?.type}-${option?.day ? "day" : "night"}`]
-    );
+    if (!option) return;
+    const videoSrc = getVideoPath(option.condition, option.day);
+    setVideoSrc(videoSrc);
   };
 
   return (
