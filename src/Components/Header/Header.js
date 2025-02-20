@@ -2,7 +2,7 @@ import "./Header.css";
 import TravelWearLogo from "../../Images/TravelWearLogo.PNG";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useContext } from "react";
 import defaultAvatar from "../../Images/default-avatar.jpg";
 
@@ -19,6 +19,7 @@ const Header = ({
   onLogin,
 }) => {
   const currentUser = useContext(CurrentUserContext);
+  const location = useLocation().pathname;
   return (
     <header className="header">
       <div className="header__logo">
@@ -31,21 +32,25 @@ const Header = ({
             />
           </Link>
         </div>
-        <div className="header__date">
-          {currentDate} {weatherData.city}
-        </div>
+        {location !== "/search/result" && (
+          <div className="header__date">
+            {currentDate} {weatherData.city}
+          </div>
+        )}
       </div>
       <div className="header__avatar-logo">
         <ToggleSwitch />
         {loggedIn ? (
           <div className="header__buttons">
-            <button
-              className="header__button"
-              type="button"
-              onClick={onCreateModal}
-            >
-              + Add Clothes
-            </button>
+            {location !== "/search/result" && (
+              <button
+                className="header__button"
+                type="button"
+                onClick={onCreateModal}
+              >
+                + Add Clothes
+              </button>
+            )}
             <Link to="/profile" className="header__name">
               {currentUser?.name || "Your Name"}
             </Link>

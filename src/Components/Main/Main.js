@@ -11,11 +11,11 @@ function Main({
   clothingItems,
   handleCardLike,
   onDeleteClick,
-  coords,
   loggedIn,
   handleBackgroundVideoChange,
   handleGetCityWeather,
   searchResults,
+  handleSearchedData,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -29,12 +29,12 @@ function Main({
     <main className="main">
       <WeatherCard
         weatherData={weatherData}
-        coords={coords}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
       <LocationSearch
         handleGetCityWeather={handleGetCityWeather}
         searchResults={searchResults}
+        handleSearchedData={handleSearchedData}
       />
       <section className="card_section">
         <p className="card_suggestion">

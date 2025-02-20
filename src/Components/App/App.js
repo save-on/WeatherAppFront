@@ -55,6 +55,7 @@ import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
+import SearchedCity from "../SearchedCity/SearchedCity.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -74,6 +75,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [searchedCity, setSearchedCity] = useState({});
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -210,6 +212,17 @@ function App() {
     });
   };
 
+  const handleSearchedData = (cityInfo) => {
+    const coords = {
+      latitude: cityInfo.lat,
+      longitude: cityInfo.lon,
+    };
+    getForecastWeather(coords).then((data) => {
+      const filteredData = filterWeatherData(data);
+      setSearchedCity(filteredData);
+    });
+  };
+
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
@@ -327,13 +340,13 @@ function App() {
                 weatherData={weatherData}
                 onSelectedCard={handleSelectedCard}
                 clothingItems={clothingItems}
-                coords={coords}
                 handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
                 loggedIn={loggedIn}
                 handleBackgroundVideoChange={handleBackgroundVideoChange}
                 handleGetCityWeather={handleGetCityWeather}
                 searchResults={searchResults}
+                handleSearchedData={handleSearchedData}
               />
             }
           />
@@ -353,6 +366,15 @@ function App() {
                   handleCardLike={handleCardLike}
                 />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/search/result"
+            element={
+              <SearchedCity
+                searchedCity={searchedCity}
+                handleBackgroundVideoChange={handleBackgroundVideoChange}
+              />
             }
           />
         </Routes>

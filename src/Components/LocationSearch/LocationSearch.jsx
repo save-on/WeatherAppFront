@@ -4,7 +4,11 @@ import { useForm } from "../../hooks/useForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
+const LocationSearch = ({
+  handleGetCityWeather,
+  searchResults,
+  handleSearchedData,
+}) => {
   const { values, handleChanges } = useForm({
     location: "",
   });
@@ -12,7 +16,8 @@ const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
   const navigate = useNavigate();
 
   const handleSearchInfo = (result) => {
-    console.log(result);
+    handleSearchedData(result);
+    navigate("/search/result");
   };
 
   useEffect(() => {
@@ -27,7 +32,6 @@ const LocationSearch = ({ handleGetCityWeather, searchResults }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    navigate("/search/results");
   };
 
   useEffect(() => {
