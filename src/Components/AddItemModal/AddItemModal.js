@@ -3,7 +3,7 @@ import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
-  const { values, handleChanges } = useForm({
+  const { values, handleChanges, setValues } = useForm({
     name: "",
     clothing_image: "",
     affiliate_link: "",
@@ -16,18 +16,21 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
     onAddItem(values);
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload= (e) => {
     const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onLoaded = () => {
-            handleChanges({
-                target: {name: "packingList_imaeg", value: reader.result},
-            });
-        };
-        reader.readAsDataURL(file);
-    }
-};
+
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setValues((prevValues) => ({
+        ...prevValues,
+        clothing_image: reader.result,
+      }));
+    };
+
+    reader.readAsDataURL(file);
+  } 
 
   return (
     <ModalWithForm
@@ -59,7 +62,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             <p className="modal-form_input-error">{errors.name}</p>
           )}
         </li>
-        <label className="input-header" htmlFor="file_input">
+        <label className="input-header" htmlFor="clothing_image">
           Image
         </label>
         <li>
@@ -69,10 +72,10 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             name="clothing_image"
             required
             placeholder="Image Url"
-            id="file_input"
+            id="clothing_image"
             accept="image/*"
-            value={values.clothing_image}
-            onChange={(e) => handleFileUpload(e)}
+         
+            onChange={handleFileUpload}
           />
           {errors.clothing_image && (
             <p className="modal-form_input-error">{errors.clothing_image}</p>

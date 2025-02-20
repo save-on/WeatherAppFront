@@ -18,13 +18,18 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
     };
 
     const handleFileUpload = (e) => {
+      console.log("handleFileUpload triggered!");
         const file = e.target.files[0];
         if (file) {
+          console.log("Selected file: ", file);
+
             const reader = new FileReader();
-            reader.onLoaded = () => {
-                handleChanges({
-                    target: {name: "packingList_imaeg", value: reader.result},
-                });
+            reader.onloadend = () => {
+                setValues((prevValues) => ({
+                  ...prevValues,
+                  packingList_image: reader.result,
+                }));
+                console.log("Base64 String: ", reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -72,11 +77,14 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
             required
             placeholder="Packing List Image"
             accept="image/*"
-            onChange={(e) => handleFileUpload(e)}
-            value={values.packingList_image}
+            onChange={handleFileUpload}
           />
-          {errors.cloting_image && (
-            <p className="modal-form_input-error">{errors.clothing_image}</p>
+          {values.packingList_image && (
+            <div>
+                <p>Selected File Preview:</p>
+                <img src={values.packingList_image} alt="Preview" width="100" />
+            </div>
+            
           )}
         </li>
         <label className="input-header" htmlFor="input_link">
