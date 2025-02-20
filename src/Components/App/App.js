@@ -207,12 +207,17 @@ function App() {
   };
 
   const handleGetCityWeather = (search) => {
+    console.log(search);
     getCityLocationData(search).then((res) => {
       setSearchResults(res);
     });
   };
 
   const handleSearchedData = (cityInfo) => {
+    if (!cityInfo) return;
+
+    localStorage.setItem("lastSearchedCity", JSON.stringify(cityInfo));
+
     const coords = {
       latitude: cityInfo.lat,
       longitude: cityInfo.lon,
@@ -222,6 +227,13 @@ function App() {
       setSearchedCity(filteredData);
     });
   };
+
+  useEffect(() => {
+    const savedCity = localStorage.getItem("lastSearchedCity");
+    if (savedCity) {
+      handleSearchedData(JSON.parse(savedCity));
+    }
+  }, []);
 
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
@@ -374,6 +386,10 @@ function App() {
               <SearchedCity
                 searchedCity={searchedCity}
                 handleBackgroundVideoChange={handleBackgroundVideoChange}
+                clothingItems={clothingItems}
+                handleSelectedCard={handleSelectedCard}
+                handleCardLike={handleCardLike}
+                loggedIn={loggedIn}
               />
             }
           />

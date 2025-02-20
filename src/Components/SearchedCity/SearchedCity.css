@@ -1,0 +1,30 @@
+.searched-city {
+  padding: 0 20px;
+  max-width: 1360px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.searched-city_title {
+  color: #fff;
+  text-align: left;
+  font-size: 32px;
+}
+
+.searched-city_card-lists {
+  display: grid;
+  max-width: 100%;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, 325px);
+  grid-gap: 20px;
+  list-style-type: none;
+  padding: 0;
+}
+
+@media screen and (max-width: 870px) {
+  .searched-city_title {
+    text-align: center;
+    font-size: 28px;
+  }
+}

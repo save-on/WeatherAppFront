@@ -10,7 +10,6 @@ function Main({
   onSelectedCard,
   clothingItems,
   handleCardLike,
-  onDeleteClick,
   loggedIn,
   handleBackgroundVideoChange,
   handleGetCityWeather,
@@ -52,7 +51,6 @@ function Main({
                 item={item}
                 onSelectedCard={onSelectedCard}
                 onCardLike={handleCardLike}
-                onDeleteClick={onDeleteClick}
                 loggedIn={loggedIn}
               />
             ))}
