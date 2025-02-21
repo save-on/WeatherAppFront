@@ -14,15 +14,37 @@ export function getItems() {
   return processServerRequest(`${baseUrl}clothing-items`);
 }
 
-export function postItems(item, token) {
+// export function postItems(item, token) {
+//   return processServerRequest(`${baseUrl}clothing-items`, {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify(item),
+//   });
+// }
+
+export function postItems(item, imageFile, token) {
+  console.log("Token from storge:", localStorage.getItem("jwt"));
+  console.log("Token format check:", token.split(".").length);
+  console.log("Token being sent", token);
+  const formData = new FormData();
+
+  for (const key in item) {
+    formData.append(key, item[key]);
+  }
+  
+  formData.append('image', imageFile);
+
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(item),
+    body: formData,
   });
 }
 

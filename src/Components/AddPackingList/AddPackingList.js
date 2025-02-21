@@ -3,7 +3,7 @@ import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator, useValidator } from "../../hooks/useFormValidator.js";
 
 const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading }) => {
-    const {values, handleChanges } = useForm({
+    const {values, handleChanges, setValues } = useForm({
         name: "",
         packingList_image: "",
         affiliate_link: "",
@@ -18,21 +18,19 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
     };
 
     const handleFileUpload = (e) => {
-      console.log("handleFileUpload triggered!");
-        const file = e.target.files[0];
-        if (file) {
-          console.log("Selected file: ", file);
+      const file = e.target.files[0];
 
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setValues((prevValues) => ({
-                  ...prevValues,
-                  packingList_image: reader.result,
-                }));
-                console.log("Base64 String: ", reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setValues((prevValues) => ({
+          ...prevValues,
+          packingList_image: reader.result,
+        }));
+      };
+
+      reader.readAsDataURL(file);
     };
     
     return (
@@ -52,12 +50,12 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
           <input
             className="input"
             type="text"
-            name="packingList_name"
+            name="name"
             minLength="2"
             maxLength="30"
             required
             placeholder="Packing List Name"
-            id="packing list name"
+            id="name"
             value={values.name}
             onChange={handleChanges}
           />
@@ -79,12 +77,8 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
             accept="image/*"
             onChange={handleFileUpload}
           />
-          {values.packingList_image && (
-            <div>
-                <p>Selected File Preview:</p>
-                <img src={values.packingList_image} alt="Preview" width="100" />
-            </div>
-            
+          {errors.packingList_image && (
+            <p className="modal-form_input-error">{errors.packingList_image}</p>
           )}
         </li>
         <label className="input-header" htmlFor="input_link">

@@ -1,36 +1,53 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
+import { useState } from "react";
 
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
-    clothing_image: "",
+    // clothing_image: "",
     affiliate_link: "",
     weather_condition: "",
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
+  const [file, setFile] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddItem(values);
+
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("affiliate_link", values.affiliate_link);
+    formData.append("weather_condition", values.weather_condition);
+    if (file) {
+      formData.append("clothing_image", file);
+    }
+    onAddItem(formData);
   };
 
-  const handleFileUpload= (e) => {
-    const file = e.target.files[0];
+  const handleFileUpload = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
 
-    if(!file) return;
+  // const handleFileUpload= (e) => {
+  //   const file = e.target.files[0];
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setValues((prevValues) => ({
-        ...prevValues,
-        clothing_image: reader.result,
-      }));
-    };
+  //   if(!file) return;
 
-    reader.readAsDataURL(file);
-  } 
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setValues((prevValues) => ({
+  //       ...prevValues,
+  //       clothing_image: reader.result,
+  //     }));
+  //   };
+
+  //   reader.readAsDataURL(file);
+  // } 
 
   return (
     <ModalWithForm
@@ -74,7 +91,6 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             placeholder="Image Url"
             id="clothing_image"
             accept="image/*"
-         
             onChange={handleFileUpload}
           />
           {errors.clothing_image && (
