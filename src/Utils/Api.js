@@ -57,3 +57,14 @@ export const removeCardLike = (_id, token) => {
     },
   });
 };
+
+export const getCityLocationData = (location) => {
+  return processServerRequest(`${baseUrl}weather`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(location),
+  });
+};

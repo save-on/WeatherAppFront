@@ -1,10 +1,17 @@
 .profile {
   display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+}
+
+.profile_container {
+  display: flex;
   align-items: flex-start;
   min-height: 60px;
-  padding: 32px 40px 0;
+  /* padding: 32px 40px 0; */
+  margin: 32px 0 0;
   font-family: "Cabinet Grotesk", sans-serif;
-  color: #000;
+  color: #fff;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -31,6 +38,7 @@
   font-size: 20px;
   height: 25px;
   text-decoration: none;
+  color: #fff;
 }
 
 .profile__logo {
@@ -53,6 +61,7 @@
   border: none;
   margin-left: 20px;
   color: rgba(0, 0, 0, 0.6);
+  color: #fff;
 }
 
 .profile__add-button:hover {

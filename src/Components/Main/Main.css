@@ -1,9 +1,12 @@
 .main {
   padding: 0 20px;
+  max-width: 1360px;
+  margin: 0 auto;
 }
 
 .card_suggestion {
   font-size: 35px;
+  color: #fff;
   opacity: 0.8;
 }
 

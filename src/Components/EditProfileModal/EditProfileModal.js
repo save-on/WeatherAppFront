@@ -19,7 +19,10 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
   };
 
   useEffect(() => {
-    setValues(currentUser);
+    setValues({
+      name: currentUser.name,
+      avatar: "",
+    });
   }, [currentUser]);
 
   return (

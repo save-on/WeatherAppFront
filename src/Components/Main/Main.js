@@ -3,16 +3,18 @@ import ItemCard from "../ItemCard/ItemCard.js";
 import { useMemo, useContext } from "react";
 import "./Main.css";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
+import LocationSearch from "../LocationSearch/LocationSearch.jsx";
 
 function Main({
   weatherData,
   onSelectedCard,
   clothingItems,
   handleCardLike,
-  onDeleteClick,
-  coords,
   loggedIn,
   handleBackgroundVideoChange,
+  handleGetCityWeather,
+  searchResults,
+  handleSearchedData,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -26,8 +28,12 @@ function Main({
     <main className="main">
       <WeatherCard
         weatherData={weatherData}
-        coords={coords}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
+      />
+      <LocationSearch
+        handleGetCityWeather={handleGetCityWeather}
+        searchResults={searchResults}
+        handleSearchedData={handleSearchedData}
       />
       <section className="card_section">
         <p className="card_suggestion">
@@ -45,7 +51,6 @@ function Main({
                 item={item}
                 onSelectedCard={onSelectedCard}
                 onCardLike={handleCardLike}
-                onDeleteClick={onDeleteClick}
                 loggedIn={loggedIn}
               />
             ))}

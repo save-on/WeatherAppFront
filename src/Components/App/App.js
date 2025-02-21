@@ -40,6 +40,7 @@ import {
   deleteItems,
   addCardLike,
   removeCardLike,
+  getCityLocationData,
 } from "../../Utils/Api.js";
 
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
@@ -54,6 +55,8 @@ import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
+import SearchedCity from "../SearchedCity/SearchedCity.jsx";
+import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -72,6 +75,9 @@ function App() {
   const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchedCity, setSearchedCity] = useState({});
+  const [savedCity, setSavedCity] = useState({ name: "" });
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -202,6 +208,34 @@ function App() {
           .catch(console.error);
   };
 
+  const handleGetCityWeather = (search) => {
+    getCityLocationData(search).then((res) => {
+      setSearchResults(res);
+    });
+  };
+
+  const handleSearchedData = (cityInfo) => {
+    if (!cityInfo) return;
+    localStorage.setItem("lastSearchedCity", JSON.stringify(cityInfo));
+
+    const coords = {
+      latitude: cityInfo.lat,
+      longitude: cityInfo.lon,
+    };
+    getForecastWeather(coords).then((data) => {
+      const filteredData = filterWeatherData(data);
+      setSearchedCity(filteredData);
+      setSavedCity(cityInfo);
+    });
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem("lastSearchedCity");
+    if (saved) {
+      handleSearchedData(JSON.parse(saved));
+    }
+  }, []);
+
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
@@ -319,11 +353,13 @@ function App() {
                 weatherData={weatherData}
                 onSelectedCard={handleSelectedCard}
                 clothingItems={clothingItems}
-                coords={coords}
                 handleCardLike={handleCardLike}
                 handleOpenItemModal={handleOpenItemModal}
                 loggedIn={loggedIn}
                 handleBackgroundVideoChange={handleBackgroundVideoChange}
+                handleGetCityWeather={handleGetCityWeather}
+                searchResults={searchResults}
+                handleSearchedData={handleSearchedData}
               />
             }
           />
@@ -344,7 +380,23 @@ function App() {
                 />
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          <Route
+            path="/search/result"
+            element={
+              <RouteRerouter path={"/search/result"}>
+                <SearchedCity
+                  searchedCity={searchedCity}
+                  handleBackgroundVideoChange={handleBackgroundVideoChange}
+                  clothingItems={clothingItems}
+                  handleSelectedCard={handleSelectedCard}
+                  handleCardLike={handleCardLike}
+                  loggedIn={loggedIn}
+                  savedCity={savedCity}
+                />
+              </RouteRerouter>
+            }
+          />
         </Routes>
 
         {activeModal === "login" && (
