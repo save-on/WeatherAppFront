@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import "./SearchedCity.css";
 import ItemCard from "../ItemCard/ItemCard";
@@ -11,24 +11,26 @@ const SearchedCity = ({
   handleSelectedCard,
   handleCardLike,
   loggedIn,
+  savedCity,
 }) => {
-  const handlePageTitle = (city) => {
-    const lines = [
-      `Weather & Packing Guide for ${city}:`,
-      `Your Travel Info for ${city}:`,
-      `Exploring ${city} Weather & Essentials:`,
-      `Packing List Potentials for ${city}:`,
-      `Don’t Forget to Pack This for ${city}:`,
-      `Must-Have Items for ${city}:`,
-      `Your ${city} Packing Guide:`,
-      `What You’ll Need in ${city}:`,
-      `Essential Items for Your Trip to ${city}:`,
-    ];
-    if (city === undefined) {
-      return;
+  const [line, setLine] = useState("");
+
+  useEffect(() => {
+    if (savedCity?.name) {
+      const lines = [
+        `Weather & Packing Guide for ${savedCity.name}:`,
+        `Your Travel Info for ${savedCity.name}:`,
+        `Exploring ${savedCity.name} Weather & Essentials:`,
+        `Packing List Potentials for ${savedCity.name}:`,
+        `Don’t Forget to Pack This for ${savedCity.name}:`,
+        `Must-Have Items for ${savedCity.name}:`,
+        `Your ${savedCity.name} Packing Guide:`,
+        `What You’ll Need in ${savedCity.name}:`,
+        `Essential Items for Your Trip to ${savedCity.name}:`,
+      ];
+      setLine(lines[Math.floor(Math.random() * lines.length)]);
     }
-    return lines[Math.floor(Math.random() * lines.length)];
-  };
+  }, [savedCity]);
 
   const filteredClothingItems = useMemo(() => {
     return clothingItems.filter(
@@ -43,9 +45,7 @@ const SearchedCity = ({
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
       <BackButton type={"home"} />
-      <h2 className="searched-city_title">
-        {handlePageTitle(searchedCity.city)}
-      </h2>
+      <h2 className="searched-city_title">{line}</h2>
       <ul className="searched-city_card-lists">
         {filteredClothingItems.map((item, index) => {
           return (

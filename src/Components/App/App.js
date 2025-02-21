@@ -77,6 +77,7 @@ function App() {
   const [coords, setCoords] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [searchedCity, setSearchedCity] = useState({});
+  const [savedCity, setSavedCity] = useState({ name: "" });
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -215,7 +216,6 @@ function App() {
 
   const handleSearchedData = (cityInfo) => {
     if (!cityInfo) return;
-
     localStorage.setItem("lastSearchedCity", JSON.stringify(cityInfo));
 
     const coords = {
@@ -225,13 +225,14 @@ function App() {
     getForecastWeather(coords).then((data) => {
       const filteredData = filterWeatherData(data);
       setSearchedCity(filteredData);
+      setSavedCity(cityInfo);
     });
   };
 
   useEffect(() => {
-    const savedCity = localStorage.getItem("lastSearchedCity");
-    if (savedCity) {
-      handleSearchedData(JSON.parse(savedCity));
+    const saved = localStorage.getItem("lastSearchedCity");
+    if (saved) {
+      handleSearchedData(JSON.parse(saved));
     }
   }, []);
 
@@ -391,6 +392,7 @@ function App() {
                   handleSelectedCard={handleSelectedCard}
                   handleCardLike={handleCardLike}
                   loggedIn={loggedIn}
+                  savedCity={savedCity}
                 />
               </RouteRerouter>
             }
