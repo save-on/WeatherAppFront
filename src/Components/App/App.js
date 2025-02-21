@@ -208,7 +208,6 @@ function App() {
   };
 
   const handleGetCityWeather = (search) => {
-    console.log(search);
     getCityLocationData(search).then((res) => {
       setSearchResults(res);
     });

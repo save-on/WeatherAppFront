@@ -3,6 +3,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import { useForm } from "../../hooks/useForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import searchIcon from "../../Images/magnifying-glass-solid.svg";
 
 const LocationSearch = ({
   handleGetCityWeather,
@@ -66,14 +67,21 @@ const LocationSearch = ({
                     className="location_search-result"
                     onClick={() => handleSearchInfo(result)}
                   >
-                    <p className="location_search-name">{`${result.name}, ${result.state}`}</p>
+                    <p className="location_search-name">{`${result.name} ${
+                      result.state === undefined ? "" : `, ${result.state}`
+                    }`}</p>
                     <p className="location_search-country">{result.country}</p>
                   </button>
                 </li>
               ))
             ) : (
               <li className="location_search-no-results">
-                No results could be found
+                <img
+                  className="location_no-results-icon"
+                  src={searchIcon}
+                  alt="no results"
+                />
+                <p className="location_no-results-text">{`Search for "${values.location}" could not be found`}</p>
               </li>
             )}
           </ul>

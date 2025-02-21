@@ -49,8 +49,23 @@
   height: 45px;
 }
 
-.location_search-btn:hover {
-  background-color: #b49b86;
+.location_search-no-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  height: 50px;
+  gap: 10px;
+}
+
+.location_no-results-text {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.location_no-results-icon {
+  width: 20px;
 }
 
 @media screen and (max-width: 870px) {

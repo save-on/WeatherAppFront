@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import "./ItemModal.css";
 
 const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
-  console.log(selectedCard);
   return (
     <div className={"modal"}>
       <div className="preview-image-content">
