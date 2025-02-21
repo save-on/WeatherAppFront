@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import "./SearchedCity.css";
 import ItemCard from "../ItemCard/ItemCard";
+import BackButton from "../BackButton/BackButton";
 
 const SearchedCity = ({
   searchedCity,
@@ -15,7 +16,7 @@ const SearchedCity = ({
     const lines = [
       `Weather & Packing Guide for ${city}:`,
       `Your Travel Info for ${city}:`,
-      `Exploring ${city}: Weather & Essentials:`,
+      `Exploring ${city} Weather & Essentials:`,
       `Packing List Potentials for ${city}:`,
       `Don’t Forget to Pack This for ${city}:`,
       `Must-Have Items for ${city}:`,
@@ -41,6 +42,7 @@ const SearchedCity = ({
         weatherData={searchedCity}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
+      <BackButton type={"home"} />
       <h2 className="searched-city_title">
         {handlePageTitle(searchedCity.city)}
       </h2>

@@ -56,6 +56,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
 import SearchedCity from "../SearchedCity/SearchedCity.jsx";
+import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -383,14 +384,16 @@ function App() {
           <Route
             path="/search/result"
             element={
-              <SearchedCity
-                searchedCity={searchedCity}
-                handleBackgroundVideoChange={handleBackgroundVideoChange}
-                clothingItems={clothingItems}
-                handleSelectedCard={handleSelectedCard}
-                handleCardLike={handleCardLike}
-                loggedIn={loggedIn}
-              />
+              <RouteRerouter path={"/search/result"}>
+                <SearchedCity
+                  searchedCity={searchedCity}
+                  handleBackgroundVideoChange={handleBackgroundVideoChange}
+                  clothingItems={clothingItems}
+                  handleSelectedCard={handleSelectedCard}
+                  handleCardLike={handleCardLike}
+                  loggedIn={loggedIn}
+                />
+              </RouteRerouter>
             }
           />
         </Routes>

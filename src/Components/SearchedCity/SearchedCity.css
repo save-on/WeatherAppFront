@@ -8,7 +8,6 @@
 
 .searched-city_title {
   color: #fff;
-  text-align: left;
   font-size: 32px;
 }
 
@@ -24,7 +23,6 @@
 
 @media screen and (max-width: 870px) {
   .searched-city_title {
-    text-align: center;
     font-size: 28px;
   }
 }

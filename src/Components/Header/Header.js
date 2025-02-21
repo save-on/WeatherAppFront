@@ -20,63 +20,67 @@ const Header = ({
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
-  return (
-    <header className="header">
-      <div className="header__logo">
-        <div>
-          <Link to="/">
+
+  if (location)
+    return (
+      <header className="header">
+        <div className="header__logo">
+          <div>
             <img
               src={TravelWearLogo}
               alt="logo"
               className="header__logo-image"
             />
-          </Link>
-        </div>
-        {location !== "/search/result" && (
-          <div className="header__date">
-            {currentDate} {weatherData.city}
           </div>
-        )}
-      </div>
-      <div className="header__avatar-logo">
-        <ToggleSwitch />
-        {loggedIn ? (
-          <div className="header__buttons">
-            {location !== "/search/result" && (
+          {location !== "/search/result" && (
+            <div className="header__date">
+              {currentDate} {weatherData.city}
+            </div>
+          )}
+        </div>
+        <div className="header__avatar-logo">
+          <ToggleSwitch />
+          {loggedIn ? (
+            <div className="header__buttons">
+              {location !== "/search/result" && (
+                <button
+                  className="header__button"
+                  type="button"
+                  onClick={onCreateModal}
+                >
+                  + Add Clothes
+                </button>
+              )}
+              <Link to="/profile" className="header__name">
+                {currentUser?.name || "Your Name"}
+              </Link>
+              <img
+                className="header__avatar-image"
+                src={currentUser?.avatar || defaultAvatar}
+                alt="avatar"
+              />
+            </div>
+          ) : (
+            <div>
               <button
                 className="header__button"
                 type="button"
-                onClick={onCreateModal}
+                onClick={onRegister}
               >
-                + Add Clothes
+                Sign Up
               </button>
-            )}
-            <Link to="/profile" className="header__name">
-              {currentUser?.name || "Your Name"}
-            </Link>
-            <img
-              className="header__avatar-image"
-              src={currentUser?.avatar || defaultAvatar}
-              alt="avatar"
-            />
-          </div>
-        ) : (
-          <div>
-            <button
-              className="header__button"
-              type="button"
-              onClick={onRegister}
-            >
-              Sign Up
-            </button>
-            <button className="header__button" type="button" onClick={onLogin}>
-              Log In
-            </button>
-          </div>
-        )}
-      </div>
-    </header>
-  );
+              <button
+                className="header__button"
+                type="button"
+                onClick={onLogin}
+              >
+                Log In
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+    );
 };
 
 export default Header;
