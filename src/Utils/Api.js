@@ -26,17 +26,23 @@ export function getItems() {
 //   });
 // }
 
-export function postItems(item, imageFile, token) {
-  console.log("Token from storge:", localStorage.getItem("jwt"));
-  console.log("Token format check:", token.split(".").length);
-  console.log("Token being sent", token);
-  const formData = new FormData();
+export function postItems(formData, token) {
+  // console.log("Token from storge:", localStorage.getItem("jwt"));
+  // console.log("Token being sent", token);
+  // const formData = new FormData();
 
-  for (const key in item) {
-    formData.append(key, item[key]);
-  }
+  // for (const key in item) {
+  //   formData.append(key, item[key]);
+  // }
   
-  formData.append('image', imageFile);
+  // formData.append('clothing_image', imageFile);
+
+  // const authToken = token || localStorage.getItem('jwt');
+
+  // if(!authToken) {
+  //   console.error("No auth token found.");
+  //   return Promise.reject("Unauthorized: No token provided.");
+  // }
 
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",

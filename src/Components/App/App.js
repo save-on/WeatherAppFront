@@ -221,9 +221,9 @@ function App() {
       : setCurrentTempUnit("F");
   };
 
-  const onAddItem = (values) => {
+  const onAddItem = (formData) => {
     const token = checkLoggedIn();
-    postItems(values, token)
+    postItems(formData, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
       })

@@ -6,7 +6,7 @@ import { useState } from "react";
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
-    // clothing_image: "",
+    clothing_image: "",
     affiliate_link: "",
     weather_condition: "",
   });
@@ -16,6 +16,14 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem("jwt");
+    console.log("Token from localStorage: ", localStorage.getItem("jwt"));
+
+    if (!token) {
+      console.error("No token found, user might not be authenticated. ");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("affiliate_link", values.affiliate_link);
@@ -23,7 +31,8 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
     if (file) {
       formData.append("clothing_image", file);
     }
-    onAddItem(formData);
+    console.log("Submitting form with token: ", token);
+    onAddItem(formData, token);
   };
 
   const handleFileUpload = (e) => {
@@ -47,7 +56,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   //   };
 
   //   reader.readAsDataURL(file);
-  // } 
+  // }
 
   return (
     <ModalWithForm
