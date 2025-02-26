@@ -17,6 +17,7 @@ const Header = ({
   loggedIn,
   onRegister,
   onLogin,
+  locationData,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
@@ -39,7 +40,7 @@ const Header = ({
           )}
         </div>
         <div className="header__avatar-logo">
-          <ToggleSwitch />
+          {locationData.locationAccess && <ToggleSwitch />}
           {loggedIn ? (
             <div className="header__buttons">
               {location !== "/search/result" && (
