@@ -15,6 +15,7 @@ function Main({
   handleGetCityWeather,
   searchResults,
   handleSearchedData,
+  locationData,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
@@ -36,25 +37,43 @@ function Main({
         handleSearchedData={handleSearchedData}
       />
       <section className="card_section">
-        <p className="card_suggestion">
-          Today is{" "}
-          {currentTemperatureUnit === "F"
-            ? weatherData.temp[currentTemperatureUnit]
-            : weatherData.temp[currentTemperatureUnit]}
-          / You may want to wear:
-        </p>
+        {locationData.locationAccess ? (
+          <p className="card_suggestion">
+            Today is{" "}
+            {currentTemperatureUnit === "F"
+              ? weatherData.temp[currentTemperatureUnit]
+              : weatherData.temp[currentTemperatureUnit]}
+            / You may want to wear:
+          </p>
+        ) : (
+          <p className="card_suggestion">Community's Travel Items</p>
+        )}
         <div className="card_item-container">
-          <ul className="card_items">
-            {filteredClothingItems.map((item, index) => (
-              <ItemCard
-                key={`item-card=${index}`}
-                item={item}
-                onSelectedCard={onSelectedCard}
-                onCardLike={handleCardLike}
-                loggedIn={loggedIn}
-              />
-            ))}
-          </ul>
+          {locationData.locationAccess ? (
+            <ul className="card_items">
+              {filteredClothingItems.map((item, index) => (
+                <ItemCard
+                  key={`item-card=${index}`}
+                  item={item}
+                  onSelectedCard={onSelectedCard}
+                  onCardLike={handleCardLike}
+                  loggedIn={loggedIn}
+                />
+              ))}
+            </ul>
+          ) : (
+            <ul className="card_items">
+              {clothingItems.map((item, index) => (
+                <ItemCard
+                  key={`item-card=${index}`}
+                  item={item}
+                  onSelectedCard={onSelectedCard}
+                  onCardLike={handleCardLike}
+                  loggedIn={loggedIn}
+                />
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </main>
