@@ -323,135 +323,135 @@ function App() {
   };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <video
-        key={videoSrc}
-        id="background-video"
-        autoPlay
-        loop
-        muted
-        className="background-video"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <Header
-          onCreateModal={handleCreateModal}
-          weatherData={weatherData}
-          loggedIn={loggedIn}
-          onLogin={handleOpenLoginModal}
-          onRegister={handleOpenRegisterModal}
-        />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <Main
-                weatherData={weatherData}
-                onSelectedCard={handleSelectedCard}
-                clothingItems={clothingItems}
-                handleCardLike={handleCardLike}
-                handleOpenItemModal={handleOpenItemModal}
-                loggedIn={loggedIn}
-                handleBackgroundVideoChange={handleBackgroundVideoChange}
-                handleGetCityWeather={handleGetCityWeather}
-                searchResults={searchResults}
-                handleSearchedData={handleSearchedData}
-              />
-            }
+    <div className="app">
+      <CurrentUserContext.Provider value={currentUser}>
+        <video
+          key={videoSrc}
+          id="background-video"
+          autoPlay
+          loop
+          muted
+          className="background-video"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          <Header
+            onCreateModal={handleCreateModal}
+            weatherData={weatherData}
+            loggedIn={loggedIn}
+            onLogin={handleOpenLoginModal}
+            onRegister={handleOpenRegisterModal}
           />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-                <Profile
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <Main
+                  weatherData={weatherData}
                   onSelectedCard={handleSelectedCard}
-                  onCreate={handleCreateModal}
                   clothingItems={clothingItems}
+                  handleCardLike={handleCardLike}
                   handleOpenItemModal={handleOpenItemModal}
                   loggedIn={loggedIn}
-                  onEditProfile={handleOpenEditProfileModal}
-                  onSignOut={onSignOut}
-                  onDeleteClick={handleDeleteCard}
-                  handleCardLike={handleCardLike}
-                />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/search/result"
-            element={
-              <RouteRerouter path={"/search/result"}>
-                <SearchedCity
-                  searchedCity={searchedCity}
                   handleBackgroundVideoChange={handleBackgroundVideoChange}
-                  clothingItems={clothingItems}
-                  handleSelectedCard={handleSelectedCard}
-                  handleCardLike={handleCardLike}
-                  loggedIn={loggedIn}
-                  savedCity={savedCity}
+                  handleGetCityWeather={handleGetCityWeather}
+                  searchResults={searchResults}
+                  handleSearchedData={handleSearchedData}
                 />
-              </RouteRerouter>
-            }
-          />
-        </Routes>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+                  <Profile
+                    onSelectedCard={handleSelectedCard}
+                    onCreate={handleCreateModal}
+                    clothingItems={clothingItems}
+                    handleOpenItemModal={handleOpenItemModal}
+                    loggedIn={loggedIn}
+                    onEditProfile={handleOpenEditProfileModal}
+                    onSignOut={onSignOut}
+                    onDeleteClick={handleDeleteCard}
+                    handleCardLike={handleCardLike}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search/result"
+              element={
+                <RouteRerouter path={"/search/result"}>
+                  <SearchedCity
+                    searchedCity={searchedCity}
+                    handleBackgroundVideoChange={handleBackgroundVideoChange}
+                    clothingItems={clothingItems}
+                    handleSelectedCard={handleSelectedCard}
+                    handleCardLike={handleCardLike}
+                    loggedIn={loggedIn}
+                    savedCity={savedCity}
+                  />
+                </RouteRerouter>
+              }
+            />
+          </Routes>
+          <Footer />
+          {activeModal === "login" && (
+            <LoginModal
+              onClose={handleCloseModal}
+              loginUser={loginUser}
+              openRegisterModal={handleOpenRegisterModal}
+            />
+          )}
 
-        {activeModal === "login" && (
-          <LoginModal
-            onClose={handleCloseModal}
-            loginUser={loginUser}
-            openRegisterModal={handleOpenRegisterModal}
-          />
-        )}
+          {activeModal === "register" && (
+            <RegisterModal
+              onClose={handleCloseModal}
+              registerUser={registerUser}
+              openLoginModal={handleOpenLoginModal}
+            />
+          )}
 
-        {activeModal === "register" && (
-          <RegisterModal
-            onClose={handleCloseModal}
-            registerUser={registerUser}
-            openLoginModal={handleOpenLoginModal}
-          />
-        )}
+          {activeModal === "create" && (
+            <AddItemModal
+              handleCloseModal={handleCloseModal}
+              isOpen={activeModal === "create"}
+              onAddItem={onAddItem}
+              isLoading={isLoading}
+            />
+          )}
+          {activeModal === "preview" && (
+            <ItemModal
+              selectedCard={selectedCard}
+              onDeleteClick={handleDeleteModal}
+              onClose={handleCloseModal}
+              loggedIn={loggedIn}
+              weatherData={weatherData}
+            />
+          )}
+          {activeModal === "edit" && (
+            <EditProfileModal
+              isOpen={activeModal === "edit"}
+              onClose={handleCloseModal}
+              updateUser={updateUser}
+            />
+          )}
 
-        <Footer />
-
-        {activeModal === "create" && (
-          <AddItemModal
-            handleCloseModal={handleCloseModal}
-            isOpen={activeModal === "create"}
-            onAddItem={onAddItem}
-            isLoading={isLoading}
-          />
-        )}
-        {activeModal === "preview" && (
-          <ItemModal
-            selectedCard={selectedCard}
-            onDeleteClick={handleDeleteModal}
-            onClose={handleCloseModal}
-            loggedIn={loggedIn}
-            weatherData={weatherData}
-          />
-        )}
-        {activeModal === "edit" && (
-          <EditProfileModal
-            isOpen={activeModal === "edit"}
-            onClose={handleCloseModal}
-            updateUser={updateUser}
-          />
-        )}
-
-        {activeModal === "delete" && (
-          <DeleteItem
-            onClose={handleCloseModal}
-            onDeleteClick={handleDeleteCard}
-            selectedCard={selectedCard}
-            isLoading={isLoading}
-          />
-        )}
-      </CurrentTemperatureUnitContext.Provider>
-    </CurrentUserContext.Provider>
+          {activeModal === "delete" && (
+            <DeleteItem
+              onClose={handleCloseModal}
+              onDeleteClick={handleDeleteCard}
+              selectedCard={selectedCard}
+              isLoading={isLoading}
+            />
+          )}
+        </CurrentTemperatureUnitContext.Provider>
+      </CurrentUserContext.Provider>
+    </div>
   );
 }
 
