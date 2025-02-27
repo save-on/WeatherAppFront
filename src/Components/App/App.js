@@ -3,6 +3,15 @@ import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
+import DeleteItem from "../DeleteItem/DeleteItem.js";
+import ItemModal from "../ItemModal/ItemModal.js";
+import LoginModal from "../LoginModal/LoginModalForm.js";
+import RegisterModal from "../RegisterModal/RegisterModal.js";
+import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
+import AddItemModal from "../AddItemModal/AddItemModal.js";
+import SearchedCity from "../SearchedCity/SearchedCity.jsx";
+import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -33,7 +42,6 @@ import {
   getForecastWeather,
   filterWeatherData,
 } from "../../Utils/WeatherAPI.js";
-
 import {
   getItems,
   postItems,
@@ -42,21 +50,9 @@ import {
   removeCardLike,
   getCityLocationData,
 } from "../../Utils/Api.js";
-
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
-
 import { checkLoggedIn } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
-
-import DeleteItem from "../DeleteItem/DeleteItem.js";
-import ItemModal from "../ItemModal/ItemModal.js";
-import LoginModal from "../LoginModal/LoginModalForm.js";
-import RegisterModal from "../RegisterModal/RegisterModal.js";
-import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
-import AddItemModal from "../AddItemModal/AddItemModal.js";
-import SearchedCity from "../SearchedCity/SearchedCity.jsx";
-import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -74,10 +70,14 @@ function App() {
   // const history = useNavigate("");
   const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
-  const [coords, setCoords] = useState(null);
+  const [coords, setCoords] = useState({});
   const [searchResults, setSearchResults] = useState([]);
   const [searchedCity, setSearchedCity] = useState({});
   const [savedCity, setSavedCity] = useState({ name: "" });
+  const [locationData, setLocationData] = useState({
+    locationAccess: false,
+    notice: "",
+  });
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -263,21 +263,32 @@ function App() {
     try {
       const data = await getCoords();
       setCoords(data);
+      setLocationData({
+        locationAccess: true,
+        notice: "",
+      });
     } catch (error) {
-      console.error("Error getting coordinates:", error);
+      const errData = {
+        locationAccess: false,
+        notice: error.message,
+      };
+      setLocationData(errData);
     }
   };
 
   useEffect(() => {
-    if (coords === null) {
-      handleGetCoords();
-    } else {
+    if (
+      coords.hasOwnProperty("latitude") &&
+      coords.hasOwnProperty("longitude")
+    ) {
       getForecastWeather(coords)
         .then((data) => {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
         })
         .catch(console.error);
+    } else {
+      handleGetCoords();
     }
   }, [coords]);
 
@@ -285,7 +296,7 @@ function App() {
     getItems()
       .then((data) => setClothingItems(data))
       .catch(console.error);
-  }, []);
+  }, [coords]);
 
   useEffect(() => {
     const jwt = checkLoggedIn();
@@ -344,6 +355,7 @@ function App() {
             loggedIn={loggedIn}
             onLogin={handleOpenLoginModal}
             onRegister={handleOpenRegisterModal}
+            locationData={locationData}
           />
           <Routes>
             <Route
@@ -361,6 +373,7 @@ function App() {
                   handleGetCityWeather={handleGetCityWeather}
                   searchResults={searchResults}
                   handleSearchedData={handleSearchedData}
+                  locationData={locationData}
                 />
               }
             />
