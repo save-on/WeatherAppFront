@@ -18,10 +18,13 @@ const Header = ({
   onRegister,
   onLogin,
   locationData,
+  searchedCity,
+  savedCity,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
-
+  // console.log(searchedCity);
+  // console.log(savedCity);
   if (location)
     return (
       <header className="header">

@@ -356,6 +356,8 @@ function App() {
             onLogin={handleOpenLoginModal}
             onRegister={handleOpenRegisterModal}
             locationData={locationData}
+            searchedCity={searchedCity}
+            savedCity={savedCity}
           />
           <Routes>
             <Route
