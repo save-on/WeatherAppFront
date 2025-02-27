@@ -32,6 +32,9 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
       formData.append("clothing_image", file);
     }
     console.log("Submitting form with token: ", token);
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
     onAddItem(formData, token);
   };
 
