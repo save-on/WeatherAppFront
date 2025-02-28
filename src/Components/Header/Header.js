@@ -64,14 +64,14 @@ const Header = ({
           ) : (
             <div>
               <button
-                className="header__button-signUp"
+                className="header__button"
                 type="button"
                 onClick={onRegister}
               >
                 Sign Up
               </button>
               <button
-                className="header__button-login"
+                className="header__button"
                 type="button"
                 onClick={onLogin}
               >
