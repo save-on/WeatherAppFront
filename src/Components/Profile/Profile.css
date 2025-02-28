@@ -55,18 +55,22 @@
 }
 
 .profile__add-button {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 25px;
-  background: none;
-  border: none;
-  margin-left: 20px;
-  color: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  color: darkgrey;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: bolder;
+  line-height: 24px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px 6px;
 }
 
 .profile__add-button:hover {
   cursor: pointer;
+  transition: 0.4s;
+  color: white; 
+  background-color: darkgrey;
 }
 
 .profile__items-text {
