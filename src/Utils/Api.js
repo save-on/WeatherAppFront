@@ -32,9 +32,12 @@ export function postItems(formData, token) {
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
     headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: formData,
+    // body: formData,
+    body: JSON.stringify(formData)
   });
 }
 

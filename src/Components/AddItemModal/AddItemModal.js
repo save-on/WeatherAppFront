@@ -8,7 +8,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
     name: "",
     clothing_image: "",
     affiliate_link: "",
-    weather_condition: "",
+    weather_condition: ""
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
   const [file, setFile] = useState(null);
@@ -24,24 +24,25 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("affiliate_link", values.affiliate_link);
-    formData.append("weather_condition", values.weather_condition);
-    if (file) {
-      formData.append("clothing_image", file);
-    }
-    console.log("Submitting form with token: ", token);
-    for (const pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-    onAddItem(formData, token);
+    // const formData = new FormData();
+    // formData.append("name", values.name);
+    // formData.append("affiliate_link", values.affiliate_link);
+    // formData.append("weather_condition", values.weather_condition);
+    // if (file) {
+    //   formData.append("clothing_image", file);
+    // }
+    // console.log("Submitting form with token: ", token);
+    // for (const pair of formData.entries()) {
+    //   console.log(pair[0], pair[1]);
+    // }
+    onAddItem(values);
   };
 
   const handleFileUpload = (e) => {
-    const selectedFile = e.target.files[0];
+    const selectedFile = e.target.files[0].name;
     if (selectedFile) {
       setFile(selectedFile);
+      values.clothing_image = selectedFile;
     }
   };
 

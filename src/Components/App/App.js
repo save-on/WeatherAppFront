@@ -224,6 +224,7 @@ function App() {
   const onAddItem = (formData) => {
     const token = checkLoggedIn();
     console.log("Token being sent:", token);
+    console.log(formData);
     postItems(formData, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
