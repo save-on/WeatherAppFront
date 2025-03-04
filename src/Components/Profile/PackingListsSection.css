@@ -2,5 +2,14 @@
   color: #fff;
   font-size: 35px;
   background-color: transparent;
-  border: none;
+  border: 1px solid darkgrey;
+  border-radius: 10px;
+}
+
+.packing__lists-button:hover {
+  cursor: pointer;
+  color: grey;
+  background-color: white;
+  font: bolder;
+  transition: 0.4s;
 }
