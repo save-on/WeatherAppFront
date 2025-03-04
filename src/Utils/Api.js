@@ -27,7 +27,7 @@ export function getItems() {
 //   });
 // }
 
-export function postItems(formData, token) {
+export function postItems(item, token) {
 
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
@@ -37,7 +37,7 @@ export function postItems(formData, token) {
       Authorization: `Bearer ${token}`,
     },
     // body: formData,
-    body: JSON.stringify(formData)
+    body: JSON.stringify(item)
   });
 }
 
