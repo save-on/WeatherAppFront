@@ -21,8 +21,7 @@ export const filterWeatherData = (data) => {
   result.isDay = isDay(sys, Date.now());
   result.coord = data.coord;
   result.country = sys.country;
-  result.time = getCurrentTime(timezone);
-  console.log(data);
+  result.timezone = timezone;
   return result;
 };
 
@@ -30,15 +29,12 @@ const isDay = ({ sunrise, sunset }, now) => {
   return sunrise * 1000 < now && now < sunset * 1000;
 };
 
-const getCurrentTime = (timeZone) => {
-  console.log(timeZone);
+export const getCurrentTime = () => {
+  const date = new Date();
+  const hours = date.getHours();
+  console.log(hours);
 };
-
-/*
-gotta build the algorithm for the timezone converting it 
-upon being built the algorithm will go into constants and get called
-every 60 seconds using a useEffect or a setTimeout
-*/
+// got the hour get the rest of the time minutes and seconds
 
 const setWeatherType = (temp) => {
   if (temp >= 86) {

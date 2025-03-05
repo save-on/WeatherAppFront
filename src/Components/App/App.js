@@ -41,6 +41,7 @@ import { Routes, Route } from "react-router";
 import {
   getForecastWeather,
   filterWeatherData,
+  getCurrentTime,
 } from "../../Utils/WeatherAPI.js";
 import {
   getItems,
@@ -291,6 +292,9 @@ function App() {
       handleGetCoords();
     }
   }, [coords]);
+
+  // getCurrentTime(weatherData.country, weatherData.timezone);
+  getCurrentTime(searchedCity.country, searchedCity.timezone);
 
   useEffect(() => {
     getItems()
