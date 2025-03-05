@@ -15,7 +15,10 @@ export function getItems() {
   return processServerRequest(`${baseUrl}clothing-items`);
 }
 
+// OLD POSTITEMS
+
 // export function postItems(item, token) {
+
 //   return processServerRequest(`${baseUrl}clothing-items`, {
 //     method: "POST",
 //     headers: {
@@ -23,21 +26,20 @@ export function getItems() {
 //       "Content-Type": "application/json",
 //       Authorization: `Bearer ${token}`,
 //     },
-//     body: JSON.stringify(item),
+//     // body: formData,
+//     body: JSON.stringify(item)
 //   });
 // }
 
 export function postItems(item, token) {
-
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    // body: formData,
-    body: JSON.stringify(item)
+    body: item,
+    
   });
 }
 

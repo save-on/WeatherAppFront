@@ -13,54 +13,60 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { formRef, errors, isDisabled } = useFormValidator(values);
   const [file, setFile] = useState(null);
 
+
+  // OLD HANDLE SUBMIT
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   const token = localStorage.getItem("jwt");
+  //   console.log("Token from localStorage: ", localStorage.getItem("jwt"));
+
+  //   const formData = new FormData();
+  //   formData.append("name", values.name);
+  //   formData.append("affiliate_link", values.affiliate_link);
+  //   formData.append("weather_condition", values.weather_condition);
+  //   if (file) {
+  //     formData.append("clothing_image", file);
+  //   }
+  //   console.log("Submitting form with token: ", token);
+  //   for (const pair of formData.entries()) {
+  //     console.log(pair[0], pair[1]);
+  //   }
+  //   onAddItem(values);
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const token = localStorage.getItem("jwt");
     console.log("Token from localStorage: ", localStorage.getItem("jwt"));
+    console.log("Token: ", token);
 
-    if (!token) {
-      console.error("No token found, user might not be authenticated. ");
-      return;
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("affiliate_link", values.affiliate_link);
+    formData.append("weather_condition", values.weather_condition);
+    if (file) {
+      formData.append("clothing_image", file);
     }
-
-    // const formData = new FormData();
-    // formData.append("name", values.name);
-    // formData.append("affiliate_link", values.affiliate_link);
-    // formData.append("weather_condition", values.weather_condition);
-    // if (file) {
-    //   formData.append("clothing_image", file);
-    // }
-    // console.log("Submitting form with token: ", token);
-    // for (const pair of formData.entries()) {
-    //   console.log(pair[0], pair[1]);
-    // }
-    onAddItem(values);
+    onAddItem(formData);
   };
+
+  // OLD HANDLE FILE UPLOAD
+
+  // const handleFileUpload = (e) => {
+  //   const selectedFile = e.target.files[0].name;
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     values.clothing_image = selectedFile;
+  //   }
+  // };
 
   const handleFileUpload = (e) => {
-    const selectedFile = e.target.files[0].name;
-    if (selectedFile) {
-      setFile(selectedFile);
-      values.clothing_image = selectedFile;
-    }
-  };
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+  }
 
-  // const handleFileUpload= (e) => {
-  //   const file = e.target.files[0];
-
-  //   if(!file) return;
-
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     setValues((prevValues) => ({
-  //       ...prevValues,
-  //       clothing_image: reader.result,
-  //     }));
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // }
 
   return (
     <ModalWithForm
