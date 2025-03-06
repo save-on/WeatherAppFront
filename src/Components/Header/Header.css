@@ -147,7 +147,6 @@
 @media screen and (max-width: 689px) {
   .header__date,
   .header__location {
-    font-size: 12px;
     width: 100px;
   }
 

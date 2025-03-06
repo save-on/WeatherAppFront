@@ -3,6 +3,7 @@ import WeatherCard from "../WeatherCard/WeatherCard";
 import "./SearchedCity.css";
 import ItemCard from "../ItemCard/ItemCard";
 import BackButton from "../BackButton/BackButton";
+import LocationSearch from "../LocationSearch/LocationSearch";
 
 const SearchedCity = ({
   searchedCity,
@@ -12,6 +13,9 @@ const SearchedCity = ({
   handleCardLike,
   loggedIn,
   savedCity,
+  handleGetCityWeather,
+  searchResults,
+  handleSearchedData,
 }) => {
   const [line, setLine] = useState("");
 
@@ -44,11 +48,18 @@ const SearchedCity = ({
         weatherData={searchedCity}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
-      <div className="searched-city_weather-details">
-        <BackButton type={"home"} />
-        <p className="searched-city_weather-condition">
-          {`The current weather in ${savedCity.name} is ${searchedCity.condition}`}
-        </p>
+      <div className="searched-city_weather-container">
+        <div className="searched-city_weather-details">
+          <BackButton type={"home"} />
+          <p className="searched-city_weather-condition">
+            {`${savedCity.name}'s current weather is ${searchedCity.condition}`}
+          </p>
+        </div>
+        <LocationSearch
+          handleGetCityWeather={handleGetCityWeather}
+          searchResults={searchResults}
+          handleSearchedData={handleSearchedData}
+        />
       </div>
       <h2 className="searched-city_title">{line}</h2>
       <ul className="searched-city_card-lists">

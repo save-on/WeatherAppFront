@@ -10,7 +10,7 @@ const LocationSearch = ({
   searchResults,
   handleSearchedData,
 }) => {
-  const { values, handleChanges } = useForm({
+  const { values, handleChanges, setValues } = useForm({
     location: "",
   });
   const [hideDropBox, setHideDropBox] = useState(true);
@@ -19,6 +19,7 @@ const LocationSearch = ({
   const handleSearchInfo = (result) => {
     handleSearchedData(result);
     navigate("/search/result");
+    setHideDropBox(true);
   };
 
   useEffect(() => {

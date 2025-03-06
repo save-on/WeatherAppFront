@@ -328,7 +328,6 @@ function App() {
   };
 
   const handleBackgroundVideoChange = (option) => {
-    console.log(option);
     setVideoSrc(
       videoMapping[`${option?.type}-${option?.day ? "day" : "night"}`]
     );
@@ -410,6 +409,9 @@ function App() {
                     handleCardLike={handleCardLike}
                     loggedIn={loggedIn}
                     savedCity={savedCity}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
                   />
                 </RouteRerouter>
               }
