@@ -58,6 +58,7 @@ export function deleteItems(_id, token) {
 export function getPackingLists() {
   return processServerRequest(`${baseUrl}profile/packing-lists`);
 }
+
 export function postPackingList(packingList, token) {
   return processServerRequest(`${baseUrl}profile/packing-lists`, {
     method: "POST",
