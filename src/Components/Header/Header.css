@@ -48,22 +48,29 @@
   line-height: normal;
   text-decoration: none;
   margin: 0 0 0 10px;
+  border-radius: 10px;
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 6px 6px;
 }
 
 .header__button {
-  color: #fff;
+  color: darkgrey;
   font-family: "Cabinet Grotesk", sans-serif;
   font-size: 25px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bolder;
   line-height: 24px;
-  background: none;
-  border: none;
-  padding: 0;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px 6px;
 }
 
 .header__button:hover {
   cursor: pointer;
+  transition: 0.4s;
+  color: white;
+  background-color: darkgrey;
 }
 
 .header__date,
