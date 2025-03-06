@@ -20,6 +20,7 @@ const Header = ({
   locationData,
   searchedCity,
   savedCity,
+  currentTime,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
@@ -36,11 +37,14 @@ const Header = ({
               className="header__logo-image"
             />
           </div>
-          {location !== "/search/result" && (
-            <div className="header__date">
-              {currentDate} {weatherData.city}
-            </div>
-          )}
+          {location !== "/search/result" ? (
+            <>
+              <p className="header__date">
+                {currentDate} {weatherData.city}
+              </p>
+              <p className="header__time">{currentTime}</p>
+            </>
+          ) : null}
         </div>
         <div className="header__avatar-logo">
           {locationData.locationAccess && <ToggleSwitch />}
