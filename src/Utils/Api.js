@@ -55,13 +55,41 @@ export function deleteItems(_id, token) {
 }
 
 //Packing Lists
-export function getPackingLists() {
-  return processServerRequest(`${baseUrl}profile/packing-lists`);
+export function getPackingLists(token) {
+  return processServerRequest(`${baseUrl}profile/packing-lists`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
 
 export function postPackingList(packingList, token) {
   return processServerRequest(`${baseUrl}profile/packing-lists`, {
     method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: packingList,
+  });
+}
+
+export function deletePackingList(packingListId, token) {
+  return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export function updatePackingList(packingListId, packingList, token) {
+  return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
+    method: "PUT", 
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

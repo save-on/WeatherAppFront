@@ -3,7 +3,9 @@ import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
-import PackingListsSection from "../Profile/PackingListsSection.js";
+import PackingListList from "../PackingListList/PackingListList.js";
+import CreatePackingListModal from "../PackingListsModal/CreatePackingListModal.js";
+import PackingListCard from "../PackingListCard/PackingListCard.js";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -56,10 +58,10 @@ import RegisterModal from "../RegisterModal/RegisterModal.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
-import PackingListsModal from "../PackingListsModal/PackingListsModal.js";
-import AddPackingList from "../AddPackingList/AddPackingList.js";
+
 
 function App() {
+  
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [weatherData, setWeatherData] = useState({
@@ -79,7 +81,7 @@ function App() {
   const [coords, setCoords] = useState(null);
 
   const handleCreatePackingList = () => {
-    setActiveModal("create packing list");
+    setActiveModal("createPackingList");
   }
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -215,6 +217,12 @@ function App() {
     setSelectedCard(card);
   };
 
+  const handleSelectedPackingList = (packingList) => {
+    console.log("Packing list selected: ", packingList);
+    setActiveModal("");
+    setSelectedCard(card);
+  }
+
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
       ? setCurrentTempUnit("C")
@@ -235,17 +243,23 @@ function App() {
       });
   };
 
-  const onAddPackingList = (values) => {
+  const onCreatePackingList = (formData) => {
     const token = checkLoggedIn();
-    postPackingList(values, token)
+    setIsLoading(true);
+    postPackingList(formData, token)
     .then((res) => {
       setPackingLists((packingList) => [res, ...packingList]);
-    })
-    .catch(console.error)
-    .finally(() => {
       handleCloseModal();
+    })
+    .catch(err => {
+      console.error("Error creating packing list: ", err);
+    })
+    .finally(() => {
+      setIsLoading(false);
     });
   };
+
+
 
   const handleGetCoords = async () => {
     try {
@@ -371,9 +385,8 @@ function App() {
           path="/profile/packing-lists"
           element={
             <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
-              <PackingListsSection
+              <PackingListList
               onSelectedCard={handleSelectedCard}
-              onCreate={handleCreatePackingList}
               clothingItems={clothingItems}
               handleOpenItemModal={handleOpenItemModal}
               loggedIn={loggedIn}
@@ -381,6 +394,7 @@ function App() {
               onSignOut={onSignOut}
               onDeleteClick={handleDeleteCard}
               handleCardLike={handleCardLike}
+              onOpenCreatePackingListModal={handleCreatePackingList}
               />
             </ProtectedRoute>
           }
@@ -405,12 +419,13 @@ function App() {
 
         <Footer />
 
-        {activeModal === "create packing list" &&(
-          <AddPackingList
-          isOpen={activeModal === "create packing list"}
-          handleCloseModal={handleCloseModal}
+        {activeModal === "createPackingList" &&(
+          <CreatePackingListModal
+          isOpen={activeModal === "createPackingList"}
+          onClose={handleCloseModal}
           isLoading={isLoading}
-          onAddPackingList={onAddPackingList}
+          onCreatePackingList={onCreatePackingList}
+          
           />
         ) }
         
@@ -421,6 +436,11 @@ function App() {
             onAddItem={onAddItem}
             isLoading={isLoading}
           />
+        )}
+        {activeModal === "packingListPreview" && (
+          <PackingListCard 
+          />
+
         )}
         {activeModal === "preview" && (
           <ItemModal

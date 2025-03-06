@@ -1,6 +1,7 @@
 // import React from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
+import PackingListList from "../PackingListList/PackingListList.js";
 import "./Profile.css";
 
 const Profile = ({
@@ -28,6 +29,8 @@ const Profile = ({
             + Add New
           </button>
         </div>
+        <PackingListList 
+        onOpenCreatePackingListModal={onCreate}/>
         <ClothesSection
           clothingItems={clothingItems}
           onSelectedCard={onSelectedCard}

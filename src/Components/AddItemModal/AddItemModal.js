@@ -107,7 +107,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="file"
             name="clothing_image"
             required
-            placeholder="Image Url"
+            placeholder="Upload Image"
             id="clothing_image"
             accept="image/*"
             onChange={handleFileUpload}

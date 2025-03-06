@@ -1,92 +1,76 @@
-import { useContext, useEffect } from "react";
-import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
+import React from "react";
+import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
-const PackingListsModal = ({
+const CreatePackingListModal = ({
+  handleCloseModal,
   onClose,
-  onAddPackingList,
+  onCreatePackingList,
   isOpen,
   isLoading,
+  handleSelectedCard
 }) => {
-  const currentUser = useContext(CurrentUserContext);
-
   const { values, handleChanges, setValues } = useForm({
-    packingList_name: "",
-    clothing_image: "",
-    affiliate_link: "",
+    name: "",
     weather_condition: "",
     location: "",
+    packingList_image: ""
   });
 
-  const { formRef, errors, isDisabled } = useFormValidator(values);
+  const { isDisabled } = useFormValidator(values);
 
-  //This needs to change for the packing list not the user
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddPackingList(values);
+    const token = localStorage.getItem("jwt");
+    console.log("Token from localStorage: ", localStorage.getItem("jwt"));
+    console.log("Token: ", token);
+
+    const formData = new FormData();
+    formData.append('name', values.name);
+    formData.append('weather_condition', values.weather_condition);
+    formData.append('location', values.location);
+
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+    onCreatePackingList(formData)
   };
+
+
 
   return (
     <ModalWithForm
-      title="Create a packing list"
-      onClose={onClose}
+      title="Create New Packing List"
+      onClose={handleCloseModal}
       isOpen={isOpen}
-      buttonText="Save Packing List"
+      buttonText="Create Packing List"
       onSubmit={handleSubmit}
-      formRef={formRef}
+    
     >
       <ul className="inputs">
-        <label className="input-header" htmlFor="name">
+        <label className="input-header" htmlFor="packingListName">
           Packing List Name
         </label>
         <li>
           <input
             className="input"
             type="text"
-            name="packingList_name"
+            name="name"
             minLength="2"
             maxLength="30"
             required
             placeholder="Packing List Name"
-            id="packing list name"
+            id="packingListName"
             value={values.name}
-            onChange={handleChanges}
-          />
-          {errors.name && (
-            <p className="modal-form_input-error">{errors.name}</p>
-          )}
-        </li>
-        <label className="input-header" htmlFor="input-url">
-          Clothing Item Image
-        </label>
-        <li>
-          <input
-            className="input"
-            type="url"
-            name="clothing_image"
-            required
-            placeholder="Clothing Item Image"
-            id="input-url"
-            value={values.clothing_image}
-            onChange={handleChanges}
-          />
-          {errors.cloting_image && (
-            <p className="modal-form_input-error">{errors.clothing_image}</p>
-          )}
-        </li>
-        <label className="input-header" htmlFor="input_link">
-          Affiliate Link
-        </label>
-        <li>
-          <input
-            className="input"
-            type="url"
-            name="affiliate_link"
-            placeholder="Insert Link (Optional)"
-            id="input_link"
-            value={values.affiliate_link}
             onChange={handleChanges}
           />
         </li>
@@ -99,13 +83,27 @@ const PackingListsModal = ({
           name="location"
           minLength="2"
           maxLength="30"
-          required
-          placeholder="Location"
+         
+          placeholder="Location (Optional)"
           id="location"
           value={values.location}
           onChange={handleChanges}
         />
       </ul>
+      <label className="input-header" htmlFor="packingListImage">
+        Packing List Image (Optional)
+      </label>
+      <li>
+        <input 
+        className="input"
+          type="file"
+          name="image"
+          placeholder="Upload Image"
+          id="packingListImage"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </li>
       <p className="weather-type-header input-header">Select Weather Type:</p>
       <div className="weather-inputs">
         <div>
@@ -115,7 +113,7 @@ const PackingListsModal = ({
             type="radio"
             id="hot"
             value="hot"
-            required
+            
             checked={values.weather_condition === "hot"}
             onChange={handleChanges}
           />
@@ -134,7 +132,7 @@ const PackingListsModal = ({
             type="radio"
             id="warm"
             value="warm"
-            required
+          
             checked={values.weather_condition === "warm"}
             onChange={handleChanges}
           />
@@ -153,7 +151,7 @@ const PackingListsModal = ({
             type="radio"
             id="cold"
             value="cold"
-            required
+        
             checked={values.weather_condition === "cold"}
             onChange={handleChanges}
           />
@@ -179,4 +177,4 @@ const PackingListsModal = ({
   );
 };
 
-export default PackingListsModal;
+export default CreatePackingListModal;
