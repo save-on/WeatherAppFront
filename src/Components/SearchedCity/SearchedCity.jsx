@@ -44,7 +44,12 @@ const SearchedCity = ({
         weatherData={searchedCity}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
-      <BackButton type={"home"} />
+      <div className="searched-city_weather-details">
+        <BackButton type={"home"} />
+        <p className="searched-city_weather-condition">
+          {`The current weather in ${savedCity.name} is ${searchedCity.condition}`}
+        </p>
+      </div>
       <h2 className="searched-city_title">{line}</h2>
       <ul className="searched-city_card-lists">
         {filteredClothingItems.map((item, index) => {

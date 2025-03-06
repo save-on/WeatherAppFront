@@ -20,6 +20,18 @@
   list-style-type: none;
   padding: 0;
 }
+.searched-city_weather-details {
+  display: flex;
+  margin: 15px 15px 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searched-city_weather-condition {
+  color: #fff;
+  font-size: 25px;
+  font-weight: 500;
+}
 
 @media screen and (max-width: 870px) {
   .searched-city_title {
