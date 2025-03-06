@@ -41,7 +41,6 @@ import { Routes, Route } from "react-router";
 import {
   getForecastWeather,
   filterWeatherData,
-  getCurrentTime,
 } from "../../Utils/WeatherAPI.js";
 import {
   getItems,
@@ -79,8 +78,6 @@ function App() {
     locationAccess: false,
     notice: "",
   });
-  const [currentTime, setCurrentTime] = useState("");
-  const [timeData, setTimeData] = useState();
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -296,33 +293,6 @@ function App() {
   }, [coords]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeData(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  });
-
-  // useEffect(() => {
-  //   const updateTime = () => {
-  //     setTimeData(new Date());
-  //     requestAnimationFrame(updateTime);
-  //   };
-  //   updateTime();
-
-  //   return () => cancelAnimationFrame(updateTime);
-  // }, []);
-
-  useEffect(() => {
-    if (timeData) {
-      const hours = timeData.getHours();
-      const minutes = timeData.getMinutes();
-      const time = getCurrentTime(searchedCity.timezone, hours, minutes);
-      setCurrentTime(time);
-    }
-  }, [timeData]);
-
-  useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data))
       .catch(console.error);
@@ -388,7 +358,6 @@ function App() {
             locationData={locationData}
             searchedCity={searchedCity}
             savedCity={savedCity}
-            currentTime={currentTime}
           />
           <Routes>
             <Route

@@ -29,27 +29,34 @@ const isDay = ({ sunrise, sunset }, now) => {
   return sunrise * 1000 < now && now < sunset * 1000;
 };
 
-export const getCurrentTime = (timezone, hours, minutes) => {
+export const getCurrentTime = (timezone, timeRef) => {
   let session;
 
-  if (hours < 12) {
+  const standardTimeMap = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+  if (timezone) {
+    const hourShift = timezone / 60 / 60;
+    timeRef.hours += hourShift;
+
+    if (timeRef.hours >= 24) {
+      timeRef.hours -= 24;
+    } else if (timeRef.hours < 0) {
+      timeRef.hours += 24;
+    }
+  }
+
+  if (timeRef.hours < 12 || timeRef.hours === 24) {
     session = "AM";
   } else {
     session = "PM";
   }
 
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
+  const standardHour = standardTimeMap[timeRef.hours % 12];
+  const minutes =
+    timeRef.minutes < 10 ? `0${timeRef.minutes}` : timeRef.minutes;
 
-  if (hours > 12) {
-    hours -= 12;
-  }
-  // if timezone then subtract or add
-  return `${hours}:${minutes} ${session}`;
+  return `${standardHour}:${minutes} ${session}`;
 };
-// got the hour get the rest of the time minutes and seconds
-// get the timezone difference and subtract it from hours
 
 const setWeatherType = (temp) => {
   if (temp >= 86) {

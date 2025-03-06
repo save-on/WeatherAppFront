@@ -3,8 +3,9 @@ import TravelWearLogo from "../../Images/TravelWearLogo.PNG";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch.js";
 import { Link, useLocation } from "react-router";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import defaultAvatar from "../../Images/default-avatar.jpg";
+import { getCurrentTime } from "../../Utils/WeatherAPI.js";
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -20,12 +21,24 @@ const Header = ({
   locationData,
   searchedCity,
   savedCity,
-  currentTime,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
-  // console.log(searchedCity);
-  // console.log(savedCity);
+  const timeRef = useRef({});
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      timeRef.current = new Date();
+      timeRef.hours = timeRef.current.getUTCHours();
+      timeRef.minutes = timeRef.current.getUTCMinutes();
+      const time = getCurrentTime(searchedCity.timezone, timeRef);
+      setCurrentTime(time);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [searchedCity]);
+
   if (location)
     return (
       <header className="header">
@@ -37,14 +50,19 @@ const Header = ({
               className="header__logo-image"
             />
           </div>
-          {location !== "/search/result" ? (
+          {location !== "/search/result" && (
+            <p className="header__date">
+              {currentDate} {weatherData.city}
+            </p>
+          )}
+          {location === "/search/result" && (
             <>
               <p className="header__date">
-                {currentDate} {weatherData.city}
+                {`${savedCity.name}, ${searchedCity.country}`}
               </p>
               <p className="header__time">{currentTime}</p>
             </>
-          ) : null}
+          )}
         </div>
         <div className="header__avatar-logo">
           {locationData.locationAccess && <ToggleSwitch />}
