@@ -2,7 +2,13 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
-const AddItemModal = ({ handleCloseModal, onAddItem, isOpen, isLoading }) => {
+const AddItemModal = ({
+  handleCloseModal,
+  onAddItem,
+  isOpen,
+  isLoading,
+  errMessage,
+}) => {
   const { values, handleChanges } = useForm({
     name: "",
     clothing_image: "",
@@ -24,6 +30,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen, isLoading }) => {
       onSubmit={handleSubmit}
       buttonText="Add Garment"
       formRef={formRef}
+      errMessage={errMessage}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="name">

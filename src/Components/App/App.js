@@ -77,6 +77,7 @@ function App() {
     locationAccess: false,
     notice: "",
   });
+  const [errMessage, setErrMessage] = useState("");
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -94,7 +95,7 @@ function App() {
         setClothingItems(clothingItems.filter((item) => item.id !== card.id));
         handleCloseModal();
       })
-      .catch(console.error)
+      .catch((err) => console.error(err.message))
       .finally(() => {
         setIsLoading(false);
       });
@@ -102,6 +103,7 @@ function App() {
 
   const handleCloseModal = () => {
     setActiveModal("");
+    setErrMessage("");
   };
 
   useEffect(() => {
@@ -139,12 +141,11 @@ function App() {
     setIsLoading(true);
     register(values)
       .then((res) => {
-        console.log(res);
         // loginUser(values)
       })
       .catch((err) => {
-        console.log(err);
-        // console.error(err);
+        console.error(err.message);
+        setErrMessage(err.message);
       })
       .finally(() => setIsLoading(false));
   };
@@ -161,7 +162,10 @@ function App() {
         }
         // history.push("/profile");
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -175,7 +179,10 @@ function App() {
         setCurrentUser(res);
         handleCloseModal();
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -195,20 +202,20 @@ function App() {
               cards.map((item) => (item.id === id ? updatedCard : item))
             )
           )
-          .catch(console.error)
+          .catch((err) => console.error(err.message))
       : removeCardLike(id, token)
           .then((updatedCard) =>
             setClothingItems((cards) =>
               cards.map((item) => (item.id === id ? updatedCard : item))
             )
           )
-          .catch(console.error);
+          .catch((err) => console.error(err.message));
   };
 
   const handleGetCityWeather = (search) => {
     getCityLocationData(search)
       .then((res) => setSearchResults(res))
-      .catch(console.error);
+      .catch((err) => console.error(err.message));
   };
 
   const handleSearchedData = (cityInfo) => {
@@ -253,7 +260,10 @@ function App() {
         setClothingItems((items) => [res, ...items]);
         handleCloseModal();
       })
-      .catch(console.error)
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
       .finally(() => setIsLoading(false));
   };
 
@@ -284,7 +294,7 @@ function App() {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
     } else {
       handleGetCoords();
     }
@@ -293,7 +303,7 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data))
-      .catch(console.error);
+      .catch((err) => console.error(err.message));
   }, [coords]);
 
   useEffect(() => {
@@ -304,7 +314,7 @@ function App() {
           setLoggedIn(true);
           setCurrentUser(res);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
     }
   }, []);
 
@@ -417,6 +427,7 @@ function App() {
               loginUser={loginUser}
               openRegisterModal={handleOpenRegisterModal}
               isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 
@@ -426,6 +437,7 @@ function App() {
               registerUser={registerUser}
               openLoginModal={handleOpenLoginModal}
               isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 
@@ -435,6 +447,7 @@ function App() {
               isOpen={activeModal === "create"}
               onAddItem={onAddItem}
               isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
           {activeModal === "preview" && (
@@ -452,6 +465,7 @@ function App() {
               onClose={handleCloseModal}
               updateUser={updateUser}
               isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 

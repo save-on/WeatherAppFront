@@ -7,6 +7,7 @@ const RegisterModal = ({
   registerUser,
   openLoginModal,
   isLoading,
+  errMessage,
 }) => {
   const { values, handleChanges } = useForm({
     email: "",
@@ -38,6 +39,7 @@ const RegisterModal = ({
       buttonText="Sign Up"
       onSubmit={onRegister}
       formRef={formRef}
+      errMessage={errMessage}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="email">
