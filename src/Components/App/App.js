@@ -15,7 +15,7 @@ import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
-import cloudsDay from "../../Videos/clear-day.mp4";
+import cloudsDay from "../../Videos/clouds-day.mp4";
 import fogDay from "../../Videos/fog-day.mp4";
 import rainDay from "../../Videos/rain-day.mp4";
 import snowDay from "../../Videos/Snow-Cabin.mp4";
@@ -356,6 +356,8 @@ function App() {
             onLogin={handleOpenLoginModal}
             onRegister={handleOpenRegisterModal}
             locationData={locationData}
+            searchedCity={searchedCity}
+            savedCity={savedCity}
           />
           <Routes>
             <Route
@@ -407,6 +409,9 @@ function App() {
                     handleCardLike={handleCardLike}
                     loggedIn={loggedIn}
                     savedCity={savedCity}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
                   />
                 </RouteRerouter>
               }

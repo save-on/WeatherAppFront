@@ -66,22 +66,21 @@
   padding: 6px 6px;
 }
 
-
-
 .header__button:hover {
   cursor: pointer;
   transition: 0.4s;
-  color: white; 
+  color: white;
   background-color: darkgrey;
 }
 
-
-.header__date {
+.header__date,
+.header__location {
   display: flex;
   justify-content: baseline;
   font-size: 25px;
   opacity: 0.8;
   color: #fff;
+  margin: 0;
 }
 
 .header-buttons {
@@ -91,6 +90,13 @@
 
 .header-avatar-logo {
   padding-left: 12px;
+}
+
+.header__time {
+  color: #fff;
+  font-size: 25px;
+  margin: 0;
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 1000px) {
@@ -117,9 +123,10 @@
   }
 }
 
-@media screen and (max-width: 720px) {
-  .header__date {
-    font-size: 20px;
+@media screen and (max-width: 870px) {
+  .header__date,
+  .header__location {
+    font-size: 16px;
   }
 
   .header__logo-image {
@@ -137,5 +144,37 @@
 
   .header__logo {
     gap: 10px;
+  }
+
+  .header__time {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 689px) {
+  .header__date,
+  .header__location {
+    width: 100px;
+  }
+
+  .header__logo-image {
+    width: 60px;
+    height: 40px;
+  }
+
+  .header__button {
+    font-size: 20px;
+  }
+
+  .header__avatar-logo {
+    gap: 0;
+  }
+
+  .header__logo {
+    gap: 10px;
+  }
+
+  .header__time {
+    font-size: 16px;
   }
 }

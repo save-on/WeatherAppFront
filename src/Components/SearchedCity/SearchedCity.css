@@ -20,9 +20,40 @@
   list-style-type: none;
   padding: 0;
 }
+.searched-city_weather-container {
+  display: flex;
+  margin: 15px 15px 0;
+  align-items: center;
+  justify-content: space-between;
+}
 
-@media screen and (max-width: 870px) {
+.searched-city_weather-details {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.searched-city_weather-condition {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin: 0;
+}
+
+@media screen and (max-width: 945px) {
   .searched-city_title {
     font-size: 28px;
+  }
+
+  .searched-city_weather-container {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .searched-city_weather-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 }

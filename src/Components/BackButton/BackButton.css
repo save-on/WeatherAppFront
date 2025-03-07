@@ -1,6 +1,5 @@
 .back-button {
   width: 60px;
-  margin: 40px 0 0;
   opacity: 0.6;
   cursor: pointer;
   background: none;
@@ -15,6 +14,6 @@
 @media screen and (max-width: 870px) {
   .back-button {
     width: 50px;
-    margin: 0 0 0 20px;
+    margin: 0;
   }
 }
