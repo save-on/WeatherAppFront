@@ -79,7 +79,7 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
           className="modal-form-submit"
           type="submit"
         >
-          {isLoading ? "Saving" : "Save Changes"}
+          {isLoading ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </ModalWithForm>
