@@ -10,6 +10,7 @@ const ModalWithForm = ({
   // isOpen,
   onSubmit,
   formRef,
+  errMessage,
 }) => {
   return (
     <div className={`modal modal_type_${name}`}>
@@ -25,6 +26,7 @@ const ModalWithForm = ({
           onSubmit={onSubmit}
         >
           {children}
+          <p className="modal-form_err-message">{errMessage}</p>
         </form>
       </div>
     </div>

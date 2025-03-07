@@ -3,7 +3,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
-const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
+const EditProfileModal = ({ onClose, updateUser, isLoading, errMessage }) => {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, handleChanges, setValues } = useForm({
@@ -33,6 +33,7 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
       buttonText="Save Changes"
       onSubmit={onSubmit}
       formRef={formRef}
+      errMessage={errMessage}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="name">
@@ -79,7 +80,7 @@ const EditProfileModal = ({ onClose, updateUser, isLoading }) => {
           className="modal-form-submit"
           type="submit"
         >
-          {isLoading ? "Saving" : "Save Changes"}
+          {isLoading ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </ModalWithForm>

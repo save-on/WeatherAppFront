@@ -3,7 +3,12 @@
 import close from "../../Images/close.svg";
 import "./DeleteItem.css";
 
-const DeleteItemModal = ({ onClose, onDeleteClick, selectedCard }) => {
+const DeleteItemModal = ({
+  onClose,
+  onDeleteClick,
+  selectedCard,
+  isLoading,
+}) => {
   const handleDelete = () => {
     onDeleteClick(selectedCard);
   };
@@ -30,7 +35,7 @@ const DeleteItemModal = ({ onClose, onDeleteClick, selectedCard }) => {
         </div>
         <div className="delete__modal-button">
           <button className="delete__button-confirm" onClick={handleDelete}>
-            Yes, delete item
+            {isLoading ? "Deleting item..." : "Yes, delete item"}
           </button>
         </div>
         <div className="delete__modal-button">
