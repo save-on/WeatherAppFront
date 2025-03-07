@@ -1,7 +1,8 @@
-// import React from "react";
+import React, { useState } from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import PackingListList from "../PackingListList/PackingListList.js";
+import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
 import "./Profile.css";
 
 const Profile = ({
@@ -13,7 +14,10 @@ const Profile = ({
   onEditProfile,
   onSignOut,
   onDeleteClick,
-  
+  onSelectedPackingList,
+  isPackingListModalOpen,
+  selectedPackingList,
+  closePackingListModal,
 }) => {
   return (
     <div className="profile">
@@ -29,8 +33,10 @@ const Profile = ({
             + Add New
           </button>
         </div>
-        <PackingListList 
-        onOpenCreatePackingListModal={onCreate}/>
+        <PackingListList
+          onOpenCreatePackingListModal={onCreate}
+          onSelectedPackingList={onSelectedPackingList}
+        />
         <ClothesSection
           clothingItems={clothingItems}
           onSelectedCard={onSelectedCard}
@@ -40,6 +46,12 @@ const Profile = ({
           onDeleteClick={onDeleteClick}
         />
       </div>
+      {isPackingListModalOpen && (
+        <PackingListDetailsModal
+          packingList={selectedPackingList}
+          onClose={closePackingListModal}
+        />
+      )}
     </div>
   );
 };

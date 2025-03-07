@@ -15,22 +15,6 @@ export function getItems() {
   return processServerRequest(`${baseUrl}clothing-items`);
 }
 
-// OLD POSTITEMS
-
-// export function postItems(item, token) {
-
-//   return processServerRequest(`${baseUrl}clothing-items`, {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     // body: formData,
-//     body: JSON.stringify(item)
-//   });
-// }
-
 export function postItems(item, token) {
   return processServerRequest(`${baseUrl}clothing-items`, {
     method: "POST",
@@ -64,6 +48,29 @@ export function getPackingLists(token) {
     },
   });
 }
+
+export const getPackingListItems = async (packingListId, token) => {
+  console.log("getPackingListItems - packingListId: ", packingListId, ", type: ", typeof packingListId);
+  try {
+      const res = await fetch(`${baseUrl}profile/packing-lists/${packingListId}/items`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, 
+          },
+      });
+
+      if (!res.ok) {
+          const message = `Error: ${res.status}`;
+          throw new Error(message);
+      }
+      const data = await res.json();
+      return data; 
+  } catch (error) {
+      console.error("Error fetching packing list items: ", error);
+      throw error; 
+  }
+};
 
 export function postPackingList(packingList, token) {
   return processServerRequest(`${baseUrl}profile/packing-lists`, {

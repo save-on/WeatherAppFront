@@ -6,6 +6,7 @@ import Profile from "../Profile/Profile.js";
 import PackingListList from "../PackingListList/PackingListList.js";
 import CreatePackingListModal from "../PackingListsModal/CreatePackingListModal.js";
 import PackingListCard from "../PackingListCard/PackingListCard.js";
+import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -59,9 +60,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
 
-
 function App() {
-  
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [weatherData, setWeatherData] = useState({
@@ -79,10 +78,12 @@ function App() {
   const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
+  const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
+  const [selectedPackingList, setSelectedPackingList] = useState(null);
 
   const handleCreatePackingList = () => {
     setActiveModal("createPackingList");
-  }
+  };
   const handleCreateModal = () => {
     setActiveModal("create");
   };
@@ -217,11 +218,18 @@ function App() {
     setSelectedCard(card);
   };
 
-  const handleSelectedPackingList = (packingList) => {
-    console.log("Packing list selected: ", packingList);
-    setActiveModal("");
-    setSelectedCard(card);
-  }
+  // This is to preview the packing list
+  const handlePackingListCardClick = (packingList) => {
+    console.log("handlePackingListCardClick CALLED", packingList);
+    setSelectedPackingList(packingList);
+    setIsPackingListModalOpen(true);
+  };
+
+  // This is to close the packing list preview
+  const closePackingListModal = () => {
+    setIsPackingListModalOpen(false);
+    setSelectedPackingList(null);
+  };
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
@@ -247,19 +255,17 @@ function App() {
     const token = checkLoggedIn();
     setIsLoading(true);
     postPackingList(formData, token)
-    .then((res) => {
-      setPackingLists((packingList) => [res, ...packingList]);
-      handleCloseModal();
-    })
-    .catch(err => {
-      console.error("Error creating packing list: ", err);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
+      .then((res) => {
+        setPackingLists((packingList) => [res, ...packingList]);
+        handleCloseModal();
+      })
+      .catch((err) => {
+        console.error("Error creating packing list: ", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
-
-
 
   const handleGetCoords = async () => {
     try {
@@ -377,27 +383,35 @@ function App() {
                   onSignOut={onSignOut}
                   onDeleteClick={handleDeleteCard}
                   handleCardLike={handleCardLike}
+                  onSelectedPackingList={handlePackingListCardClick}
+                  isPackingListModalOpen={isPackingListModalOpen}
+                  setSelectedPackingList={selectedPackingList}
+                  closePackingListModal={closePackingListModal}
                 />
               </ProtectedRoute>
             }
           />
           <Route
-          path="/profile/packing-lists"
-          element={
-            <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
-              <PackingListList
-              onSelectedCard={handleSelectedCard}
-              clothingItems={clothingItems}
-              handleOpenItemModal={handleOpenItemModal}
-              loggedIn={loggedIn}
-              onEditProfile={handleOpenEditProfileModal}
-              onSignOut={onSignOut}
-              onDeleteClick={handleDeleteCard}
-              handleCardLike={handleCardLike}
-              onOpenCreatePackingListModal={handleCreatePackingList}
-              />
-            </ProtectedRoute>
-          }
+            path="/profile/packing-lists"
+            element={
+              <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
+                <PackingListList
+                  onSelectedCard={handleSelectedCard}
+                  clothingItems={clothingItems}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleOpenEditProfileModal}
+                  onSignOut={onSignOut}
+                  onDeleteClick={handleDeleteCard}
+                  handleCardLike={handleCardLike}
+                  onOpenCreatePackingListModal={handleCreatePackingList}
+                  onSelectedPackingList={handlePackingListCardClick}
+                  isPackingListModalOpen={isPackingListModalOpen}
+                  selectedPackingList={selectedPackingList}
+                  closePackingListModal={closePackingListModal}
+                />
+              </ProtectedRoute>
+            }
           />
         </Routes>
 
@@ -419,16 +433,23 @@ function App() {
 
         <Footer />
 
-        {activeModal === "createPackingList" &&(
+        {activeModal === "createPackingList" && (
           <CreatePackingListModal
-          isOpen={activeModal === "createPackingList"}
-          onClose={handleCloseModal}
-          isLoading={isLoading}
-          onCreatePackingList={onCreatePackingList}
-          
+            isOpen={activeModal === "createPackingList"}
+            onClose={handleCloseModal}
+            isLoading={isLoading}
+            onCreatePackingList={onCreatePackingList}
           />
-        ) }
+        )}
+
+        {isPackingListModalOpen && (
+          <PackingListDetailsModal 
+          packingList={selectedPackingList}
+          onClose={closePackingListModal}
+          />
         
+        )}
+
         {activeModal === "create" && (
           <AddItemModal
             handleCloseModal={handleCloseModal}
@@ -437,11 +458,7 @@ function App() {
             isLoading={isLoading}
           />
         )}
-        {activeModal === "packingListPreview" && (
-          <PackingListCard 
-          />
-
-        )}
+      
         {activeModal === "preview" && (
           <ItemModal
             selectedCard={selectedCard}

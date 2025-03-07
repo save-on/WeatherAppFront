@@ -6,7 +6,9 @@ import { checkLoggedIn } from "../../Utils/token.js";
 import "./PackingListList.css";
 
 
-const PackingListList = ({onOpenCreatePackingListModal }) => {
+const PackingListList = (props) => {
+    const { onOpenCreatePackingListModal} = props;
+    const onSelectedPackingList = props.onSelectedPackingList;
     const currentUser= useContext(CurrentUserContext);
     const [packingLists, setPackingLists] = useState([]);
   
@@ -47,10 +49,6 @@ const PackingListList = ({onOpenCreatePackingListModal }) => {
         }
     };
 
-    const handleSelectedPackingList = (packingList) => {
-        console.log("Packinglist card click: ", packingList);
-    };
-    
     return (
         <div className="packing-list-list">
             <h2>My Packing Lists</h2>
@@ -61,10 +59,11 @@ const PackingListList = ({onOpenCreatePackingListModal }) => {
             {packingLists.length > 0 ? (
                 <ul className="card-list">
                     {packingLists.map(list => (
+                        // console.log("PackingListList - Rendering PackingListCard with packingList: ", list),
                         <PackingListCard
                         key={list.id}
                         packingList={list}
-                        onSelectedPackingList={handleSelectedPackingList}
+                        onSelectedPackingList={props.onSelectedPackingList}
                         />
                     ))}
                 </ul>

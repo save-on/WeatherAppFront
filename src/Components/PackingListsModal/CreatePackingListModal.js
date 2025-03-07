@@ -16,7 +16,7 @@ const CreatePackingListModal = ({
     name: "",
     weather_condition: "",
     location: "",
-    packingList_image: ""
+    packinglist_image: ""
   });
 
   const { isDisabled } = useFormValidator(values);
@@ -31,8 +31,6 @@ const CreatePackingListModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem("jwt");
-    console.log("Token from localStorage: ", localStorage.getItem("jwt"));
-    console.log("Token: ", token);
 
     const formData = new FormData();
     formData.append('name', values.name);

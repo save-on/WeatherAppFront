@@ -21,7 +21,7 @@ const ItemCard = ({ item, onSelectedCard, onCardLike, loggedIn }) => {
     <li className="card">
       <img
         className="card_image"
-        src={`http://localhost:3001${item.clothing_image}`}
+        src={`http://localhost:3001${item.clothing_image.startsWith('/') ? '' : '/'}${item.clothing_image}`}
         onClick={() => onSelectedCard(item)}
         alt={item.name}
       />

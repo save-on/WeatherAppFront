@@ -1,0 +1,93 @@
+/* PackingListDetailsModal.css */
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 600px; /* Example max width */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    position: relative; /* For close button positioning */
+}
+
+.modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.modal__title {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.modal__close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.modal__close-button:hover,
+.modal__close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal__body {
+    padding: 15px 0;
+    text-align: center; /* Center content in body */
+}
+
+.modal__image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Example: rounded image corners */
+}
+
+
+.modal__footer {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    text-align: right; /* Align buttons to the right */
+}
+
+.modal__button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.modal__button-close {
+    background-color: #f44336; /* Example close button color */
+    color: white;
+}
+
+.modal__button-close:hover {
+    background-color: #d32f2f;
+}

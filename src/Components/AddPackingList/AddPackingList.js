@@ -5,7 +5,7 @@ import { useFormValidator, useValidator } from "../../hooks/useFormValidator.js"
 const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading }) => {
     const {values, handleChanges, setValues } = useForm({
         name: "",
-        packingList_image: "",
+        packinglist_image: "",
         affiliate_link: "",
         weather_condition: "",
     });
@@ -26,7 +26,7 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
       reader.onloadend = () => {
         setValues((prevValues) => ({
           ...prevValues,
-          packingList_image: reader.result,
+          packinglist_image: reader.result,
         }));
       };
 
@@ -63,22 +63,22 @@ const AddPackingList = ({ handleCloseModal, onAddPackingList, isOpen, isLoading 
             <p className="modal-form_input-error">{errors.name}</p>
           )}
         </li>
-        <label className="input-header" htmlFor="packingList_image">
+        <label className="input-header" htmlFor="packinglist_image">
           Packing List Image
         </label>
         <li>
           <input
             className="input"
-            id="packingList_image"
+            id="packinglist_image"
             type="file"
-            name="packingList_image"
+            name="packinglist_image"
             required
             placeholder="Packing List Image"
             accept="image/*"
             onChange={handleFileUpload}
           />
-          {errors.packingList_image && (
-            <p className="modal-form_input-error">{errors.packingList_image}</p>
+          {errors.packinglist_image && (
+            <p className="modal-form_input-error">{errors.packinglist_image}</p>
           )}
         </li>
         <label className="input-header" htmlFor="input_link">
