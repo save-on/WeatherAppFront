@@ -31,11 +31,19 @@ function Main({
         weatherData={weatherData}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
       />
-      <LocationSearch
-        handleGetCityWeather={handleGetCityWeather}
-        searchResults={searchResults}
-        handleSearchedData={handleSearchedData}
-      />
+      <div className="main-city_weather-container">
+        {weatherData.condition && (
+          <p className="main-city_weather-condition">
+            {`${weatherData.city}'s current weather is ${weatherData.condition}`}
+          </p>
+        )}
+
+        <LocationSearch
+          handleGetCityWeather={handleGetCityWeather}
+          searchResults={searchResults}
+          handleSearchedData={handleSearchedData}
+        />
+      </div>
       <section className="card_section">
         {locationData.locationAccess ? (
           <p className="card_suggestion">
