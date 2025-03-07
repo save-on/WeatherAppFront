@@ -83,6 +83,42 @@ export function postPackingList(packingList, token) {
   });
 }
 
+export const postPackingListItem = async (packingListId, clothingItemIds, token) => { 
+  console.log("postPackingListItem - packingListId:", packingListId, ", clothingItemIds:", clothingItemIds); 
+
+  if (!Array.isArray(clothingItemIds)) { 
+      console.error("Error: clothingItemIds must be an array.");
+      throw new Error("clothingItemIds must be an array."); 
+  }
+
+  if (clothingItemIds.length === 0) { 
+      console.warn("Warning: clothingItemIds array is empty. No items will be added.");
+      return; 
+  }
+
+
+  try {
+      const res = await fetch(`${baseUrl}profile/packing-lists/${packingListId}/items`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ clothing_item_ids: clothingItemIds }), 
+      });
+
+      if (!res.ok) {
+          const message = `Error: ${res.status}`;
+          throw new Error(message);
+      }
+      const data = await res.json();
+      return data; 
+  } catch (error) {
+      console.error("Error adding items to packing list: ", error);
+      throw error;
+  }
+};
+
 export function deletePackingList(packingListId, token) {
   return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
     method: "DELETE",
