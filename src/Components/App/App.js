@@ -131,6 +131,10 @@ function App() {
     setActiveModal("edit");
   };
 
+  const handleOpenDropbox = () => {
+    setActiveModal("dropbox");
+  };
+
   function handleSubmit(request) {
     setIsLoading(true);
     request()
@@ -358,6 +362,9 @@ function App() {
             locationData={locationData}
             searchedCity={searchedCity}
             savedCity={savedCity}
+            handleOpenDropbox={handleOpenDropbox}
+            activeModal={activeModal}
+            handleCloseModal={handleCloseModal}
           />
           <Routes>
             <Route

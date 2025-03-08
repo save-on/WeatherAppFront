@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router";
 import { useContext, useEffect, useRef, useState } from "react";
 import defaultAvatar from "../../Images/default-avatar.jpg";
 import { getCurrentTime } from "../../Utils/WeatherAPI.js";
+import HeaderDropbox from "../HeaderDropbox/HeaderDropbox.jsx";
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -21,6 +22,9 @@ const Header = ({
   locationData,
   searchedCity,
   savedCity,
+  handleOpenDropbox,
+  activeModal,
+  handleCloseModal,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
@@ -55,7 +59,7 @@ const Header = ({
               {currentDate} {weatherData.city}
             </p>
           )}
-          {location === "/search/result" && (
+          {location === "/search/result" && searchedCity.country && (
             <>
               <p className="header__date">
                 {`${savedCity.name}, ${searchedCity.country}`}
@@ -77,13 +81,18 @@ const Header = ({
                   + Add Clothes
                 </button>
               )}
-              <Link to="/profile" className="header__name">
+              {/* <Link to="/profile" className="header__name">
                 {currentUser?.name || "Your Name"}
-              </Link>
+              </Link> */}
               <img
                 className="header__avatar-image"
                 src={currentUser?.avatar || defaultAvatar}
                 alt="avatar"
+                onClick={handleOpenDropbox}
+              />
+              <HeaderDropbox
+                isOpened={activeModal === "dropbox"}
+                handleCloseModal={handleCloseModal}
               />
             </div>
           ) : (

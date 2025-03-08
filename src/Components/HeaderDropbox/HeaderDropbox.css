@@ -1,0 +1,128 @@
+@keyframes slide-in {
+  from {
+    transform: translateY(-25%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.headerdropbox {
+  position: absolute;
+  width: 100%;
+  right: 5px;
+  top: 45px;
+  z-index: 999;
+  padding: 15px 0 0;
+  border: 3px solid rgb(0, 174, 255);
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  list-style-type: none;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.15s ease-in-out 0s;
+}
+
+.headerdropbox_visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out 0s;
+  animation: slide-in 0.15s ease-out;
+}
+
+.headerdropbox__user-info {
+  display: flex;
+  margin: 0 0 15px;
+}
+
+.headerdropbox__user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  box-shadow: -7px 8px 15px -7px rgba(0, 0, 0, 0.2);
+  margin: 0 10px 0 15px;
+}
+
+.headerdropbox__user {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerdropbox__user-name {
+  margin: 0 0 2px;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: capitalize;
+  text-align: left;
+}
+
+.headerdropbox__profile-button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: rgb(0, 132, 255);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.15s linear 0s;
+}
+
+.headerdropbox__profile-button:hover {
+  color: rgb(0, 111, 214);
+}
+
+.headerdropbox__list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.headerdropbox__list-item {
+  display: flex;
+  height: 40px;
+  width: 100%;
+}
+
+.headerdropbox__button {
+  padding: 0 0 0 15px;
+  margin: 0;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.7);
+  transition: background-color 0.05s linear 0s;
+}
+
+.headerdropbox__button:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.headerdropbox__signout {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.headerdropbox__signout-button {
+  padding: 0 0 0 15px;
+  border: none;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: color 0.15s linear 0s;
+}
+
+.headerdropbox__signout-button:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
