@@ -2,10 +2,12 @@ import { useContext, useEffect, useRef } from "react";
 import "./HeaderDropbox.css";
 import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import defaultAvatar from "../../Images/default-avatar.jpg";
+import { useNavigate } from "react-router";
 
-const HeaderDropbox = ({ isOpened, handleCloseModal }) => {
+const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut }) => {
   const currentUser = useContext(CurrentUserContext);
   const dropboxRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isOpened) return;
@@ -35,7 +37,14 @@ const HeaderDropbox = ({ isOpened, handleCloseModal }) => {
         />
         <div className="headerdropbox__user">
           <p className="headerdropbox__user-name">{currentUser.name}</p>
-          <button className="headerdropbox__profile-button" type="button">
+          <button
+            className="headerdropbox__profile-button"
+            type="button"
+            onClick={() => {
+              navigate("/profile");
+              handleCloseModal();
+            }}
+          >
             View profile
           </button>
         </div>
@@ -53,7 +62,14 @@ const HeaderDropbox = ({ isOpened, handleCloseModal }) => {
         </li>
       </ul>
       <li className="headerdropbox__signout">
-        <button className="headerdropbox__signout-button" type="button">
+        <button
+          className="headerdropbox__signout-button"
+          type="button"
+          onClick={() => {
+            onSignOut();
+            handleCloseModal();
+          }}
+        >
           Sign out
         </button>
       </li>

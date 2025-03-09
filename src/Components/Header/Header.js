@@ -25,6 +25,7 @@ const Header = ({
   handleOpenDropbox,
   activeModal,
   handleCloseModal,
+  onSignOut,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
@@ -81,18 +82,16 @@ const Header = ({
                   + Add Clothes
                 </button>
               )}
-              {/* <Link to="/profile" className="header__name">
-                {currentUser?.name || "Your Name"}
-              </Link> */}
               <img
                 className="header__avatar-image"
-                src={currentUser?.avatar || defaultAvatar}
-                alt="avatar"
+                src={currentUser.avatar || defaultAvatar}
+                alt={`${currentUser.name}'s avatar`}
                 onClick={handleOpenDropbox}
               />
               <HeaderDropbox
                 isOpened={activeModal === "dropbox"}
                 handleCloseModal={handleCloseModal}
+                onSignOut={onSignOut}
               />
             </div>
           ) : (

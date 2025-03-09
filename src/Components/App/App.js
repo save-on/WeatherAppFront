@@ -365,6 +365,7 @@ function App() {
             handleOpenDropbox={handleOpenDropbox}
             activeModal={activeModal}
             handleCloseModal={handleCloseModal}
+            onSignOut={onSignOut}
           />
           <Routes>
             <Route
