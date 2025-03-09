@@ -14,70 +14,98 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
 
   const handleSelectedItemsChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions);
-    const values = selectedOptions.map(option => option.value);
+    const values = selectedOptions.map((option) => option.value);
     setSelectedItems(values);
     console.log("Selected Item IDs: ", values);
-  }
+  };
 
-  const handleAddItemToPackingList = async () => { 
+  const handleAddItemToPackingList = async () => {
     console.log("Add Item button clicked. Selected Item IDs:", selectedItems);
 
     if (!packingList) {
-        console.error("Packing list is not defined."); 
-        return;
+      console.error("Packing list is not defined.");
+      return;
     }
 
-    const packingListId = packingList.id; 
-    const clothingItemIds = selectedItems; 
-    const token = checkLoggedIn(); 
+    const packingListId = packingList.id;
+    const clothingItemIds = selectedItems;
+    const token = checkLoggedIn();
 
     if (!token) {
-        console.error("User not logged in or token missing."); 
-        
-        return;
+      console.error("User not logged in or token missing.");
+
+      return;
     }
 
-    if (!clothingItemIds || clothingItemIds.length === 0) { 
-        console.warn("No items selected to add."); 
-        return; 
+    if (!clothingItemIds || clothingItemIds.length === 0) {
+      console.warn("No items selected to add.");
+      return;
     }
 
     try {
-        await api.postPackingListItem(packingListId, clothingItemIds, token); 
-        console.log("Items added to packing list successfully!");
+      await api.postPackingListItem(packingListId, clothingItemIds, token);
+      console.log("Items added to packing list successfully!");
 
-       
-        const updatedPackingListItems = await getPackingListItems(packingListId);
-        setItems(updatedPackingListItems);
+      const tokenForFetch = checkLoggedIn();
+      console.log(
+        "Token for getPackingListItems (handleAddItem): ",
+        tokenForFetch
+      );
+      const updatedPackingListItems = await getPackingListItems(packingListId);
+      setItems(updatedPackingListItems);
 
-        setSelectedItems([]); 
-
+      setSelectedItems([]);
     } catch (error) {
-        console.error("Error adding items to packing list: ", error);
-     
+      console.error("Error adding items to packing list: ", error);
     }
-}
+
+    try {
+      await api.postPackingListItem(packingListId, clothingItemIds, token);
+      console.log("Items added to packing list successfully!");
+
+      const updatedPackingListItems = await getPackingListItems(
+        packingListId,
+        token
+      );
+      setItems(updatedPackingListItems);
+
+      setSelectedItems([]);
+    } catch (error) {
+      console.error("Error adding items to packing list: ", error);
+    }
+  };
 
   useEffect(() => {
-    console.log("PackingListDetailsModal - useEffect - packingList prop: ", packingList);
+    console.log(
+      "PackingListDetailsModal - useEffect - packingList prop: ",
+      packingList
+    );
     if (!packingList) return;
 
     const fetchItems = async () => {
-        try {
-            const packingListItemsData = await getPackingListItems(packingList.id);
-            setItems(packingListItemsData);
-        } catch (error) {
-            console.error("Error fetching items for packing list: ", error);
+      try {
+        const token = checkLoggedIn();
+        if (!token) {
+          console.error(
+            "User not logged in or token missing when fetching items."
+          );
+          return;
         }
+        console.log("Token from getPackingListItems (useEffect): ", token);
+        const packingListItemsData = await getPackingListItems(packingList.id);
+        setItems(packingListItemsData);
+      } catch (error) {
+        console.error("Error fetching items for packing list: ", error);
+      }
     };
 
     const fetchAvailableItems = async () => {
-        try {
-            const allClothingItems = await getItems();
-            setAvailableItems(allClothingItems);
-        } catch (error) {
-            console.error("Error fetching available clothing items: ", error);
-        }
+      try {
+        const allClothingItems = await getItems();
+        setAvailableItems(allClothingItems);
+      } catch (error) {
+        console.error("Error fetching available clothing items: ", error);
+      }
     };
 
     fetchItems();
@@ -102,8 +130,20 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
           </h3>
         </div>
         <div className="modal__body modal__body_type_packing-list">
+          <div>
+            **DEBUG: packingList Prop Value: **{" "}
+            <pre>{JSON.stringify(packingList, null, 2)}</pre>
+          </div>
+          {console.log(
+            "DEBUG: Just before <img> - packingList.packinglist_image: ",
+            packingList.packinglist_image
+          )}
+          {console.log(
+            "DEBUG: Constructed Image URL: ",
+            `http://localhost:3001${packingList.packinglist_image}`
+          )}
           <img
-            src={`http://localhost:3001${packingList?.image_filepath}`}
+            src={`https://localhost:3001${packingList}`}
             alt={packingList?.name}
             className="modal__image"
           />
@@ -120,32 +160,30 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
                 Error loading items: {errorLoadingItems.message}
               </p>
             )}
-            {!loadingItems &&
-              !errorLoadingItems &&
-              items.length > 0 && (
-                <ul className="modal__item-list">
-                  {items.map((item) => (
-                    <li key={item.id} className="modal__item">
-                      <p className="modal__item-name">{item.name}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            {!loadingItems &&
-              !errorLoadingItems &&
-              items.length === 0 && (
-                <p>No clothing items added to this packing list yet.</p>
-              )}
-              <div className="modal__add-item-section">
-                <h4>Add Item To Packing List</h4>
-                <select multiple onChange={handleSelectedItemsChange}>
-                    <option value="">Select an item to add</option>
-                    {availableItems.map(item => (
-                        <option key={item.id} value={item.id}>{item.name}</option>
-                    ))}
-                </select>
-                <button onClick={handleAddItemToPackingList}>Add Item</button>
-              </div>
+            {!loadingItems && !errorLoadingItems && items.length > 0 && (
+              <ul className="modal__item-list">
+                {items.map((item) => (
+                  <li key={item.id} className="modal__item">
+                    <p className="modal__item-name">{item.name}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!loadingItems && !errorLoadingItems && items.length === 0 && (
+              <p>No clothing items added to this packing list yet.</p>
+            )}
+            <div className="modal__add-item-section">
+              <h4>Add Item To Packing List</h4>
+              <select multiple onChange={handleSelectedItemsChange}>
+                <option value="">Select an item to add</option>
+                {availableItems.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              <button onClick={handleAddItemToPackingList}>Add Item</button>
+            </div>
           </div>
         </div>
         <div className="modal__footer modal__fotter_type_packing-list">

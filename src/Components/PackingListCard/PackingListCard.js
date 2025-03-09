@@ -7,7 +7,7 @@ const PackingListCard = ({ packingList, onSelectedPackingList }) => {
     <li className="card">
       <img
         className="card_image"
-        src={`${baseUrl}${packingList.packinglist_image}`}
+        src={`http://localhost:3001${packingList.packinglist_image}`}
         onClick={() => {
           console.log("packingListCard - onClick - packingList: ", packingList);
           onSelectedPackingList(packingList);

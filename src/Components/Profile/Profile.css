@@ -27,6 +27,16 @@
   position: relative;
 }
 
+.card-list {
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  top: 15px;
+}
+
 .profile__user-name {
   font-size: 20px;
   height: 25px;

@@ -50,6 +50,7 @@ const Profile = ({
         <PackingListDetailsModal
           packingList={selectedPackingList}
           onClose={closePackingListModal}
+          onSelectedPackingList={onSelectedPackingList}
         />
       )}
     </div>
