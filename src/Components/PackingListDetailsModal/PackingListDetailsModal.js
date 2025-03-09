@@ -130,10 +130,7 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
           </h3>
         </div>
         <div className="modal__body modal__body_type_packing-list">
-          <div>
-            **DEBUG: packingList Prop Value: **{" "}
-            <pre>{JSON.stringify(packingList, null, 2)}</pre>
-          </div>
+         
           {console.log(
             "DEBUG: Just before <img> - packingList.packinglist_image: ",
             packingList.packinglist_image
@@ -143,7 +140,7 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
             `http://localhost:3001${packingList.packinglist_image}`
           )}
           <img
-            src={`https://localhost:3001${packingList}`}
+            src={`http://localhost:3001${packingList.packinglist_image}`}
             alt={packingList?.name}
             className="modal__image"
           />
