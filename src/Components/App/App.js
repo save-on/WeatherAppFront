@@ -53,6 +53,7 @@ import {
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 import { checkLoggedIn, removeToken, setToken } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
+import LikesPage from "../LikesPage/LikesPage.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -137,7 +138,11 @@ function App() {
     setActiveModal("edit");
   };
 
-  const registerUser = (values) => {
+  const handleOpenDropbox = () => {
+    setActiveModal("dropbox");
+  };
+
+    const registerUser = (values) => {
     setIsLoading(true);
     register(values)
       .then(() => loginUser(values))
@@ -364,6 +369,10 @@ function App() {
             locationData={locationData}
             searchedCity={searchedCity}
             savedCity={savedCity}
+            handleOpenDropbox={handleOpenDropbox}
+            activeModal={activeModal}
+            handleCloseModal={handleCloseModal}
+            onSignOut={onSignOut}
           />
           <Routes>
             <Route
@@ -420,6 +429,22 @@ function App() {
                     handleSearchedData={handleSearchedData}
                   />
                 </RouteRerouter>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRoute path="/favorites" loggedIn={loggedIn}>
+                  <LikesPage
+                    handleSelectedCard={handleSelectedCard}
+                    clothingItems={clothingItems}
+                    handleCardLike={handleCardLike}
+                    loggedIn={loggedIn}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
+                  />
+                </ProtectedRoute>
               }
             />
           </Routes>

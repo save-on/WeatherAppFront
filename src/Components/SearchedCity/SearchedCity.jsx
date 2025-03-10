@@ -51,9 +51,11 @@ const SearchedCity = ({
       <div className="searched-city_weather-container">
         <div className="searched-city_weather-details">
           <BackButton type={"home"} />
-          <p className="searched-city_weather-condition">
-            {`${savedCity.name}'s current weather is ${searchedCity.condition}`}
-          </p>
+          {searchedCity ? (
+            <p className="searched-city_weather-condition">
+              {`${savedCity.name}'s current weather is ${searchedCity.condition}`}
+            </p>
+          ) : null}
         </div>
         <LocationSearch
           handleGetCityWeather={handleGetCityWeather}

@@ -20,6 +20,7 @@
   list-style-type: none;
   padding: 0;
 }
+
 .searched-city_weather-container {
   display: flex;
   margin: 15px 15px 0;

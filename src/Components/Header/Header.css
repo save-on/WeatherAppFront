@@ -33,10 +33,16 @@
 }
 
 .header__avatar-image {
-  margin-left: 12px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  transition: scale 0.15s linear 0s;
+}
+
+.header__avatar-image:hover {
+  scale: 1.1;
 }
 
 .header__name {
@@ -83,13 +89,11 @@
   margin: 0;
 }
 
-.header-buttons {
+.header__buttons {
+  position: relative;
   display: flex;
   align-items: center;
-}
-
-.header-avatar-logo {
-  padding-left: 12px;
+  gap: 12px;
 }
 
 .header__time {

@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router";
 import { useContext, useEffect, useRef, useState } from "react";
 import defaultAvatar from "../../Images/default-avatar.jpg";
 import { getCurrentTime } from "../../Utils/WeatherAPI.js";
+import HeaderDropbox from "../HeaderDropbox/HeaderDropbox.jsx";
 
 const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -21,6 +22,10 @@ const Header = ({
   locationData,
   searchedCity,
   savedCity,
+  handleOpenDropbox,
+  activeModal,
+  handleCloseModal,
+  onSignOut,
 }) => {
   const currentUser = useContext(CurrentUserContext);
   const location = useLocation().pathname;
@@ -50,12 +55,14 @@ const Header = ({
               className="header__logo-image"
             />
           </div>
-          {location !== "/search/result" && (
-            <p className="header__date">
-              {currentDate} {weatherData.city}
-            </p>
-          )}
-          {location === "/search/result" && (
+          {location !== "/search/result" &&
+            location !== "/profile" &&
+            location !== "/favorites" && (
+              <p className="header__date">
+                {currentDate} {weatherData.city}
+              </p>
+            )}
+          {location === "/search/result" && searchedCity.country && (
             <>
               <p className="header__date">
                 {`${savedCity.name}, ${searchedCity.country}`}
@@ -65,25 +72,32 @@ const Header = ({
           )}
         </div>
         <div className="header__avatar-logo">
-          {locationData.locationAccess && <ToggleSwitch />}
+          {locationData.locationAccess &&
+            location !== "/profile" &&
+            location !== "/favorites" && <ToggleSwitch />}
           {loggedIn ? (
             <div className="header__buttons">
-              {location !== "/search/result" && (
-                <button
-                  className="header__button"
-                  type="button"
-                  onClick={onCreateModal}
-                >
-                  + Add Clothes
-                </button>
-              )}
-              <Link to="/profile" className="header__name">
-                {currentUser?.name || "Your Name"}
-              </Link>
+              {location !== "/search/result" &&
+                location !== "/favorites" &&
+                location !== "/profile" && (
+                  <button
+                    className="header__button"
+                    type="button"
+                    onClick={onCreateModal}
+                  >
+                    + Add Clothes
+                  </button>
+                )}
               <img
                 className="header__avatar-image"
-                src={currentUser?.avatar || defaultAvatar}
-                alt="avatar"
+                src={currentUser.avatar || defaultAvatar}
+                alt={`${currentUser.name}'s avatar`}
+                onClick={handleOpenDropbox}
+              />
+              <HeaderDropbox
+                isOpened={activeModal === "dropbox"}
+                handleCloseModal={handleCloseModal}
+                onSignOut={onSignOut}
               />
             </div>
           ) : (
