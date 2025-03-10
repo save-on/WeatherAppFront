@@ -1,13 +1,12 @@
 import React from "react";
 import "../ItemCard/ItemCard.css";
-import { baseUrl } from "../../Utils/Api.js";
 
 const PackingListCard = ({ packingList, onSelectedPackingList }) => {
   return (
     <li className="card">
       <img
         className="card_image"
-        src={`http://localhost:3001${packingList.packinglist_image}`}
+        src={`http://localhost:3001${packingList?.packinglist_image}`}
         onClick={() => {
           console.log("packingListCard - onClick - packingList: ", packingList);
           onSelectedPackingList(packingList);

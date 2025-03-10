@@ -84,11 +84,15 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
 
     const fetchItems = async () => {
       try {
+        console.log("PackingListADetailsModal - useEffect - Before checkLoggedIn()");
         const token = checkLoggedIn();
+        console.log("PackingListDetailsModal - useEffect - After checkLoggedIn() - Token:", token);
+
+        const localStorageToken = localStorage.getItem('jwt');
+        console.log("PackingListDetailsModal - useEffect - localStorage Token:", localStorageToken);
         if (!token) {
           console.error(
-            "User not logged in or token missing when fetching items."
-          );
+            "PackingListDetailsModal - useEffect - No token found, cannot fetch items");
           return;
         }
         console.log("Token from getPackingListItems (useEffect): ", token);
@@ -108,6 +112,7 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
       }
     };
 
+  
     fetchItems();
     fetchAvailableItems();
   }, [packingList]);
@@ -133,14 +138,14 @@ const PackingListDetailsModal = ({ packingList, onClose }) => {
          
           {console.log(
             "DEBUG: Just before <img> - packingList.packinglist_image: ",
-            packingList.packinglist_image
+            packingList?.packinglist_image
           )}
           {console.log(
             "DEBUG: Constructed Image URL: ",
-            `http://localhost:3001${packingList.packinglist_image}`
+            `http://localhost:3001${packingList?.packinglist_image}`
           )}
           <img
-            src={`http://localhost:3001${packingList.packinglist_image}`}
+            src={`http://localhost:3001${packingList?.packinglist_image}`}
             alt={packingList?.name}
             className="modal__image"
           />

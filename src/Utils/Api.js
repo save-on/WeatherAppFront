@@ -4,7 +4,6 @@ export const baseUrl =
     : "http://localhost:3001/";
 
 export const processServerRequest = (url, options) => {
- 
   return fetch(url, options).then((res) =>
     res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
   );
@@ -40,6 +39,7 @@ export function deleteItems(_id, token) {
 
 //Packing Lists
 export function getPackingLists(token) {
+  console.log("Api.js - getPackingListItems - Token Received: ", token);
   return processServerRequest(`${baseUrl}profile/packing-lists`, {
     headers: {
       Accept: "application/json",
@@ -56,7 +56,7 @@ export const getPackingListItems = async (packingListId, token) => {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`, 
+              Authorization: `Bearer ${token}`, 
           },
       });
 
