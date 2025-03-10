@@ -51,7 +51,7 @@ import {
   getCityLocationData,
 } from "../../Utils/Api.js";
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
-import { checkLoggedIn } from "../../Utils/token.js";
+import { checkLoggedIn, removeToken, setToken } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
 
 function App() {
@@ -68,7 +68,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   // const history = useNavigate("");
-  const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState({});
   const [searchResults, setSearchResults] = useState([]);
@@ -78,6 +77,7 @@ function App() {
     locationAccess: false,
     notice: "",
   });
+  const [errMessage, setErrMessage] = useState("");
 
   const handleCreateModal = () => {
     setActiveModal("create");
@@ -88,16 +88,22 @@ function App() {
   };
 
   const handleDeleteCard = (card) => {
+    setIsLoading(true);
+    const token = checkLoggedIn();
     deleteItems(card.id, token)
       .then(() => {
         setClothingItems(clothingItems.filter((item) => item.id !== card.id));
         handleCloseModal();
       })
-      .catch(console.error);
+      .catch((err) => console.error(err.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleCloseModal = () => {
     setActiveModal("");
+    setErrMessage("");
   };
 
   useEffect(() => {
@@ -131,25 +137,17 @@ function App() {
     setActiveModal("edit");
   };
 
-  function handleSubmit(request) {
-    setIsLoading(true);
-    request()
-      .then(handleCloseModal)
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }
-
   const registerUser = (values) => {
-    handleSubmit(() =>
-      register(values)
-        .then(() => loginUser(values))
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => {
-          setCurrentUser(values);
-        })
-    );
+    setIsLoading(true);
+    register(values)
+      .then((res) => {
+        // loginUser(values)
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const loginUser = (user) => {
@@ -158,7 +156,6 @@ function App() {
       .then((res) => {
         if (res.token) {
           setToken(res.token);
-          localStorage.setItem("jwt", res.token);
           setCurrentUser(res);
           setLoggedIn(true);
           handleCloseModal();
@@ -166,7 +163,8 @@ function App() {
         // history.push("/profile");
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err.message);
+        setErrMessage(err.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -174,16 +172,22 @@ function App() {
   };
 
   const updateUser = (values) => {
-    const jwt = checkLoggedIn();
-    handleSubmit(() =>
-      update(values, jwt).then((res) => {
+    const token = checkLoggedIn();
+    setIsLoading(true);
+    update(values, token)
+      .then((res) => {
         setCurrentUser(res);
+        handleCloseModal();
       })
-    );
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const onSignOut = () => {
-    localStorage.removeItem("jwt");
+    removeToken();
     setCurrentUser({});
     setLoggedIn(false);
     // history.push("/");
@@ -193,25 +197,25 @@ function App() {
     const token = checkLoggedIn();
     !isLiked
       ? addCardLike(id, token)
-          .then((updatedCard) => {
+          .then((updatedCard) =>
             setClothingItems((cards) =>
               cards.map((item) => (item.id === id ? updatedCard : item))
-            );
-          })
-          .catch(console.error)
+            )
+          )
+          .catch((err) => console.error(err.message))
       : removeCardLike(id, token)
-          .then((updatedCard) => {
+          .then((updatedCard) =>
             setClothingItems((cards) =>
               cards.map((item) => (item.id === id ? updatedCard : item))
-            );
-          })
-          .catch(console.error);
+            )
+          )
+          .catch((err) => console.error(err.message));
   };
 
   const handleGetCityWeather = (search) => {
-    getCityLocationData(search).then((res) => {
-      setSearchResults(res);
-    });
+    getCityLocationData(search)
+      .then((res) => setSearchResults(res))
+      .catch((err) => console.error(err.message));
   };
 
   const handleSearchedData = (cityInfo) => {
@@ -222,6 +226,7 @@ function App() {
       latitude: cityInfo.lat,
       longitude: cityInfo.lon,
     };
+
     getForecastWeather(coords).then((data) => {
       const filteredData = filterWeatherData(data);
       setSearchedCity(filteredData);
@@ -249,14 +254,17 @@ function App() {
 
   const onAddItem = (values) => {
     const token = checkLoggedIn();
+    setIsLoading(true);
     postItems(values, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
-      })
-      .catch(console.error)
-      .finally(() => {
         handleCloseModal();
-      });
+      })
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleGetCoords = async () => {
@@ -286,7 +294,7 @@ function App() {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
     } else {
       handleGetCoords();
     }
@@ -295,18 +303,18 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data))
-      .catch(console.error);
+      .catch((err) => console.error(err.message));
   }, [coords]);
 
   useEffect(() => {
-    const jwt = checkLoggedIn();
-    if (jwt) {
-      getUserData(jwt)
+    const token = checkLoggedIn();
+    if (token) {
+      getUserData(token)
         .then((res) => {
           setLoggedIn(true);
           setCurrentUser(res);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
     }
   }, []);
 
@@ -423,6 +431,8 @@ function App() {
               onClose={handleCloseModal}
               loginUser={loginUser}
               openRegisterModal={handleOpenRegisterModal}
+              isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 
@@ -431,6 +441,8 @@ function App() {
               onClose={handleCloseModal}
               registerUser={registerUser}
               openLoginModal={handleOpenLoginModal}
+              isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 
@@ -440,6 +452,7 @@ function App() {
               isOpen={activeModal === "create"}
               onAddItem={onAddItem}
               isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
           {activeModal === "preview" && (
@@ -456,6 +469,8 @@ function App() {
               isOpen={activeModal === "edit"}
               onClose={handleCloseModal}
               updateUser={updateUser}
+              isLoading={isLoading}
+              errMessage={errMessage}
             />
           )}
 
