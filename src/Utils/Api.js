@@ -120,6 +120,7 @@ export const postPackingListItem = async (packingListId, clothingItemIds, token)
 };
 
 export function deletePackingList(packingListId, token) {
+  
   return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
     method: "DELETE",
     headers: {

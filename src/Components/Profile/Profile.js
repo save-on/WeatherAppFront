@@ -3,6 +3,7 @@ import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
 import PackingListList from "../PackingListList/PackingListList.js";
 import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
+import PackingListCard from "../PackingListCard/PackingListCard.js";
 import "./Profile.css";
 
 const Profile = ({
@@ -19,6 +20,15 @@ const Profile = ({
   selectedPackingList,
   closePackingListModal,
 }) => {
+  const [packingLists, setPackingLists] = useState([]);
+
+
+  const handlePackingListDeleted = (deletedPackingListId) => { // [✅] **Define handlePackingListDeleted in Profile**
+    // Update the packing lists state to remove the deleted list
+    setPackingLists(prevLists => prevLists.filter(list => list.id !== deletedPackingListId));
+    console.log(`Packing list with ID ${deletedPackingListId} deleted and removed from list.`);
+};
+
   return (
     <div className="profile">
       <SideBar onSignOut={onSignOut} onEditProfile={onEditProfile} />
@@ -36,6 +46,11 @@ const Profile = ({
         <PackingListList
           onOpenCreatePackingListModal={onCreate}
           onSelectedPackingList={onSelectedPackingList}
+          isPackingListModalOpen={isPackingListModalOpen}
+          selectedPackingList={selectedPackingList}
+          closePackingListModal={closePackingListModal}
+          handlePackingListDeleted={handlePackingListDeleted}
+          
         />
         <ClothesSection
           clothingItems={clothingItems}
@@ -46,13 +61,14 @@ const Profile = ({
           onDeleteClick={onDeleteClick}
         />
       </div>
-      {isPackingListModalOpen && (
+      {/* {isPackingListModalOpen && (
         <PackingListDetailsModal
           packingList={selectedPackingList}
           onClose={closePackingListModal}
           onSelectedPackingList={onSelectedPackingList}
+          onPackingListDeleted={handlePackingListDeleted}
         />
-      )}
+      )} */}
     </div>
   );
 };

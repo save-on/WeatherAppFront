@@ -79,6 +79,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
   const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
+  const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] = useState(false);
   const [selectedPackingList, setSelectedPackingList] = useState(null);
 
   const handleCreatePackingList = () => {
@@ -230,6 +231,10 @@ function App() {
     setIsPackingListModalOpen(false);
     setSelectedPackingList(null);
   };
+
+  const closeCreatePackingListModal = () => {
+    setIsCreatePackingListModalOpen(false);
+  }
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"

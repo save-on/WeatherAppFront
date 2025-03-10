@@ -1,8 +1,11 @@
 import React from "react";
 import "../ItemCard/ItemCard.css";
 
+
 const PackingListCard = ({ packingList, onSelectedPackingList }) => {
-  return (
+  
+
+    return (
     <li className="card">
       <img
         className="card_image"

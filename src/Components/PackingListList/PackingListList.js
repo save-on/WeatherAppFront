@@ -3,11 +3,13 @@ import {useState, useEffect, useContext } from "react";
 import * as api from "../../Utils/Api.js";
 import PackingListCard from "../PackingListCard/PackingListCard.js";
 import { checkLoggedIn } from "../../Utils/token.js";
+import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
 import "./PackingListList.css";
 
 
 const PackingListList = (props) => {
-    const { onOpenCreatePackingListModal} = props;
+    const { onOpenCreatePackingListModal, selectedPackingList, isPackingListModalOpen, closePackingListModal, handlePackingListDeleted, } = props;
+
     const onSelectedPackingList = props.onSelectedPackingList;
     const currentUser= useContext(CurrentUserContext);
     const [packingLists, setPackingLists] = useState([]);
@@ -27,33 +29,20 @@ const PackingListList = (props) => {
             const data = await api.getPackingLists(token);
             setPackingLists(data);
         } catch (error) {
-            console.error("Error fetching packing lists: ", error);
-            if (error.message.includes("401")) {
-                console.error("Unauthorized access. Please check your login status.");
-            }
+            // console.error("Error fetching packing lists: ", error);
+            // if (error.message.includes("401")) {
+            //     console.error("Unauthorized access. Please check your login status.");
+            // }
+            
         }
     };
 
-    const handleCreatePackingListSuccess = (newPackingList) => {
-        //when a new packing list is created, add it to the list and close the modal.
-        setPackingLists([newPackingList, ...packingLists]);
-        setIsCreateModalOpen(false);
-    };
-
-    const handleDeletePackingList = async (packingListId) => {
-        try{
-            await api.deletePackingList(packingListId);
-            setPackingLists(packingLists.filter(list => list.id !== packingListId));
-        } catch (error) {
-            console.error("Error deleting packing list: ", error);
-        }
-    };
 
     return (
         <div className="packing-list-list">
             <h2>My Packing Lists</h2>
             <button onClick={onOpenCreatePackingListModal}>
-                Create New Packing List
+                Create New Packing 
             </button>
 
             {packingLists.length > 0 ? (
@@ -64,13 +53,25 @@ const PackingListList = (props) => {
                         key={list.id}
                         packingList={list}
                         onSelectedPackingList={props.onSelectedPackingList}
+                       
                         />
                     ))}
                 </ul>
             ) : (
                 <p>You have no packing lists yet. Create on to get started!</p>
             )}
+               {isPackingListModalOpen && (
+                    <PackingListDetailsModal
+                      packingList={selectedPackingList}
+                      onClose={closePackingListModal}
+                      onSelectedPackingList={onSelectedPackingList}
+                      handlePackingListDeleted={handlePackingListDeleted}
+                    />
+                  )}
+             
         </div>
+   
+        
     );
 };
 
