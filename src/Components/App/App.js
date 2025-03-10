@@ -140,9 +140,7 @@ function App() {
   const registerUser = (values) => {
     setIsLoading(true);
     register(values)
-      .then((res) => {
-        // loginUser(values)
-      })
+      .then(() => loginUser(values))
       .catch((err) => {
         console.error(err.message);
         setErrMessage(err.message);
