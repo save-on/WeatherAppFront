@@ -53,6 +53,7 @@ import {
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
+import LikesPage from "../LikesPage/LikesPage.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -422,6 +423,22 @@ function App() {
                     handleSearchedData={handleSearchedData}
                   />
                 </RouteRerouter>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRoute path="/favorites" loggedIn={loggedIn}>
+                  <LikesPage
+                    handleSelectedCard={handleSelectedCard}
+                    clothingItems={clothingItems}
+                    handleCardLike={handleCardLike}
+                    loggedIn={loggedIn}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
+                  />
+                </ProtectedRoute>
               }
             />
           </Routes>

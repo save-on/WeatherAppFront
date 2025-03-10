@@ -51,7 +51,14 @@ const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut }) => {
       </li>
       <ul className="headerdropbox__list">
         <li className="headerdropbox__list-item">
-          <button className="headerdropbox__button" type="button">
+          <button
+            className="headerdropbox__button"
+            type="button"
+            onClick={() => {
+              navigate("/favorites");
+              handleCloseModal();
+            }}
+          >
             favorites
           </button>
         </li>

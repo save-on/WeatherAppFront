@@ -55,11 +55,13 @@ const Header = ({
               className="header__logo-image"
             />
           </div>
-          {location !== "/search/result" && (
-            <p className="header__date">
-              {currentDate} {weatherData.city}
-            </p>
-          )}
+          {location !== "/search/result" &&
+            location !== "/profile" &&
+            location !== "/favorites" && (
+              <p className="header__date">
+                {currentDate} {weatherData.city}
+              </p>
+            )}
           {location === "/search/result" && searchedCity.country && (
             <>
               <p className="header__date">
@@ -70,18 +72,22 @@ const Header = ({
           )}
         </div>
         <div className="header__avatar-logo">
-          {locationData.locationAccess && <ToggleSwitch />}
+          {locationData.locationAccess &&
+            location !== "/profile" &&
+            location !== "/favorites" && <ToggleSwitch />}
           {loggedIn ? (
             <div className="header__buttons">
-              {location !== "/search/result" && (
-                <button
-                  className="header__button"
-                  type="button"
-                  onClick={onCreateModal}
-                >
-                  + Add Clothes
-                </button>
-              )}
+              {location !== "/search/result" &&
+                location !== "/favorites" &&
+                location !== "/profile" && (
+                  <button
+                    className="header__button"
+                    type="button"
+                    onClick={onCreateModal}
+                  >
+                    + Add Clothes
+                  </button>
+                )}
               <img
                 className="header__avatar-image"
                 src={currentUser.avatar || defaultAvatar}
