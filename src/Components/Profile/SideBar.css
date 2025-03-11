@@ -10,40 +10,51 @@
   flex-direction: column;
 }
 
+.sidebar__button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 40px 0 0;
+}
+
 .sidebar__logout-button {
   background-color: transparent;
   border: none;
-  margin-top: 8px;
+  margin: 0;
   display: flex;
-  color: #000;
-  font-family: "Cabinet Grotesk";
+  color: #fff;
+  font-family: "";
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s linear 0s;
 }
 
 .sidebar__logout-button:hover {
-  cursor: pointer;
+  opacity: 0.8;
 }
 
 .sidebar__change_profile_data-button {
   background-color: transparent;
   border: none;
-  margin-top: 24px;
+  margin: 0;
   display: flex;
-  color: #000;
+  color: #fff;
   font-family: "Cabinet Grotesk";
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s linear 0s;
 }
 
 .sidebar__change_profile_data-button:hover {
-  cursor: pointer;
+  opacity: 0.8;
 }
 
 .sidebar__packing-lists__link {
@@ -90,7 +101,7 @@
   font-weight: 700;
   line-height: 20px;
   padding-bottom: 8px;
-  display:flex;
+  display: flex;
 }
 
 .modal__input {
@@ -117,13 +128,13 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  color: #fff;
+  color: #000;
   font-family: "Cabinet Grotesk";
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 20px;
-  background-color: #000;
+  background-color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;

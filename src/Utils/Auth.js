@@ -36,17 +36,6 @@ export const update = ({ name, avatar }, token) => {
   });
 };
 
-// export const checkToken = (token) => {
-//   return fetch(`${baseUrl}/users/me`, {
-//     method: "GET",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//   }).then(processServerRequest);
-// };
-
 export const getUserData = (token) => {
   return processServerRequest(`${baseUrl}users/me`, {
     method: "GET",

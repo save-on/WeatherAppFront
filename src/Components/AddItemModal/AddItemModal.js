@@ -3,6 +3,7 @@ import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 import { useState } from "react";
 
+
 const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
@@ -13,28 +14,6 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   const { formRef, errors, isDisabled } = useFormValidator(values);
   const [file, setFile] = useState(null);
 
-
-  // OLD HANDLE SUBMIT
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const token = localStorage.getItem("jwt");
-  //   console.log("Token from localStorage: ", localStorage.getItem("jwt"));
-
-  //   const formData = new FormData();
-  //   formData.append("name", values.name);
-  //   formData.append("affiliate_link", values.affiliate_link);
-  //   formData.append("weather_condition", values.weather_condition);
-  //   if (file) {
-  //     formData.append("clothing_image", file);
-  //   }
-  //   console.log("Submitting form with token: ", token);
-  //   for (const pair of formData.entries()) {
-  //     console.log(pair[0], pair[1]);
-  //   }
-  //   onAddItem(values);
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,6 +55,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
       onSubmit={handleSubmit}
       buttonText="Add Garment"
       formRef={formRef}
+      errMessage={errMessage}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="name">
@@ -195,7 +175,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
               type="submit"
               className="modal-form-submit"
             >
-              Add Garment
+              {isLoading ? "Adding item..." : "Add Garment"}
             </button>
           </div>
         </div>

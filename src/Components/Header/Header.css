@@ -10,6 +10,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 24px;
+  max-width: 100%;
 }
 
 .header__logo {
@@ -32,52 +33,75 @@
 }
 
 .header__avatar-image {
-  margin-left: 12px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+  transition: scale 0.15s linear 0s;
+}
+
+.header__avatar-image:hover {
+  scale: 1.1;
 }
 
 .header__name {
-  color: #000;
-  font-family: "Cabinet Grotesk";
-  font-size: 35px;
+  color: #fff;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 25px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  text-decoration: none;
+  margin: 0 0 0 10px;
+  border-radius: 10px;
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 6px 6px;
 }
 
 .header__button {
-  color: #000;
+  color: darkgrey;
   font-family: "Cabinet Grotesk", sans-serif;
-  font-size: 35px;
+  font-size: 25px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: bolder;
   line-height: 24px;
-  background: none;
-  border: none;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px 6px;
 }
 
 .header__button:hover {
   cursor: pointer;
+  transition: 0.4s;
+  color: white;
+  background-color: darkgrey;
 }
 
-.header__date {
+.header__date,
+.header__location {
   display: flex;
   justify-content: baseline;
-  font-size: 35px;
+  font-size: 25px;
   opacity: 0.8;
+  color: #fff;
+  margin: 0;
 }
 
-.header-buttons {
+.header__buttons {
+  position: relative;
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.header-avatar-logo {
-  padding-left: 12px;
+.header__time {
+  color: #fff;
+  font-size: 25px;
+  margin: 0;
+  opacity: 0.8;
 }
-
 
 @media screen and (max-width: 1000px) {
   .header__date {
@@ -101,12 +125,12 @@
     width: 70px;
     height: 50px;
   }
-  
 }
 
-@media screen and (max-width: 720px) {
-  .header__date {
-    font-size: 20px;
+@media screen and (max-width: 870px) {
+  .header__date,
+  .header__location {
+    font-size: 16px;
   }
 
   .header__logo-image {
@@ -120,12 +144,41 @@
 
   .header__avatar-logo {
     gap: 0;
-  
-   }
+  }
 
-   .header__logo {
+  .header__logo {
     gap: 10px;
-   }
+  }
 
+  .header__time {
+    font-size: 16px;
+  }
 }
 
+@media screen and (max-width: 689px) {
+  .header__date,
+  .header__location {
+    width: 100px;
+  }
+
+  .header__logo-image {
+    width: 60px;
+    height: 40px;
+  }
+
+  .header__button {
+    font-size: 20px;
+  }
+
+  .header__avatar-logo {
+    gap: 0;
+  }
+
+  .header__logo {
+    gap: 10px;
+  }
+
+  .header__time {
+    font-size: 16px;
+  }
+}

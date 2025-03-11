@@ -1,7 +1,10 @@
 import { Link } from "react-router";
 import "./ItemModal.css";
+import { useContext } from "react";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
+
   return (
     <div className={"modal"}>
       <div className="preview-image-content">
@@ -17,7 +20,7 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
         ></img>
         <div className="preview-image-name">
           {selectedCard.name}
-          {loggedIn && (
+          {loggedIn && selectedCard.owner === currentUser._id && (
             <button className="delete-button" onClick={onDeleteClick}>
               Delete Item
             </button>

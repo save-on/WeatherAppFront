@@ -3,7 +3,7 @@ import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants.js";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
-const WeatherCard = ({ weatherData, coords, handleBackgroundVideoChange }) => {
+const WeatherCard = ({ weatherData, handleBackgroundVideoChange }) => {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
   const [filteredOption, setFilteredOption] = useState();
 
@@ -22,21 +22,17 @@ const WeatherCard = ({ weatherData, coords, handleBackgroundVideoChange }) => {
       handleBackgroundVideoChange(weatherOption);
     }
   }, [weatherData]);
- 
 
   return (
     <section className="weather" id="weather">
       <div className="weather_info">
-        {currentTemperatureUnit === "F"
-          ? weatherData.temp[currentTemperatureUnit]
-          : weatherData.temp[currentTemperatureUnit]}
+        {weatherData?.temp !== undefined
+          ? currentTemperatureUnit === "F"
+            ? weatherData.temp[currentTemperatureUnit]
+            : weatherData.temp[currentTemperatureUnit]
+          : null}
       </div>
-      <img
-        src={weatherOption?.url}
-        className="weather_image"
-        alt={weatherOption?.type}
-      ></img>
-      {coords === null
+      {weatherData.coord === null
         ? weatherOptions[0].component
         : filteredOption?.component === undefined
         ? weatherOptions[0].component

@@ -1,0 +1,19 @@
+.back-button {
+  width: 60px;
+  opacity: 0.6;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: opacity 0.15s linear 0s;
+}
+
+.back-button:hover {
+  opacity: 1;
+}
+
+@media screen and (max-width: 870px) {
+  .back-button {
+    width: 50px;
+    margin: 0;
+  }
+}

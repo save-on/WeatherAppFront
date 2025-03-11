@@ -1,10 +1,17 @@
 .profile {
   display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  margin: 40px 0 380px;
+}
+
+.profile_container {
+  display: flex;
   align-items: flex-start;
   min-height: 60px;
-  padding: 32px 40px 0;
+  margin: 32px 0 0;
   font-family: "Cabinet Grotesk", sans-serif;
-  color: #000;
+  color: #fff;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -41,6 +48,7 @@
   font-size: 20px;
   height: 25px;
   text-decoration: none;
+  color: #fff;
 }
 
 .profile__logo {
@@ -56,21 +64,27 @@
 }
 
 .profile__add-button {
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 25px;
-  background: none;
-  border: none;
-  margin-left: 20px;
-  color: rgba(0, 0, 0, 0.6);
+  color: darkgrey;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: bolder;
+  line-height: 24px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px 6px;
+  margin: 0 0 0 15px;
 }
 
 .profile__add-button:hover {
   cursor: pointer;
+  transition: 0.4s;
+  color: white;
+  background-color: darkgrey;
 }
 
 .profile__items-text {
-  margin: 0 auto;
+  margin: 0;
   line-height: 25px;
   font-size: 20px;
 }

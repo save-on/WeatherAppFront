@@ -3,14 +3,25 @@ import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
+
 import PackingListList from "../PackingListList/PackingListList.js";
 import CreatePackingListModal from "../PackingListsModal/CreatePackingListModal.js";
 import PackingListCard from "../PackingListCard/PackingListCard.js";
 import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
+import DeleteItem from "../DeleteItem/DeleteItem.js";
+import ItemModal from "../ItemModal/ItemModal.js";
+import LoginModal from "../LoginModal/LoginModalForm.js";
+import RegisterModal from "../RegisterModal/RegisterModal.js";
+import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
+import AddItemModal from "../AddItemModal/AddItemModal.js";
+import SearchedCity from "../SearchedCity/SearchedCity.jsx";
+import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
+
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
-import cloudsDay from "../../Videos/clear-day.mp4";
+import cloudsDay from "../../Videos/clouds-day.mp4";
 import fogDay from "../../Videos/fog-day.mp4";
 import rainDay from "../../Videos/rain-day.mp4";
 import snowDay from "../../Videos/Snow-Cabin.mp4";
@@ -37,7 +48,6 @@ import {
   getForecastWeather,
   filterWeatherData,
 } from "../../Utils/WeatherAPI.js";
-
 import {
   getItems,
   postItems,
@@ -45,20 +55,12 @@ import {
   deleteItems,
   addCardLike,
   removeCardLike,
+  getCityLocationData,
 } from "../../Utils/Api.js";
-
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
-
-import { checkLoggedIn } from "../../Utils/token.js";
+import { checkLoggedIn, removeToken, setToken } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
-
-import DeleteItem from "../DeleteItem/DeleteItem.js";
-import ItemModal from "../ItemModal/ItemModal.js";
-import LoginModal from "../LoginModal/LoginModalForm.js";
-import RegisterModal from "../RegisterModal/RegisterModal.js";
-import EditProfileModal from "../EditProfileModal/EditProfileModal.js";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
-import AddItemModal from "../AddItemModal/AddItemModal.js";
+import LikesPage from "../LikesPage/LikesPage.jsx";
 
 function App() {
   const [activeModal, setActiveModal] = useState("");
@@ -74,13 +76,19 @@ function App() {
   const [packkingLists, setPackingLists] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-  // const history = useNavigate("");
-  const [token, setToken] = useState(checkLoggedIn() || "");
   const [isLoading, setIsLoading] = useState(false);
   const [coords, setCoords] = useState(null);
   const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
   const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] = useState(false);
   const [selectedPackingList, setSelectedPackingList] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchedCity, setSearchedCity] = useState({});
+  const [savedCity, setSavedCity] = useState({ name: "" });
+  const [locationData, setLocationData] = useState({
+    locationAccess: false,
+    notice: "",
+  });
+  const [errMessage, setErrMessage] = useState("");
 
   const handleCreatePackingList = () => {
     setActiveModal("createPackingList");
@@ -94,16 +102,22 @@ function App() {
   };
 
   const handleDeleteCard = (card) => {
+    setIsLoading(true);
+    const token = checkLoggedIn();
     deleteItems(card.id, token)
       .then(() => {
         setClothingItems(clothingItems.filter((item) => item.id !== card.id));
         handleCloseModal();
       })
-      .catch(console.error);
+      .catch((err) => console.error(err.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleCloseModal = () => {
     setActiveModal("");
+    setErrMessage("");
   };
 
   useEffect(() => {
@@ -137,25 +151,19 @@ function App() {
     setActiveModal("edit");
   };
 
-  function handleSubmit(request) {
-    setIsLoading(true);
-    request()
-      .then(handleCloseModal)
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }
+  const handleOpenDropbox = () => {
+    setActiveModal("dropbox");
+  };
 
   const registerUser = (values) => {
-    handleSubmit(() =>
-      register(values)
-        .then(() => loginUser(values))
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => {
-          setCurrentUser(values);
-        })
-    );
+    setIsLoading(true);
+    register(values)
+      .then(() => loginUser(values))
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const loginUser = (user) => {
@@ -164,7 +172,6 @@ function App() {
       .then((res) => {
         if (res.token) {
           setToken(res.token);
-          localStorage.setItem("jwt", res.token);
           setCurrentUser(res);
           setLoggedIn(true);
           handleCloseModal();
@@ -172,7 +179,8 @@ function App() {
         // history.push("/profile");
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err.message);
+        setErrMessage(err.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -180,16 +188,22 @@ function App() {
   };
 
   const updateUser = (values) => {
-    const jwt = checkLoggedIn();
-    handleSubmit(() =>
-      update(values, jwt).then((res) => {
+    const token = checkLoggedIn();
+    setIsLoading(true);
+    update(values, token)
+      .then((res) => {
         setCurrentUser(res);
+        handleCloseModal();
       })
-    );
+      .catch((err) => {
+        console.error(err.message);
+        setErrMessage(err.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const onSignOut = () => {
-    localStorage.removeItem("jwt");
+    removeToken();
     setCurrentUser({});
     setLoggedIn(false);
     // history.push("/");
@@ -199,20 +213,49 @@ function App() {
     const token = checkLoggedIn();
     !isLiked
       ? addCardLike(id, token)
-          .then((updatedCard) => {
+          .then((updatedCard) =>
             setClothingItems((cards) =>
               cards.map((item) => (item.id === id ? updatedCard : item))
-            );
-          })
-          .catch(console.error)
+            )
+          )
+          .catch((err) => console.error(err.message))
       : removeCardLike(id, token)
-          .then((updatedCard) => {
+          .then((updatedCard) =>
             setClothingItems((cards) =>
               cards.map((item) => (item.id === id ? updatedCard : item))
-            );
-          })
-          .catch(console.error);
+            )
+          )
+          .catch((err) => console.error(err.message));
   };
+
+  const handleGetCityWeather = (search) => {
+    getCityLocationData(search)
+      .then((res) => setSearchResults(res))
+      .catch((err) => console.error(err.message));
+  };
+
+  const handleSearchedData = (cityInfo) => {
+    if (!cityInfo) return;
+    localStorage.setItem("lastSearchedCity", JSON.stringify(cityInfo));
+
+    const coords = {
+      latitude: cityInfo.lat,
+      longitude: cityInfo.lon,
+    };
+
+    getForecastWeather(coords).then((data) => {
+      const filteredData = filterWeatherData(data);
+      setSearchedCity(filteredData);
+      setSavedCity(cityInfo);
+    });
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem("lastSearchedCity");
+    if (saved) {
+      handleSearchedData(JSON.parse(saved));
+    }
+  }, []);
 
   const handleSelectedCard = (card) => {
     setActiveModal("preview");
@@ -243,13 +286,12 @@ function App() {
 
   const onAddItem = (formData) => {
     const token = checkLoggedIn();
-    console.log("Token being sent:", token);
-    console.log(formData);
     postItems(formData, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
+        handleCloseModal();
       })
-      .catch(console.error)
+       .catch(console.error)
       .finally(() => {
         handleCloseModal();
       });
@@ -275,39 +317,50 @@ function App() {
     try {
       const data = await getCoords();
       setCoords(data);
+      setLocationData({
+        locationAccess: true,
+        notice: "",
+      });
     } catch (error) {
-      console.error("Error getting coordinates:", error);
+      const errData = {
+        locationAccess: false,
+        notice: error.message,
+      };
+      setLocationData(errData);
     }
   };
 
   useEffect(() => {
-    if (coords === null) {
-      handleGetCoords();
-    } else {
+    if (
+      coords.hasOwnProperty("latitude") &&
+      coords.hasOwnProperty("longitude")
+    ) {
       getForecastWeather(coords)
         .then((data) => {
           const filteredData = filterWeatherData(data);
           setWeatherData(filteredData);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
+    } else {
+      handleGetCoords();
     }
   }, [coords]);
 
   useEffect(() => {
     getItems()
       .then((data) => setClothingItems(data))
-      .catch(console.error);
-  }, []);
+      .catch((err) => console.error(err.message));
+  }, [coords]);
 
   useEffect(() => {
-    const jwt = checkLoggedIn();
-    if (jwt) {
-      getUserData(jwt)
+    const token = checkLoggedIn();
+    if (token) {
+      getUserData(token)
         .then((res) => {
           setLoggedIn(true);
           setCurrentUser(res);
         })
-        .catch(console.error);
+        .catch((err) => console.error(err.message));
     }
   }, []);
 
@@ -335,45 +388,52 @@ function App() {
   };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <video
-        key={videoSrc}
-        id="background-video"
-        autoPlay
-        loop
-        muted
-        className="background-video"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <Header
-          onCreateModal={handleCreateModal}
-          weatherData={weatherData}
-          loggedIn={loggedIn}
-          onLogin={handleOpenLoginModal}
-          onRegister={handleOpenRegisterModal}
-        />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <Main
-                weatherData={weatherData}
-                onSelectedCard={handleSelectedCard}
-                clothingItems={clothingItems}
-                coords={coords}
-                handleCardLike={handleCardLike}
-                handleOpenItemModal={handleOpenItemModal}
-                loggedIn={loggedIn}
-                handleBackgroundVideoChange={handleBackgroundVideoChange}
+    <div className="app">
+      <CurrentUserContext.Provider value={currentUser}>
+        <video
+          key={videoSrc}
+          id="background-video"
+          autoPlay
+          loop
+          muted
+          className="background-video"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
+          <Header
+            onCreateModal={handleCreateModal}
+            weatherData={weatherData}
+            loggedIn={loggedIn}
+            onLogin={handleOpenLoginModal}
+            onRegister={handleOpenRegisterModal}
+            locationData={locationData}
+            searchedCity={searchedCity}
+            savedCity={savedCity}
+            handleOpenDropbox={handleOpenDropbox}
+            activeModal={activeModal}
+            handleCloseModal={handleCloseModal}
+            onSignOut={onSignOut}
+          />
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                <Main
+                  weatherData={weatherData}
+                  onSelectedCard={handleSelectedCard}
+                  clothingItems={clothingItems}
+                  handleCardLike={handleCardLike}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  handleBackgroundVideoChange={handleBackgroundVideoChange}
               />
             }
-          />
-          <Route
+           />
+          <Route 
             path="/profile"
             element={
               <ProtectedRoute path="/profile" loggedIn={loggedIn}>
@@ -416,80 +476,126 @@ function App() {
                 />
               </ProtectedRoute>
             }
-          />
-        </Routes>
+          />           
+            <Route
+              path="/search/result"
+              element={
+                <RouteRerouter path={"/search/result"}>
+                  <SearchedCity
+                    searchedCity={searchedCity}
+                    handleBackgroundVideoChange={handleBackgroundVideoChange}
+                    clothingItems={clothingItems}
+                    handleSelectedCard={handleSelectedCard}
+                    handleCardLike={handleCardLike}
+                    loggedIn={loggedIn}
+                    savedCity={savedCity}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
+                    locationData={locationData}
+                  />
+                </RouteRerouter>
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRoute path="/favorites" loggedIn={loggedIn}>
+                  <LikesPage
+                    handleSelectedCard={handleSelectedCard}
+                    clothingItems={clothingItems}
+                    handleCardLike={handleCardLike}
+                    loggedIn={loggedIn}
+                    handleGetCityWeather={handleGetCityWeather}
+                    searchResults={searchResults}
+                    handleSearchedData={handleSearchedData}
+                  />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
 
-        {activeModal === "login" && (
-          <LoginModal
-            onClose={handleCloseModal}
-            loginUser={loginUser}
-            openRegisterModal={handleOpenRegisterModal}
+          <Footer />
+              
+          {activeModal === "login" && (
+            <LoginModal
+              onClose={handleCloseModal}
+              loginUser={loginUser}
+              openRegisterModal={handleOpenRegisterModal}
+              isLoading={isLoading}
+              errMessage={errMessage}
+              setErrMessage={setErrMessage}
+            />
+          )}
+
+          {activeModal === "register" && (
+            <RegisterModal
+              onClose={handleCloseModal}
+              registerUser={registerUser}
+              openLoginModal={handleOpenLoginModal}
+              isLoading={isLoading}
+              errMessage={errMessage}
+              setErrMessage={setErrMessage}
+            />
+          )}
+
+          {activeModal === "create" && (
+            <AddItemModal
+              handleCloseModal={handleCloseModal}
+              isOpen={activeModal === "create"}
+              onAddItem={onAddItem}
+              isLoading={isLoading}
+              errMessage={errMessage}
+            />
+          )}
+          
+          {activeModal === "createPackingList" && (
+            <CreatePackingListModal
+              isOpen={activeModal === "createPackingList"}
+              onClose={handleCloseModal}
+              isLoading={isLoading}
+              onCreatePackingList={onCreatePackingList}
           />
         )}
-
-        {activeModal === "register" && (
-          <RegisterModal
-            onClose={handleCloseModal}
-            registerUser={registerUser}
-            openLoginModal={handleOpenLoginModal}
+          
+          {isPackingListModalOpen && (
+            <PackingListDetailsModal 
+              packingList={selectedPackingList}
+              onClose={closePackingListModal}
           />
         )}
-
-        <Footer />
-
-        {activeModal === "createPackingList" && (
-          <CreatePackingListModal
-            isOpen={activeModal === "createPackingList"}
-            onClose={handleCloseModal}
-            isLoading={isLoading}
-            onCreatePackingList={onCreatePackingList}
-          />
-        )}
-
-        {isPackingListModalOpen && (
-          <PackingListDetailsModal 
-          packingList={selectedPackingList}
-          onClose={closePackingListModal}
-          />
         
-        )}
+          {activeModal === "preview" && (
+            <ItemModal
+              selectedCard={selectedCard}
+              onDeleteClick={handleDeleteModal}
+              onClose={handleCloseModal}
+              loggedIn={loggedIn}
+              weatherData={weatherData}
+            />
+          )}
+          
+          {activeModal === "edit" && (
+            <EditProfileModal
+              isOpen={activeModal === "edit"}
+              onClose={handleCloseModal}
+              updateUser={updateUser}
+              isLoading={isLoading}
+              errMessage={errMessage}
+            />
+          )}
 
-        {activeModal === "create" && (
-          <AddItemModal
-            handleCloseModal={handleCloseModal}
-            isOpen={activeModal === "create"}
-            onAddItem={onAddItem}
-            isLoading={isLoading}
-          />
-        )}
-      
-        {activeModal === "preview" && (
-          <ItemModal
-            selectedCard={selectedCard}
-            onDeleteClick={handleDeleteModal}
-            onClose={handleCloseModal}
-            loggedIn={loggedIn}
-            weatherData={weatherData}
-          />
-        )}
-        {activeModal === "edit" && (
-          <EditProfileModal
-            isOpen={activeModal === "edit"}
-            onClose={handleCloseModal}
-            updateUser={updateUser}
-          />
-        )}
-
-        {activeModal === "delete" && (
-          <DeleteItem
-            onClose={handleCloseModal}
-            onDeleteClick={handleDeleteCard}
-            selectedCard={selectedCard}
-            isLoading={isLoading}
-          />
-        )}
-      </CurrentTemperatureUnitContext.Provider>
-    </CurrentUserContext.Provider>
+          {activeModal === "delete" && (
+            <DeleteItem
+              onClose={handleCloseModal}
+              onDeleteClick={handleDeleteCard}
+              selectedCard={selectedCard}
+              isLoading={isLoading}
+            />
+          )}
+        </CurrentTemperatureUnitContext.Provider>
+      </CurrentUserContext.Provider>
+    </div>
   );
 }
 

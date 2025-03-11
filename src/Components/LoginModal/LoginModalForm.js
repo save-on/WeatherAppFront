@@ -2,7 +2,14 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
-const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
+const LoginModal = ({
+  onClose,
+  loginUser,
+  openRegisterModal,
+  isLoading,
+  errMessage,
+  setErrMessage,
+}) => {
   const { values, handleChanges } = useForm({
     email: "",
     password: "",
@@ -29,6 +36,7 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
       buttonText="Log In"
       name="login"
       formRef={formRef}
+      errMessage={errMessage}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="email">
@@ -83,7 +91,10 @@ const LoginModal = ({ onClose, loginUser, openRegisterModal, isLoading }) => {
         <button
           className="modal__signup"
           type="button"
-          onClick={openRegisterModal}
+          onClick={() => {
+            openRegisterModal();
+            setErrMessage("");
+          }}
         >
           or Sign Up
         </button>

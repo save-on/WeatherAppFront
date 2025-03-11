@@ -4,9 +4,18 @@ export const baseUrl =
     : "http://localhost:3001/";
 
 export const processServerRequest = (url, options) => {
-  return fetch(url, options).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
-  );
+  return fetch(url, options).then(async (res) => {
+    if (res.ok) return res.json();
+    let errorMessage = `Error: ${res.status}`;
+    try {
+      const errorData = await res.json();
+      errorMessage = errorData.message || errorMessage;
+    } catch (err) {
+      console.error("Failed to parse response", err);
+    }
+
+    return Promise.reject({ message: errorMessage });
+  });
 };
 
 //Clothing Items
@@ -162,5 +171,16 @@ export const removeCardLike = (_id, token) => {
       "Content-type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  });
+};
+
+export const getCityLocationData = (location) => {
+  return processServerRequest(`${baseUrl}weather`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(location),
   });
 };
