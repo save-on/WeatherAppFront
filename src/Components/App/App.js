@@ -142,7 +142,7 @@ function App() {
     setActiveModal("dropbox");
   };
 
-    const registerUser = (values) => {
+  const registerUser = (values) => {
     setIsLoading(true);
     register(values)
       .then(() => loginUser(values))
@@ -456,6 +456,7 @@ function App() {
               openRegisterModal={handleOpenRegisterModal}
               isLoading={isLoading}
               errMessage={errMessage}
+              setErrMessage={setErrMessage}
             />
           )}
 
@@ -466,6 +467,7 @@ function App() {
               openLoginModal={handleOpenLoginModal}
               isLoading={isLoading}
               errMessage={errMessage}
+              setErrMessage={setErrMessage}
             />
           )}
 

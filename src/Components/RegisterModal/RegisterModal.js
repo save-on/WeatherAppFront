@@ -8,6 +8,7 @@ const RegisterModal = ({
   openLoginModal,
   isLoading,
   errMessage,
+  setErrMessage,
 }) => {
   const { values, handleChanges } = useForm({
     email: "",
@@ -126,7 +127,10 @@ const RegisterModal = ({
         <button
           className="modal__signup"
           type="button"
-          onClick={openLoginModal}
+          onClick={() => {
+            openLoginModal();
+            setErrMessage("");
+          }}
         >
           Or Log In
         </button>
