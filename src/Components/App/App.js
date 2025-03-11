@@ -18,7 +18,6 @@ import AddItemModal from "../AddItemModal/AddItemModal.js";
 import SearchedCity from "../SearchedCity/SearchedCity.jsx";
 import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
 
-
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
 import cloudsDay from "../../Videos/clouds-day.mp4";
@@ -77,9 +76,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [coords, setCoords] = useState(null);
+  const [coords, setCoords] = useState({});
   const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
-  const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] = useState(false);
+  const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] =
+    useState(false);
   const [selectedPackingList, setSelectedPackingList] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [searchedCity, setSearchedCity] = useState({});
@@ -276,7 +276,7 @@ function App() {
 
   const closeCreatePackingListModal = () => {
     setIsCreatePackingListModalOpen(false);
-  }
+  };
 
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
@@ -291,7 +291,7 @@ function App() {
         setClothingItems((items) => [res, ...items]);
         handleCloseModal();
       })
-       .catch(console.error)
+      .catch(console.error)
       .finally(() => {
         handleCloseModal();
       });
@@ -430,53 +430,57 @@ function App() {
                   handleOpenItemModal={handleOpenItemModal}
                   loggedIn={loggedIn}
                   handleBackgroundVideoChange={handleBackgroundVideoChange}
-              />
-            }
-           />
-          <Route 
-            path="/profile"
-            element={
-              <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-                <Profile
-                  onSelectedCard={handleSelectedCard}
-                  onCreate={handleCreateModal}
-                  clothingItems={clothingItems}
-                  handleOpenItemModal={handleOpenItemModal}
-                  loggedIn={loggedIn}
-                  onEditProfile={handleOpenEditProfileModal}
-                  onSignOut={onSignOut}
-                  onDeleteClick={handleDeleteCard}
-                  handleCardLike={handleCardLike}
-                  onSelectedPackingList={handlePackingListCardClick}
-                  isPackingListModalOpen={isPackingListModalOpen}
-                  setSelectedPackingList={selectedPackingList}
-                  closePackingListModal={closePackingListModal}
+                  locationData={locationData}
                 />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/packing-lists"
-            element={
-              <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
-                <PackingListList
-                  onSelectedCard={handleSelectedCard}
-                  clothingItems={clothingItems}
-                  handleOpenItemModal={handleOpenItemModal}
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+                  <Profile
+                    onSelectedCard={handleSelectedCard}
+                    onCreate={handleCreateModal}
+                    clothingItems={clothingItems}
+                    handleOpenItemModal={handleOpenItemModal}
+                    loggedIn={loggedIn}
+                    onEditProfile={handleOpenEditProfileModal}
+                    onSignOut={onSignOut}
+                    onDeleteClick={handleDeleteCard}
+                    handleCardLike={handleCardLike}
+                    onSelectedPackingList={handlePackingListCardClick}
+                    isPackingListModalOpen={isPackingListModalOpen}
+                    setSelectedPackingList={selectedPackingList}
+                    closePackingListModal={closePackingListModal}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/packing-lists"
+              element={
+                <ProtectedRoute
+                  path="/profile/packing-lists"
                   loggedIn={loggedIn}
-                  onEditProfile={handleOpenEditProfileModal}
-                  onSignOut={onSignOut}
-                  onDeleteClick={handleDeleteCard}
-                  handleCardLike={handleCardLike}
-                  onOpenCreatePackingListModal={handleCreatePackingList}
-                  onSelectedPackingList={handlePackingListCardClick}
-                  isPackingListModalOpen={isPackingListModalOpen}
-                  selectedPackingList={selectedPackingList}
-                  closePackingListModal={closePackingListModal}
-                />
-              </ProtectedRoute>
-            }
-          />           
+                >
+                  <PackingListList
+                    onSelectedCard={handleSelectedCard}
+                    clothingItems={clothingItems}
+                    handleOpenItemModal={handleOpenItemModal}
+                    loggedIn={loggedIn}
+                    onEditProfile={handleOpenEditProfileModal}
+                    onSignOut={onSignOut}
+                    onDeleteClick={handleDeleteCard}
+                    handleCardLike={handleCardLike}
+                    onOpenCreatePackingListModal={handleCreatePackingList}
+                    onSelectedPackingList={handlePackingListCardClick}
+                    isPackingListModalOpen={isPackingListModalOpen}
+                    selectedPackingList={selectedPackingList}
+                    closePackingListModal={closePackingListModal}
+                  />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/search/result"
               element={
@@ -516,7 +520,7 @@ function App() {
           </Routes>
 
           <Footer />
-              
+
           {activeModal === "login" && (
             <LoginModal
               onClose={handleCloseModal}
@@ -548,23 +552,23 @@ function App() {
               errMessage={errMessage}
             />
           )}
-          
+
           {activeModal === "createPackingList" && (
             <CreatePackingListModal
               isOpen={activeModal === "createPackingList"}
               onClose={handleCloseModal}
               isLoading={isLoading}
               onCreatePackingList={onCreatePackingList}
-          />
-        )}
-          
+            />
+          )}
+
           {isPackingListModalOpen && (
-            <PackingListDetailsModal 
+            <PackingListDetailsModal
               packingList={selectedPackingList}
               onClose={closePackingListModal}
-          />
-        )}
-        
+            />
+          )}
+
           {activeModal === "preview" && (
             <ItemModal
               selectedCard={selectedCard}
@@ -574,7 +578,7 @@ function App() {
               weatherData={weatherData}
             />
           )}
-          
+
           {activeModal === "edit" && (
             <EditProfileModal
               isOpen={activeModal === "edit"}

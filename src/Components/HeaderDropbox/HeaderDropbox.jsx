@@ -63,7 +63,14 @@ const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut }) => {
           </button>
         </li>
         <li className="headerdropbox__list-item">
-          <button className="headerdropbox__button" type="button">
+          <button
+            className="headerdropbox__button"
+            type="button"
+            onClick={() => {
+              navigate("/profile/packing-lists");
+              handleCloseModal();
+            }}
+          >
             packing lists
           </button>
         </li>
