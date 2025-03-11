@@ -3,6 +3,11 @@ import Header from "../Header/Header.js";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
+
+import PackingListList from "../PackingListList/PackingListList.js";
+import CreatePackingListModal from "../PackingListsModal/CreatePackingListModal.js";
+import PackingListCard from "../PackingListCard/PackingListCard.js";
+import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
 import DeleteItem from "../DeleteItem/DeleteItem.js";
 import ItemModal from "../ItemModal/ItemModal.js";
 import LoginModal from "../LoginModal/LoginModalForm.js";
@@ -12,6 +17,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
 import SearchedCity from "../SearchedCity/SearchedCity.jsx";
 import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
+
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -45,6 +51,7 @@ import {
 import {
   getItems,
   postItems,
+  postPackingList,
   deleteItems,
   addCardLike,
   removeCardLike,
@@ -66,11 +73,14 @@ function App() {
   const [videoSrc, setVideoSrc] = useState("");
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
+  const [packkingLists, setPackingLists] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
-  // const history = useNavigate("");
   const [isLoading, setIsLoading] = useState(false);
-  const [coords, setCoords] = useState({});
+  const [coords, setCoords] = useState(null);
+  const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
+  const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] = useState(false);
+  const [selectedPackingList, setSelectedPackingList] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [searchedCity, setSearchedCity] = useState({});
   const [savedCity, setSavedCity] = useState({ name: "" });
@@ -80,6 +90,9 @@ function App() {
   });
   const [errMessage, setErrMessage] = useState("");
 
+  const handleCreatePackingList = () => {
+    setActiveModal("createPackingList");
+  };
   const handleCreateModal = () => {
     setActiveModal("create");
   };
@@ -249,25 +262,55 @@ function App() {
     setSelectedCard(card);
   };
 
+  // This is to preview the packing list
+  const handlePackingListCardClick = (packingList) => {
+    setSelectedPackingList(packingList);
+    setIsPackingListModalOpen(true);
+  };
+
+  // This is to close the packing list preview
+  const closePackingListModal = () => {
+    setIsPackingListModalOpen(false);
+    setSelectedPackingList(null);
+  };
+
+  const closeCreatePackingListModal = () => {
+    setIsCreatePackingListModalOpen(false);
+  }
+
   const handleToggleSwitchChange = () => {
     currentTemperatureUnit === "F"
       ? setCurrentTempUnit("C")
       : setCurrentTempUnit("F");
   };
 
-  const onAddItem = (values) => {
+  const onAddItem = (formData) => {
     const token = checkLoggedIn();
-    setIsLoading(true);
-    postItems(values, token)
+    postItems(formData, token)
       .then((res) => {
         setClothingItems((items) => [res, ...items]);
         handleCloseModal();
       })
-      .catch((err) => {
-        console.error(err.message);
-        setErrMessage(err.message);
+       .catch(console.error)
+      .finally(() => {
+        handleCloseModal();
+      });
+  };
+
+  const onCreatePackingList = (formData) => {
+    const token = checkLoggedIn();
+    setIsLoading(true);
+    postPackingList(formData, token)
+      .then((res) => {
+        setPackingLists((packingList) => [res, ...packingList]);
+        handleCloseModal();
       })
-      .finally(() => setIsLoading(false));
+      .catch((err) => {
+        console.error("Error creating packing list: ", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleGetCoords = async () => {
@@ -387,31 +430,53 @@ function App() {
                   handleOpenItemModal={handleOpenItemModal}
                   loggedIn={loggedIn}
                   handleBackgroundVideoChange={handleBackgroundVideoChange}
-                  handleGetCityWeather={handleGetCityWeather}
-                  searchResults={searchResults}
-                  handleSearchedData={handleSearchedData}
-                  locationData={locationData}
+              />
+            }
+           />
+          <Route 
+            path="/profile"
+            element={
+              <ProtectedRoute path="/profile" loggedIn={loggedIn}>
+                <Profile
+                  onSelectedCard={handleSelectedCard}
+                  onCreate={handleCreateModal}
+                  clothingItems={clothingItems}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleOpenEditProfileModal}
+                  onSignOut={onSignOut}
+                  onDeleteClick={handleDeleteCard}
+                  handleCardLike={handleCardLike}
+                  onSelectedPackingList={handlePackingListCardClick}
+                  isPackingListModalOpen={isPackingListModalOpen}
+                  setSelectedPackingList={selectedPackingList}
+                  closePackingListModal={closePackingListModal}
                 />
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-                  <Profile
-                    onSelectedCard={handleSelectedCard}
-                    onCreate={handleCreateModal}
-                    clothingItems={clothingItems}
-                    handleOpenItemModal={handleOpenItemModal}
-                    loggedIn={loggedIn}
-                    onEditProfile={handleOpenEditProfileModal}
-                    onSignOut={onSignOut}
-                    onDeleteClick={handleDeleteCard}
-                    handleCardLike={handleCardLike}
-                  />
-                </ProtectedRoute>
-              }
-            />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/packing-lists"
+            element={
+              <ProtectedRoute path="/profile/packing-lists" loggedIn={loggedIn}>
+                <PackingListList
+                  onSelectedCard={handleSelectedCard}
+                  clothingItems={clothingItems}
+                  handleOpenItemModal={handleOpenItemModal}
+                  loggedIn={loggedIn}
+                  onEditProfile={handleOpenEditProfileModal}
+                  onSignOut={onSignOut}
+                  onDeleteClick={handleDeleteCard}
+                  handleCardLike={handleCardLike}
+                  onOpenCreatePackingListModal={handleCreatePackingList}
+                  onSelectedPackingList={handlePackingListCardClick}
+                  isPackingListModalOpen={isPackingListModalOpen}
+                  selectedPackingList={selectedPackingList}
+                  closePackingListModal={closePackingListModal}
+                />
+              </ProtectedRoute>
+            }
+          />           
             <Route
               path="/search/result"
               element={
@@ -427,6 +492,7 @@ function App() {
                     handleGetCityWeather={handleGetCityWeather}
                     searchResults={searchResults}
                     handleSearchedData={handleSearchedData}
+                    locationData={locationData}
                   />
                 </RouteRerouter>
               }
@@ -448,7 +514,9 @@ function App() {
               }
             />
           </Routes>
+
           <Footer />
+              
           {activeModal === "login" && (
             <LoginModal
               onClose={handleCloseModal}
@@ -480,6 +548,23 @@ function App() {
               errMessage={errMessage}
             />
           )}
+          
+          {activeModal === "createPackingList" && (
+            <CreatePackingListModal
+              isOpen={activeModal === "createPackingList"}
+              onClose={handleCloseModal}
+              isLoading={isLoading}
+              onCreatePackingList={onCreatePackingList}
+          />
+        )}
+          
+          {isPackingListModalOpen && (
+            <PackingListDetailsModal 
+              packingList={selectedPackingList}
+              onClose={closePackingListModal}
+          />
+        )}
+        
           {activeModal === "preview" && (
             <ItemModal
               selectedCard={selectedCard}
@@ -489,6 +574,7 @@ function App() {
               weatherData={weatherData}
             />
           )}
+          
           {activeModal === "edit" && (
             <EditProfileModal
               isOpen={activeModal === "edit"}

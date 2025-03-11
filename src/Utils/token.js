@@ -3,9 +3,9 @@ export const removeToken = () => localStorage.removeItem("jwt");
 export const setToken = (token) => localStorage.setItem("jwt", token);
 
 export const checkLoggedIn = () => {
-  const token = getToken();
-  if (!token) {
-    return;
+  const jwt = getToken();
+  if (!jwt) {
+    return null;
   }
-  return token;
+  return jwt;
 };

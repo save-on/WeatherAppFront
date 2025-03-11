@@ -1,65 +1,61 @@
+import React from "react";
+import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
-import { useState } from "react";
 
-
-const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
+const CreatePackingListModal = ({
+  onClose,
+  onCreatePackingList,
+  isOpen,
+  isLoading,
+  handleSelectedCard
+}) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
-    clothing_image: "",
-    affiliate_link: "",
-    weather_condition: ""
+    weather_condition: "",
+    location: "",
+    packinglist_image: ""
   });
-  const { formRef, errors, isDisabled } = useFormValidator(values);
-  const [file, setFile] = useState(null);
 
+  const { isDisabled } = useFormValidator(values);
 
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem("jwt");
-    console.log("Token from localStorage: ", localStorage.getItem("jwt"));
-    console.log("Token: ", token);
 
     const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("affiliate_link", values.affiliate_link);
-    formData.append("weather_condition", values.weather_condition);
-    if (file) {
-      formData.append("clothing_image", file);
+    formData.append('name', values.name);
+    formData.append('weather_condition', values.weather_condition);
+    formData.append('location', values.location);
+
+    if (imageFile) {
+      formData.append('image', imageFile);
     }
-    onAddItem(formData);
+    onCreatePackingList(formData)
   };
 
-  // OLD HANDLE FILE UPLOAD
-
-  // const handleFileUpload = (e) => {
-  //   const selectedFile = e.target.files[0].name;
-  //   if (selectedFile) {
-  //     setFile(selectedFile);
-  //     values.clothing_image = selectedFile;
-  //   }
-  // };
-
-  const handleFileUpload = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-  }
 
 
   return (
     <ModalWithForm
-      title="New Garment"
-      onClose={handleCloseModal}
+      title="Create New Packing List"
+      onClose={onClose}
       isOpen={isOpen}
+      buttonText="Create Packing List"
       onSubmit={handleSubmit}
-      buttonText="Add Garment"
-      formRef={formRef}
-      errMessage={errMessage}
+    
     >
       <ul className="inputs">
-        <label className="input-header" htmlFor="name">
-          Name
+        <label className="input-header" htmlFor="packingListName">
+          Packing List Name
         </label>
         <li>
           <input
@@ -69,48 +65,42 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             minLength="2"
             maxLength="30"
             required
-            placeholder="Name"
-            id="name"
+            placeholder="Packing List Name"
+            id="packingListName"
             value={values.name}
             onChange={handleChanges}
           />
-          {errors.name && (
-            <p className="modal-form_input-error">{errors.name}</p>
-          )}
         </li>
-        <label className="input-header" htmlFor="clothing_image">
-          Image
+        <label className="input-header" htmlFor="location">
+          Location
         </label>
-        <li>
-          <input
-            className="input"
-            type="file"
-            name="clothing_image"
-            required
-            placeholder="Upload Image"
-            id="clothing_image"
-            accept="image/*"
-            onChange={handleFileUpload}
-          />
-          {errors.clothing_image && (
-            <p className="modal-form_input-error">{errors.clothing_image}</p>
-          )}
-        </li>
-        <label className="input-header" htmlFor="input_link">
-          Affiliate Link
-        </label>
-        <li>
-          <input
-            className="input"
-            type="url"
-            name="affiliate_link"
-            placeholder="Insert link (Optional)"
-            id="input_link"
-            value={values.affiliate_link}
-            onChange={handleChanges}
-          />
-        </li>
+        <input
+          className="input"
+          type="text"
+          name="location"
+          minLength="2"
+          maxLength="30"
+         
+          placeholder="Location (Optional)"
+          id="location"
+          value={values.location}
+          onChange={handleChanges}
+        />
       </ul>
+      <label className="input-header" htmlFor="packingListImage">
+        Packing List Image (Optional)
+      </label>
+      <li>
+        <input 
+        className="input"
+          type="file"
+          name="image"
+          placeholder="Upload Image"
+          id="packingListImage"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </li>
       <p className="weather-type-header input-header">Select Weather Type:</p>
       <div className="weather-inputs">
         <div>
@@ -120,7 +110,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="hot"
             value="hot"
-            required
+            
             checked={values.weather_condition === "hot"}
             onChange={handleChanges}
           />
@@ -139,7 +129,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="warm"
             value="warm"
-            required
+          
             checked={values.weather_condition === "warm"}
             onChange={handleChanges}
           />
@@ -158,7 +148,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
             type="radio"
             id="cold"
             value="cold"
-            required
+        
             checked={values.weather_condition === "cold"}
             onChange={handleChanges}
           />
@@ -175,7 +165,7 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
               type="submit"
               className="modal-form-submit"
             >
-              {isLoading ? "Adding item..." : "Add Garment"}
+              {isLoading ? "Saving" : "Save Packing List"}
             </button>
           </div>
         </div>
@@ -184,4 +174,4 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
   );
 };
 
-export default AddItemModal;
+export default CreatePackingListModal;

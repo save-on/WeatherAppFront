@@ -1,6 +1,9 @@
-// import React from "react";
+import React, { useState } from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
+import PackingListList from "../PackingListList/PackingListList.js";
+import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
+import PackingListCard from "../PackingListCard/PackingListCard.js";
 import "./Profile.css";
 import BackButton from "../BackButton/BackButton.jsx";
 
@@ -13,7 +16,20 @@ const Profile = ({
   onEditProfile,
   onSignOut,
   onDeleteClick,
+  onSelectedPackingList,
+  isPackingListModalOpen,
+  selectedPackingList,
+  closePackingListModal,
 }) => {
+  const [packingLists, setPackingLists] = useState([]);
+
+
+  const handlePackingListDeleted = (deletedPackingListId) => { // [✅] **Define handlePackingListDeleted in Profile**
+    // Update the packing lists state to remove the deleted list
+    setPackingLists(prevLists => prevLists.filter(list => list.id !== deletedPackingListId));
+    console.log(`Packing list with ID ${deletedPackingListId} deleted and removed from list.`);
+};
+
   return (
     <div className="profile">
       <BackButton type="prev" />
@@ -39,7 +55,27 @@ const Profile = ({
             onDeleteClick={onDeleteClick}
           />
         </div>
+
+        <PackingListList
+          onOpenCreatePackingListModal={onCreate}
+          onSelectedPackingList={onSelectedPackingList}
+          isPackingListModalOpen={isPackingListModalOpen}
+          selectedPackingList={selectedPackingList}
+          closePackingListModal={closePackingListModal}
+          handlePackingListDeleted={handlePackingListDeleted}
+          
+        />
+        <ClothesSection
+          clothingItems={clothingItems}
+          onSelectedCard={onSelectedCard}
+          onCreate={onCreate}
+          onAddItem={onAddItem}
+          onCardLike={handleCardLike}
+          onDeleteClick={onDeleteClick}
+        />
+
       </div>
+
     </div>
   );
 };

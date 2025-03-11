@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Link } from "react-router";
 import "./SideBar.css";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import defaultAvatar from "../../Images/default-avatar.jpg";
@@ -27,6 +28,11 @@ const SideBar = ({ onSignOut, onEditProfile }) => {
           >
             Change Profile Data{" "}
           </button>
+
+          <Link to="packing-lists" className="sidebar__packing-lists__link">
+          Packing Lists
+          </Link>
+
           <button
             className="sidebar__change_profile_data-button"
             onClick={() => {
@@ -35,6 +41,7 @@ const SideBar = ({ onSignOut, onEditProfile }) => {
           >
             Favorites{" "}
           </button>
+
           <button className="sidebar__logout-button" onClick={onSignOut}>
             Log Out
           </button>
