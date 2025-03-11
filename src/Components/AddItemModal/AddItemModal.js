@@ -4,7 +4,7 @@ import { useFormValidator } from "../../hooks/useFormValidator.js";
 import { useState } from "react";
 
 
-const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
+const AddItemModal = ({ handleCloseModal, onAddItem, isOpen, errMessage, isLoading }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
     clothing_image: "",
