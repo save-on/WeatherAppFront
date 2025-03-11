@@ -3,24 +3,25 @@ import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 import { useState } from "react";
 
-
-const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
-  const { values, handleChanges, setValues } = useForm({
+const AddItemModal = ({
+  handleCloseModal,
+  onAddItem,
+  isOpen,
+  isLoading,
+  errMessage,
+}) => {
+  const { values, handleChanges } = useForm({
     name: "",
     clothing_image: "",
     affiliate_link: "",
-    weather_condition: ""
+    weather_condition: "",
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
   const [file, setFile] = useState(null);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem("jwt");
-    console.log("Token from localStorage: ", localStorage.getItem("jwt"));
-    console.log("Token: ", token);
-
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("affiliate_link", values.affiliate_link);
@@ -31,21 +32,10 @@ const AddItemModal = ({ handleCloseModal, onAddItem, isOpen }) => {
     onAddItem(formData);
   };
 
-  // OLD HANDLE FILE UPLOAD
-
-  // const handleFileUpload = (e) => {
-  //   const selectedFile = e.target.files[0].name;
-  //   if (selectedFile) {
-  //     setFile(selectedFile);
-  //     values.clothing_image = selectedFile;
-  //   }
-  // };
-
   const handleFileUpload = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-  }
-
+  };
 
   return (
     <ModalWithForm

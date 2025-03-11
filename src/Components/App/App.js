@@ -430,6 +430,9 @@ function App() {
                   handleOpenItemModal={handleOpenItemModal}
                   loggedIn={loggedIn}
                   handleBackgroundVideoChange={handleBackgroundVideoChange}
+                  handleGetCityWeather={handleGetCityWeather}
+                  searchResults={searchResults}
+                  handleSearchedData={handleSearchedData}
                   locationData={locationData}
                 />
               }
