@@ -5,6 +5,8 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
 
+  const currentUser = useContext(CurrentUserContext);
+
   return (
     <div className={"modal"}>
       <div className="preview-image-content">
