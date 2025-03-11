@@ -37,12 +37,11 @@ const PackingListList = (props) => {
         }
     };
 
-
     return (
         <div className="packing-list-list">
             <h2>My Packing Lists</h2>
             <button onClick={onOpenCreatePackingListModal}>
-                Create New Packing 
+                Create New Packing List
             </button>
 
             {packingLists.length > 0 ? (

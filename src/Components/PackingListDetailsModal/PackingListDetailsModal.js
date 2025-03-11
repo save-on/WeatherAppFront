@@ -6,7 +6,11 @@ import PackingListItemCard from "../PackingListItemCard/PackingListItemCard.js";
 import * as api from "../../Utils/Api.js";
 import "./PackingListDetailsModal.css";
 
-const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDeleted }) => {
+const PackingListDetailsModal = ({
+  packingList,
+  onClose,
+  handlePackingListDeleted,
+}) => {
   const [items, setItems] = useState([]);
   const [availableItems, setAvailableItems] = useState([]);
   const [loadingItems, setLoadingItems] = useState(false);
@@ -79,55 +83,55 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
 
   const handleDeleteClick = async () => {
     console.log("jwt token: ", token);
-    const confirmDelete = window.confirm(`Are you sure you want to delete this packing list " ${packingList.name}"? This action cannot be undone.`);
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete this packing list " ${packingList.name}"? This action cannot be undone.`
+    );
     if (confirmDelete) {
-        const token = checkLoggedIn();
-        if (!token) {
-            console.error("User not logged in.");
-            return null;
-        }
-        try {
-            await api.deletePackingList(packingList.id, token);
-            console.log(`Packing List: "${packingList.name}" deleted successfully.`);
-            handlePackingListDeleted(packingList.id);
-            onClose();
-        } catch (error) {
-            console.error("Error deleting packing list: ", error);
-        }
+      const token = checkLoggedIn();
+      if (!token) {
+        console.error("User not logged in.");
+        return null;
+      }
+      try {
+        await api.deletePackingList(packingList.id, token);
+        console.log(
+          `Packing List: "${packingList.name}" deleted successfully.`
+        );
+        handlePackingListDeleted(packingList.id);
+        onClose();
+      } catch (error) {
+        console.error("Error deleting packing list: ", error);
+      }
     }
-}
-
+  };
 
   useEffect(() => {
-    console.log(
-      "PackingListDetailsModal - useEffect - packingList prop: ",
-      packingList
-    );
     if (!packingList) {
-      console.log("Skipping fetch: packingList is undefined")
+      console.log("Skipping fetch: packingList is undefined");
       return;
-    };
+    }
 
-    const storedToken = localStorage.getItem('jwt');
+    const storedToken = localStorage.getItem("jwt");
     if (storedToken) {
       setToken(storedToken);
     }
 
     const fetchItems = async () => {
       try {
-        console.log("PackingListADetailsModal - useEffect - Before checkLoggedIn()");
         const token = checkLoggedIn();
-        console.log("PackingListDetailsModal - useEffect - After checkLoggedIn() - Token:", token);
 
-        const localStorageToken = localStorage.getItem('jwt');
-        console.log("PackingListDetailsModal - useEffect - localStorage Token:", localStorageToken);
+        const localStorageToken = localStorage.getItem("jwt");
+
         if (!token) {
           console.error(
-            "PackingListDetailsModal - useEffect - No token found, cannot fetch items");
+            "PackingListDetailsModal - useEffect - No token found, cannot fetch items"
+          );
           return;
         }
-        console.log("Token from getPackingListItems (useEffect): ", token);
-        const packingListItemsData = await getPackingListItems(packingList.id);
+        const packingListItemsData = await getPackingListItems(
+          packingList.id,
+          token
+        );
         setItems(packingListItemsData);
       } catch (error) {
         console.error("Error fetching items for packing list: ", error);
@@ -143,7 +147,6 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
       }
     };
 
-  
     fetchItems();
     fetchAvailableItems();
   }, [packingList]);
@@ -166,15 +169,6 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
           </h3>
         </div>
         <div className="modal__body modal__body_type_packing-list">
-         
-          {console.log(
-            "DEBUG: Just before <img> - packingList.packinglist_image: ",
-            packingList?.packinglist_image
-          )}
-          {console.log(
-            "DEBUG: Constructed Image URL: ",
-            `http://localhost:3001${packingList?.packinglist_image}`
-          )}
           <img
             src={`http://localhost:3001${packingList?.packinglist_image}`}
             alt={packingList?.name}
@@ -189,7 +183,7 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
             <h4>Clothing Items In This Packing List:</h4>
             {loadingItems && <p>Loading Items...</p>}
             {errorLoadingItems && (
-              <p className="modal__error">
+              <p className="modal__error" >
                 Error loading items: {errorLoadingItems.message}
               </p>
             )}
@@ -205,7 +199,11 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
             )}
             <div className="modal__add-item-section">
               <h4>Add Item To Packing List</h4>
-              <select multiple className="modal__add-item-section-options" onChange={handleSelectedItemsChange}>
+              <select
+                multiple
+                className="modal__add-item-section-options"
+                onChange={handleSelectedItemsChange}
+              >
                 <option value="">Select an item to add</option>
                 {availableItems.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -213,14 +211,19 @@ const PackingListDetailsModal = ({ packingList, onClose, handlePackingListDelete
                   </option>
                 ))}
               </select>
-              <button className="modal__add-item-section-options__button" onClick={handleAddItemToPackingList}>Add Item</button>
+              <button
+                className="modal__add-item-section-options__button"
+                onClick={handleAddItemToPackingList}
+              >
+                Add Item
+              </button>
             </div>
           </div>
         </div>
         <div className="modal__footer modal__fotter_type_packing-list">
           <button
-          className="modal__button modal__button-delete"
-          onClick={handleDeleteClick}
+            className="modal__button modal__button-delete"
+            onClick={handleDeleteClick}
           >
             Delete Packing List
           </button>

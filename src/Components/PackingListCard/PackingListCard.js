@@ -11,7 +11,6 @@ const PackingListCard = ({ packingList, onSelectedPackingList }) => {
         className="card_image"
         src={`http://localhost:3001${packingList?.packinglist_image}`}
         onClick={() => {
-          console.log("packingListCard - onClick - packingList: ", packingList);
           onSelectedPackingList(packingList);
         }}
         alt={packingList.name}

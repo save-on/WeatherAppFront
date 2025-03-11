@@ -39,7 +39,6 @@ export function deleteItems(_id, token) {
 
 //Packing Lists
 export function getPackingLists(token) {
-  console.log("Api.js - getPackingListItems - Token Received: ", token);
   return processServerRequest(`${baseUrl}profile/packing-lists`, {
     headers: {
       Accept: "application/json",
@@ -50,7 +49,6 @@ export function getPackingLists(token) {
 }
 
 export const getPackingListItems = async (packingListId, token) => {
-  console.log("getPackingListItems - packingListId: ", packingListId, ", type: ", typeof packingListId);
   try {
       const res = await fetch(`${baseUrl}profile/packing-lists/${packingListId}/items`, {
           method: 'GET',

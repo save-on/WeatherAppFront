@@ -221,7 +221,6 @@ function App() {
 
   // This is to preview the packing list
   const handlePackingListCardClick = (packingList) => {
-    console.log("handlePackingListCardClick CALLED", packingList);
     setSelectedPackingList(packingList);
     setIsPackingListModalOpen(true);
   };

@@ -5,7 +5,6 @@ import { useForm } from "../../hooks/useForm.js";
 import { useFormValidator } from "../../hooks/useFormValidator.js";
 
 const CreatePackingListModal = ({
-  handleCloseModal,
   onClose,
   onCreatePackingList,
   isOpen,
@@ -48,7 +47,7 @@ const CreatePackingListModal = ({
   return (
     <ModalWithForm
       title="Create New Packing List"
-      onClose={handleCloseModal}
+      onClose={onClose}
       isOpen={isOpen}
       buttonText="Create Packing List"
       onSubmit={handleSubmit}
