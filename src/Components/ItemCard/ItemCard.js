@@ -2,7 +2,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import "./ItemCard.css";
 import { useContext } from "react";
 import likeButton from "../../Images/State=Default.svg";
-import likeButtonActive from "../../Images/State=Liked.svg";
+import likeButtonActive from "../../Images/heart.png";
 
 const ItemCard = ({ item, onSelectedCard, onCardLike, loggedIn }) => {
   const currentUser = useContext(CurrentUserContext);

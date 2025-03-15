@@ -21,10 +21,10 @@
   position: absolute;
   display: flex;
   width: 100%;
-  align-items: center;
+  align-items: normal;
   justify-content: center;
   gap: 10px;
-  top: 15px;
+  top: 10px;
 }
 
 .card_name {

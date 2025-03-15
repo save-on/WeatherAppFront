@@ -5,7 +5,7 @@
 }
 
 .card_suggestion {
-  font-size: 35px;
+  font-size: 40px;
   color: #fff;
   opacity: 0.8;
 }
@@ -25,7 +25,7 @@
 
 .main-city_weather-condition {
   color: #fff;
-  font-size: 20px;
+  font-size: 40px;
   font-weight: 500;
   opacity: 0.9;
   margin: 0;
