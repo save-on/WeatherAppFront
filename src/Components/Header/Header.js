@@ -49,11 +49,13 @@ const Header = ({
       <header className="header">
         <div className="header__logo">
           <div>
+            <Link to="/">
             <img
               src={TravelWearLogo}
               alt="logo"
               className="header__logo-image"
             />
+            </Link>
           </div>
           {location !== "/search/result" &&
             location !== "/profile" &&
