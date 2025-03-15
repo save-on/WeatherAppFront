@@ -53,7 +53,7 @@
 .headerdropbox__user-name {
   margin: 0 0 2px;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   text-transform: capitalize;
   text-align: left;
 }
@@ -67,6 +67,7 @@
   text-decoration: underline;
   cursor: pointer;
   transition: color 0.15s linear 0s;
+  font-size: 18px;
 }
 
 .headerdropbox__profile-button:hover {
@@ -93,7 +94,7 @@
   padding: 0 0 0 15px;
   margin: 0;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   text-transform: capitalize;
   background-color: transparent;
@@ -117,7 +118,7 @@
 .headerdropbox__signout-button {
   padding: 0 0 0 15px;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: color 0.15s linear 0s;
