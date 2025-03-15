@@ -1,4 +1,45 @@
-.packing-list-list__header {
+.packinglist__back-button {
   display: flex;
   margin: 0 0 0 20px;
+}
+
+.packinglist__create-button {
+  color: darkgrey;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: bolder;
+  line-height: 24px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 6px 6px;
+  margin: 0 0 0 15px;
+}
+
+.packinglist__create-button:hover {
+  cursor: pointer;
+  transition: 0.4s;
+  color: white;
+  background-color: darkgrey;
+}
+
+.packinglist__list {
+ margin-top: 50px;
+}
+.packinglist__header {
+ display:flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.packinglist__header-text {
+  font-size: 40px;
+  margin: 0;
+  color: white;
+  -webkit-text-stroke: 2px black;
+}
+
+.packinglist__message {
+  font-size: 25px;
+  color: white;  
 }

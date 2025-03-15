@@ -3,10 +3,10 @@
   font-family: "Cabinet", sans-serif;
   justify-content: flex-start;
   width: 229px;
-  height: 56px;
   font-size: 20px;
   font-weight: 700;
   padding-right: 116px;
+  padding-top: 15px;
   flex-direction: column;
 }
 
@@ -60,9 +60,8 @@
 .sidebar__packing-lists__link {
   background-color: transparent;
   border: none;
-  margin-top: 8px;
   display: flex;
-  color: #000;
+  color: white;
   font-family: "Cabinet Grotesk";
   font-size: 20px;
   font-style: normal;

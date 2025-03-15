@@ -22,11 +22,10 @@ const LikesPage = ({
     }
   });
 
-  console.log(currentUser);
+  
   return (
     <div className="likes-page">
-      <h1 className="likes-page__title">Favorites</h1>
-      <div className="likes-page__header-container">
+      <div className="likes-page__header">
         <BackButton type="prev" />
         <LocationSearch
           handleGetCityWeather={handleGetCityWeather}
@@ -34,11 +33,15 @@ const LikesPage = ({
           handleSearchedData={handleSearchedData}
         />
       </div>
+      <div className="likes-page__header-container">
+      <h1 className="likes-page__title">Favorites  </h1>
       <p className="likes-page__counter">
         {filteredClothingItems.length > 0
           ? `${filteredClothingItems.length} liked items`
           : "No liked items"}
       </p>
+      </div>
+     
       <ul className="likes-page__items">
         {filteredClothingItems.map((item, index) => {
           return (

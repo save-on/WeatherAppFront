@@ -52,23 +52,6 @@ const PackingListDetailsModal = ({
       await api.postPackingListItem(packingListId, clothingItemIds, token);
       console.log("Items added to packing list successfully!");
 
-      const tokenForFetch = checkLoggedIn();
-      console.log(
-        "Token for getPackingListItems (handleAddItem): ",
-        tokenForFetch
-      );
-      const updatedPackingListItems = await getPackingListItems(packingListId);
-      setItems(updatedPackingListItems);
-
-      setSelectedItems([]);
-    } catch (error) {
-      console.error("Error adding items to packing list: ", error);
-    }
-
-    try {
-      await api.postPackingListItem(packingListId, clothingItemIds, token);
-      console.log("Items added to packing list successfully!");
-
       const updatedPackingListItems = await getPackingListItems(
         packingListId,
         token

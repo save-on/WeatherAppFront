@@ -44,16 +44,19 @@ const PackingListList = (props) => {
   };
 
   return (
-    <div className="packing-list-list">
+    <div className="packinglist__list">
       {location !== "/profile" && (
-        <div className="packing-list-list__header">
+        <div className="packinglist__back-button">
           <BackButton type="prev" />
         </div>
       )}
-      <h2>My Packing Lists</h2>
-      <button onClick={onOpenCreatePackingListModal}>
+      <div className="packinglist__header">
+      <h2 className="packinglist__header-text">My Packing Lists</h2>
+      <button onClick={onOpenCreatePackingListModal} className="packinglist__create-button">
         Create New Packing List
       </button>
+      </div>
+     
 
       {packingLists.length > 0 ? (
         <ul className="card-list">
@@ -67,7 +70,7 @@ const PackingListList = (props) => {
           ))}
         </ul>
       ) : (
-        <p>You have no packing lists yet. Create on to get started!</p>
+        <p className="packinglist__message">You have no packing lists yet. Create one to get started!</p>
       )}
       {isPackingListModalOpen && (
         <PackingListDetailsModal

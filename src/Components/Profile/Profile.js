@@ -36,16 +36,18 @@ const Profile = ({
       <div className="profile_container">
         <SideBar onSignOut={onSignOut} onEditProfile={onEditProfile} />
         <div className="profile__items-container">
-          <div className="profile__items-text">
-            Your Clothing Items
+          <div className="profile__items">
+            <p className="profile__items-text"> Your Clothing Items </p>
             <button
               className="profile__add-button"
               onClick={onCreate}
               type="button"
             >
-              + Add New
+              Add New Item
             </button>
           </div>
+
+
           <ClothesSection
             clothingItems={clothingItems}
             onSelectedCard={onSelectedCard}
@@ -65,14 +67,14 @@ const Profile = ({
           handlePackingListDeleted={handlePackingListDeleted}
           
         />
-        <ClothesSection
+        {/* <ClothesSection
           clothingItems={clothingItems}
           onSelectedCard={onSelectedCard}
           onCreate={onCreate}
           onAddItem={onAddItem}
           onCardLike={handleCardLike}
           onDeleteClick={onDeleteClick}
-        />
+        /> */}
 
       </div>
 
