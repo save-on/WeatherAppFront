@@ -64,6 +64,27 @@ const PackingListDetailsModal = ({
     }
   };
 
+  const handleDeletePackingListItem = async (itemId) => {
+    const token = checkLoggedIn();
+    if (!token) {
+      console.error("User not logged in.");
+      return null;
+    }
+
+    try {
+      await api.deletePackingListItem(packingList.id, itemId, token); 
+      setItems((prevItems) => {
+        const updatedItems = prevItems.filter(
+          (item) => item.clothing_item_id !== itemId
+        );
+        console.log("Updated items:", updatedItems);
+        return updatedItems;
+      });
+    } catch (error) {
+      console.error("Error deleting item from packing list: ", error);
+    }
+  };
+
   const handleDeleteClick = async () => {
     console.log("jwt token: ", token);
     const confirmDelete = window.confirm(
@@ -173,7 +194,7 @@ const PackingListDetailsModal = ({
             {!loadingItems && !errorLoadingItems && items.length > 0 && (
               <ul className="modal__item-list modal__item-card-list">
                 {items.map((item) => (
-                  <PackingListItemCard key={item.id} item={item} />
+                  <PackingListItemCard key={item.id} item={item} onDelete={handleDeletePackingListItem} />
                 ))}
               </ul>
             )}

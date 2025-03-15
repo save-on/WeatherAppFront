@@ -36,10 +36,6 @@ const PackingListList = (props) => {
       const data = await api.getPackingLists(token);
       setPackingLists(data);
     } catch (error) {
-      // console.error("Error fetching packing lists: ", error);
-      // if (error.message.includes("401")) {
-      //     console.error("Unauthorized access. Please check your login status.");
-      // }
     }
   };
 

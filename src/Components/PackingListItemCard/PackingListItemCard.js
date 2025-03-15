@@ -1,22 +1,30 @@
 import React from 'react';
 import './PackingListItemCard.css'; 
 
-const PackingListItemCard = ({ item }) => {
+const PackingListItemCard = ({ item, onDelete }) => {    
+
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        onDelete(item.clothing_item_id);
+    }
+
     if (!item) {
         return null; 
     }
 
     return (
-        <li className="packing-list-item-card">
+        <li className="packinglist__item-card">
             <img
-                className="packing-list-item-card__image"
+                className="packinglist__item-card__image"
                 src={`http://localhost:3001${item.clothing_image}`} 
                 alt={item.name}
             />
-            <div className="packing-list-item-card__info">
-                <h5 className="packing-list-item-card__name">{item.name}</h5>
-                
+            <div className="packinglist__item-card__info">
+                <h5 className="packinglist__item-card__name">{item.name}</h5>
             </div>
+            <button className="packinglist__item-delete__button" onClick={handleDelete}>
+                x
+            </button>
         </li>
     );
 };

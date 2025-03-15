@@ -1,4 +1,4 @@
-.packing-list-item-card {
+.packinglist__item-card {
     display: flex; 
     flex-direction: column; 
     align-items: center; 
@@ -11,7 +11,7 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
-.packing-list-item-card__image {
+.packinglist__item-card__image {
     width: 120px; 
     height: 120px;
     object-fit: contain; 
@@ -19,14 +19,18 @@
     margin-bottom: 8px;
 }
 
-.packing-list-item-card__info {
+.packinglist__item-card__info {
     /* Styles for the text info if needed */
 
 }
 
-.packing-list-item-card__name {
+.packinglist__item-card__name {
     font-size: 30px;
     margin: 0; 
     word-wrap: break-word; 
     color: black;
+}
+
+.packinglist__item-delete__button {
+    
 }

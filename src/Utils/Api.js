@@ -127,7 +127,6 @@ export const postPackingListItem = async (packingListId, clothingItemIds, token)
 };
 
 export function deletePackingList(packingListId, token) {
-  
   return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
     method: "DELETE",
     headers: {
@@ -137,6 +136,25 @@ export function deletePackingList(packingListId, token) {
     },
   });
 }
+
+export const deletePackingListItem = async (packingListId, itemId, token) => {
+  const url = `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`;
+  console.log("DELETE request url: ", url);
+  const response = await fetch(
+    `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete item from packing list");
+  }
+};
 
 export function updatePackingList(packingListId, packingList, token) {
   return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
