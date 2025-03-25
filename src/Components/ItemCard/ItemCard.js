@@ -24,7 +24,7 @@ const ItemCard = ({ item, onSelectedCard, onCardLike, loggedIn }) => {
         src={
           process.env.NODE_ENV === "development"
             ? `http://localhost:3001${item.clothing_image}`
-            : `https://travelwear-aa3b8a7cc158.herokuapp.com/${item.clothing_image}`
+            : `https://travelwear-aa3b8a7cc158.herokuapp.com${item.clothing_image}`
         }
         onClick={() => onSelectedCard(item)}
         alt={item.name}
