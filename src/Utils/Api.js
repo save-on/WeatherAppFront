@@ -1,6 +1,6 @@
 export const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://travelwear-aa3b8a7cc158.herokuapp.com/"
+    ? "https://travelwear-aa3b8a7cc158.herokuapp.com"
     : "http://localhost:3001/";
 
 export const processServerRequest = (url, options) => {
