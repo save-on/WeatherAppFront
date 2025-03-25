@@ -15,29 +15,29 @@ const PackingListList = (props) => {
     isPackingListModalOpen,
     closePackingListModal,
     handlePackingListDeleted,
+    onSelectedPackingList, 
+    packingLists
   } = props;
 
-  const onSelectedPackingList = props.onSelectedPackingList;
   const currentUser = useContext(CurrentUserContext);
-  const [packingLists, setPackingLists] = useState([]);
   const location = useLocation().pathname;
 
-  useEffect(() => {
-    fetchPackingLists();
-  }, []);
+  // useEffect(() => {
+  //   fetchPackingLists();
+  // }, []);
 
-  const fetchPackingLists = async () => {
-    try {
-      const token = checkLoggedIn();
-      if (!token) {
-        console.error("No token found. User might not be logged in.");
-        return;
-      }
-      const data = await api.getPackingLists(token);
-      setPackingLists(data);
-    } catch (error) {
-    }
-  };
+  // const fetchPackingLists = async () => {
+  //   try {
+  //     const token = checkLoggedIn();
+  //     if (!token) {
+  //       console.error("No token found. User might not be logged in.");
+  //       return;
+  //     }
+  //     const data = await api.getPackingLists(token);
+  //     setPackingLists(data);
+  //   } catch (error) {
+  //   }
+  // };
 
   return (
     <div className="packinglist__list">
@@ -54,7 +54,7 @@ const PackingListList = (props) => {
       </div>
      
 
-      {packingLists.length > 0 ? (
+      {packingLists && packingLists.length > 0 ? (
         <ul className="card-list">
           {packingLists.map((list) => (
             // console.log("PackingListList - Rendering PackingListCard with packingList: ", list),
