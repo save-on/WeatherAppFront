@@ -19,7 +19,7 @@ const PackingListItemCard = ({ item, onDelete }) => {
                 src={
                     process.env.NODE_ENV === "development"
                       ? `http://localhost:3001${item.clothing_image}`
-                      : `https://travelwear-aa3b8a7cc158.herokuapp.com/uploads/${item.clothing_image}`
+                      : `https://travelwear-aa3b8a7cc158.herokuapp.com/${item.clothing_image}`
                   }
                 alt={item.name}
             />
