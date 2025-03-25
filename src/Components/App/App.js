@@ -50,6 +50,7 @@ import {
 import {
   getItems,
   postItems,
+  getPackingLists,
   postPackingList,
   deleteItems,
   addCardLike,
@@ -72,7 +73,7 @@ function App() {
   const [videoSrc, setVideoSrc] = useState("");
   const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
-  const [packkingLists, setPackingLists] = useState([]);
+  const [packingLists, setPackingLists] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +92,7 @@ function App() {
   const [errMessage, setErrMessage] = useState("");
 
   const handleCreatePackingList = () => {
+    console.log("HANDLECREATEPACKINGLIST CALLED");
     setActiveModal("createPackingList");
   };
   const handleCreateModal = () => {
@@ -302,8 +304,8 @@ function App() {
     setIsLoading(true);
     postPackingList(formData, token)
       .then((res) => {
-        setPackingLists((packingList) => [res, ...packingList]);
-        handleCloseModal();
+        setPackingLists((packingLists) => [res, ...packingLists]);
+        setActiveModal("");
       })
       .catch((err) => {
         console.error("Error creating packing list: ", err);
@@ -351,6 +353,21 @@ function App() {
       .then((data) => setClothingItems(data))
       .catch((err) => console.error(err.message));
   }, [coords]);
+
+  useEffect(() => {
+    const token = checkLoggedIn();
+    if (token && loggedIn) {
+      getPackingLists(token)
+      .then((data) => {
+        setPackingLists(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching packing lists: ", err);
+      });
+    } else if (!token) {
+      setPackingLists([]);
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     const token = checkLoggedIn();
@@ -455,6 +472,7 @@ function App() {
                     isPackingListModalOpen={isPackingListModalOpen}
                     setSelectedPackingList={selectedPackingList}
                     closePackingListModal={closePackingListModal}
+                    packingLists={packingLists}
                   />
                 </ProtectedRoute>
               }
@@ -480,6 +498,7 @@ function App() {
                     isPackingListModalOpen={isPackingListModalOpen}
                     selectedPackingList={selectedPackingList}
                     closePackingListModal={closePackingListModal}
+                    packingLists={packingLists}
                   />
                 </ProtectedRoute>
               }
@@ -559,7 +578,7 @@ function App() {
           {activeModal === "createPackingList" && (
             <CreatePackingListModal
               isOpen={activeModal === "createPackingList"}
-              onClose={handleCloseModal}
+              onClose={closeCreatePackingListModal}
               isLoading={isLoading}
               onCreatePackingList={onCreatePackingList}
             />

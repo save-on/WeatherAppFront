@@ -79,16 +79,38 @@ export const getPackingListItems = async (packingListId, token) => {
   }
 };
 
-export function postPackingList(packingList, token) {
-  return processServerRequest(`${baseUrl}profile/packing-lists`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: packingList,
-  });
-}
+// export function postPackingList(packingList, token) {
+//   return processServerRequest(`${baseUrl}profile/packing-lists`, {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: packingList,
+//   });
+// }
+
+export const postPackingList = async (formData, token) => {
+  try {
+    const res = await fetch(`${baseUrl}profile/packing-lists`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(`HTTP error! status: ${res.status}, message: ${errorData.message || 'Failed to create packing list'}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error posting packing list:", error);
+    throw error;
+  }
+};
 
 export const postPackingListItem = async (packingListId, clothingItemIds, token) => { 
   console.log("postPackingListItem - packingListId:", packingListId, ", clothingItemIds:", clothingItemIds); 
