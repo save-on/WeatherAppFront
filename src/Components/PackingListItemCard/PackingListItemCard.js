@@ -16,7 +16,11 @@ const PackingListItemCard = ({ item, onDelete }) => {
         <li className="packinglist__item-card">
             <img
                 className="packinglist__item-card__image"
-                src={`http://localhost:3001${item.clothing_image}`} 
+                src={
+                    process.env.NODE_ENV === "development"
+                      ? `http://localhost:3001${item.clothing_image}`
+                      : `https://travelwear-aa3b8a7cc158.herokuapp.com/uploads/${item.clothing_image}`
+                  }
                 alt={item.name}
             />
             <div className="packinglist__item-card__info">
