@@ -13,9 +13,9 @@ const CreatePackingListModal = ({
 }) => {
   const { values, handleChanges, setValues } = useForm({
     name: "",
-    weather_condition: "",
     location: "",
-    packinglist_image: ""
+    packinglist_image: "",
+    weather_condition: ""
   });
 
   const { isDisabled } = useFormValidator(values);
@@ -38,6 +38,10 @@ const CreatePackingListModal = ({
 
     if (imageFile) {
       formData.append('image', imageFile);
+    }
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ":", pair[1])
     }
     onCreatePackingList(formData)
   };
@@ -86,7 +90,7 @@ const CreatePackingListModal = ({
           value={values.location}
           onChange={handleChanges}
         />
-      </ul>
+      
       <label className="input-header" htmlFor="packingListImage">
         Packing List Image (Optional)
       </label>
@@ -101,6 +105,7 @@ const CreatePackingListModal = ({
           onChange={handleFileChange}
         />
       </li>
+      </ul>
       <p className="weather-type-header input-header">Select Weather Type:</p>
       <div className="weather-inputs">
         <div>
@@ -110,7 +115,6 @@ const CreatePackingListModal = ({
             type="radio"
             id="hot"
             value="hot"
-            
             checked={values.weather_condition === "hot"}
             onChange={handleChanges}
           />
@@ -129,7 +133,6 @@ const CreatePackingListModal = ({
             type="radio"
             id="warm"
             value="warm"
-          
             checked={values.weather_condition === "warm"}
             onChange={handleChanges}
           />

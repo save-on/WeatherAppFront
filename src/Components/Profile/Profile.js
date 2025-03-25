@@ -20,8 +20,9 @@ const Profile = ({
   isPackingListModalOpen,
   selectedPackingList,
   closePackingListModal,
+  packingLists
 }) => {
-  const [packingLists, setPackingLists] = useState([]);
+
 
 
   const handlePackingListDeleted = (deletedPackingListId) => { // [✅] **Define handlePackingListDeleted in Profile**
@@ -65,16 +66,9 @@ const Profile = ({
           selectedPackingList={selectedPackingList}
           closePackingListModal={closePackingListModal}
           handlePackingListDeleted={handlePackingListDeleted}
-          
+          packingLists={packingLists}
         />
-        {/* <ClothesSection
-          clothingItems={clothingItems}
-          onSelectedCard={onSelectedCard}
-          onCreate={onCreate}
-          onAddItem={onAddItem}
-          onCardLike={handleCardLike}
-          onDeleteClick={onDeleteClick}
-        /> */}
+   
 
       </div>
 
