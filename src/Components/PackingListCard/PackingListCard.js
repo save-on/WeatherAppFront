@@ -9,7 +9,7 @@ const PackingListCard = ({ packingList, onSelectedPackingList }) => {
         src={
           process.env.NODE_ENV === "development"
             ? `http://localhost:3001${packingList?.packinglist_image}`
-            : `https://travelwear-aa3b8a7cc158.herokuapp.com${packingList?.packinglist_image}`
+            : `https://travelwear-aa3b8a7cc158.herokuapp.com/${packingList?.packinglist_image}`
         }
         onClick={() => {
           onSelectedPackingList(packingList);
