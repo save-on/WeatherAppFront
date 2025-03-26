@@ -15,7 +15,11 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
         ></button>
         <img
           className="image-preview"
-          src={`http://localhost:3001${selectedCard.clothing_image}`}
+          src={
+            process.env.NODE_ENV === "development"
+              ? `http://localhost:3001/${item.clothing_image}`
+              : `https://travelwear-aa3b8a7cc158.herokuapp.com/${item.clothing_image}`
+          }
           alt="image-preview"
         ></img>
         <div className="preview-image-name">
