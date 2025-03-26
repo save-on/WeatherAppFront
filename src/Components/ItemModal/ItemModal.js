@@ -17,8 +17,8 @@ const ItemModal = ({ selectedCard, onClose, onDeleteClick, loggedIn }) => {
           className="image-preview"
           src={
             process.env.NODE_ENV === "development"
-              ? `http://localhost:3001/${item.clothing_image}`
-              : `https://travelwear-aa3b8a7cc158.herokuapp.com/${item.clothing_image}`
+              ? `http://localhost:3001/${selectedCard.clothing_image}`
+              : `https://travelwear-aa3b8a7cc158.herokuapp.com/${selectedCard.clothing_image}`
           }
           alt="image-preview"
         ></img>

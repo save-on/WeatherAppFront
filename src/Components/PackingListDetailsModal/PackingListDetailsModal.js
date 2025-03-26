@@ -72,7 +72,7 @@ const PackingListDetailsModal = ({
     }
 
     try {
-      await api.deletePackingListItem(packingList.id, itemId, token); 
+      await api.deletePackingListItem(packingList.id, itemId, token);
       setItems((prevItems) => {
         const updatedItems = prevItems.filter(
           (item) => item.clothing_item_id !== itemId
@@ -174,11 +174,11 @@ const PackingListDetailsModal = ({
         </div>
         <div className="modal__body modal__body_type_packing-list">
           <img
-                src={
-                  process.env.NODE_ENV === "development"
-                    ? `http://localhost:3001${packingList?.packinglist_image}`
-                    : `https://travelwear-aa3b8a7cc158.herokuapp.com/${packingList?.packinglist_image}`
-                }
+            src={
+              process.env.NODE_ENV === "development"
+                ? `http://localhost:3001/${packingList?.packinglist_image}`
+                : `https://travelwear-aa3b8a7cc158.herokuapp.com/${packingList?.packinglist_image}`
+            }
             alt={packingList?.name}
             className="modal__image"
           />
@@ -191,14 +191,18 @@ const PackingListDetailsModal = ({
             <h4>Clothing Items In This Packing List:</h4>
             {loadingItems && <p>Loading Items...</p>}
             {errorLoadingItems && (
-              <p className="modal__error" >
+              <p className="modal__error">
                 Error loading items: {errorLoadingItems.message}
               </p>
             )}
             {!loadingItems && !errorLoadingItems && items.length > 0 && (
               <ul className="modal__item-list modal__item-card-list">
                 {items.map((item) => (
-                  <PackingListItemCard key={item.id} item={item} onDelete={handleDeletePackingListItem} />
+                  <PackingListItemCard
+                    key={item.id}
+                    item={item}
+                    onDelete={handleDeletePackingListItem}
+                  />
                 ))}
               </ul>
             )}
