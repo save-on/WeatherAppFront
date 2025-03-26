@@ -174,7 +174,11 @@ const PackingListDetailsModal = ({
         </div>
         <div className="modal__body modal__body_type_packing-list">
           <img
-            src={`http://localhost:3001${packingList?.packinglist_image}`}
+                src={
+                  process.env.NODE_ENV === "development"
+                    ? `http://localhost:3001${packingList?.packinglist_image}`
+                    : `https://travelwear-aa3b8a7cc158.herokuapp.com/${packingList?.packinglist_image}`
+                }
             alt={packingList?.name}
             className="modal__image"
           />
