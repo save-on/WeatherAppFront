@@ -350,7 +350,10 @@ function App() {
 
   useEffect(() => {
     getItems()
-      .then((data) => setClothingItems(data))
+      .then((data) => {
+        console.log(data);
+        setClothingItems(data)
+      })
       .catch((err) => console.error(err.message));
   }, [coords]);
 
