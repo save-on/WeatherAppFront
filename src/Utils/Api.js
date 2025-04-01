@@ -113,8 +113,6 @@ export const postPackingList = async (formData, token) => {
 };
 
 export const postPackingListItem = async (packingListId, clothingItemIds, token) => { 
-  console.log("postPackingListItem - packingListId:", packingListId, ", clothingItemIds:", clothingItemIds); 
-
   if (!Array.isArray(clothingItemIds)) { 
       console.error("Error: clothingItemIds must be an array.");
       throw new Error("clothingItemIds must be an array."); 
@@ -161,7 +159,6 @@ export function deletePackingList(packingListId, token) {
 
 export const deletePackingListItem = async (packingListId, itemId, token) => {
   const url = `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`;
-  console.log("DELETE request url: ", url);
   const response = await fetch(
     `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`,
     {

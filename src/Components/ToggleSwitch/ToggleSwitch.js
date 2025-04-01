@@ -1,4 +1,4 @@
-import { useContext } from "react"; // useState not used?
+import { useContext } from "react";
 import "./ToggleSwitch.css";
 import { CurrentTemperatureUnitContext } from "../../Contexts/CurrentTemperatureUnitContext.js";
 
@@ -6,13 +6,14 @@ const ToggleSwitch = () => {
   const { currentTemperatureUnit, handleToggleSwitchChange } = useContext(
     CurrentTemperatureUnitContext
   );
+  
   return (
     <label className="switch" htmlFor="temperature-switch">
       <input
         className="switch__box"
         id="temperature-switch"
         type="checkbox"
-        onChange={handleToggleSwitchChange}
+        onClick={handleToggleSwitchChange}
       />
       <span
         className={

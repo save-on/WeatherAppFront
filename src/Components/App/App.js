@@ -58,7 +58,7 @@ import {
   getCityLocationData,
 } from "../../Utils/Api.js";
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
-import { checkLoggedIn, removeToken, setToken } from "../../Utils/token.js";
+import { checkLoggedIn, getTempUnit, removeToken, setTempUnit, setToken } from "../../Utils/token.js";
 import getCoords from "../../Utils/geolocationapi.js";
 import LikesPage from "../LikesPage/LikesPage.jsx";
 
@@ -71,7 +71,7 @@ function App() {
     city: "",
   });
   const [videoSrc, setVideoSrc] = useState("");
-  const [currentTemperatureUnit, setCurrentTempUnit] = useState("F");
+  const [currentTemperatureUnit, setCurrentTempUnit] = useState(getTempUnit() || "F");
   const [clothingItems, setClothingItems] = useState([]);
   const [packingLists, setPackingLists] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -92,7 +92,6 @@ function App() {
   const [errMessage, setErrMessage] = useState("");
 
   const handleCreatePackingList = () => {
-    console.log("HANDLECREATEPACKINGLIST CALLED");
     setActiveModal("createPackingList");
   };
   const handleCreateModal = () => {
@@ -286,6 +285,10 @@ function App() {
       : setCurrentTempUnit("F");
   };
 
+  useEffect(() => {
+    setTempUnit(currentTemperatureUnit);
+  }, [currentTemperatureUnit]);
+
   const onAddItem = (formData) => {
     const token = checkLoggedIn();
     postItems(formData, token)
@@ -351,7 +354,6 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => {
-        console.log(data);
         setClothingItems(data)
       })
       .catch((err) => console.error(err.message));
