@@ -28,7 +28,6 @@ const Profile = ({
   const handlePackingListDeleted = (deletedPackingListId) => { // [✅] **Define handlePackingListDeleted in Profile**
     // Update the packing lists state to remove the deleted list
     setPackingLists(prevLists => prevLists.filter(list => list.id !== deletedPackingListId));
-    console.log(`Packing list with ID ${deletedPackingListId} deleted and removed from list.`);
 };
 
   return (

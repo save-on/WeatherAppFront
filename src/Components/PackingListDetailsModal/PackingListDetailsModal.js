@@ -22,12 +22,9 @@ const PackingListDetailsModal = ({
     const selectedOptions = Array.from(e.target.selectedOptions);
     const values = selectedOptions.map((option) => option.value);
     setSelectedItems(values);
-    console.log("Selected Item IDs: ", values);
   };
 
   const handleAddItemToPackingList = async () => {
-    console.log("Add Item button clicked. Selected Item IDs:", selectedItems);
-
     if (!packingList) {
       console.error("Packing list is not defined.");
       return;
@@ -50,7 +47,6 @@ const PackingListDetailsModal = ({
 
     try {
       await api.postPackingListItem(packingListId, clothingItemIds, token);
-      console.log("Items added to packing list successfully!");
 
       const updatedPackingListItems = await getPackingListItems(
         packingListId,
@@ -77,7 +73,6 @@ const PackingListDetailsModal = ({
         const updatedItems = prevItems.filter(
           (item) => item.clothing_item_id !== itemId
         );
-        console.log("Updated items:", updatedItems);
         return updatedItems;
       });
     } catch (error) {
@@ -86,7 +81,6 @@ const PackingListDetailsModal = ({
   };
 
   const handleDeleteClick = async () => {
-    console.log("jwt token: ", token);
     const confirmDelete = window.confirm(
       `Are you sure you want to delete this packing list " ${packingList.name}"? This action cannot be undone.`
     );
@@ -98,9 +92,6 @@ const PackingListDetailsModal = ({
       }
       try {
         await api.deletePackingList(packingList.id, token);
-        console.log(
-          `Packing List: "${packingList.name}" deleted successfully.`
-        );
         handlePackingListDeleted(packingList.id);
         onClose();
       } catch (error) {
@@ -111,7 +102,6 @@ const PackingListDetailsModal = ({
 
   useEffect(() => {
     if (!packingList) {
-      console.log("Skipping fetch: packingList is undefined");
       return;
     }
 

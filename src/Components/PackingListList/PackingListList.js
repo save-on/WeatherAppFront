@@ -57,7 +57,6 @@ const PackingListList = (props) => {
       {packingLists && packingLists.length > 0 ? (
         <ul className="card-list">
           {packingLists.map((list) => (
-            // console.log("PackingListList - Rendering PackingListCard with packingList: ", list),
             <PackingListCard
               key={list.id}
               packingList={list}
