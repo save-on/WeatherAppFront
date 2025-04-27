@@ -1,6 +1,8 @@
 import "./App.css";
 import Header from "../Header/Header.js";
+import NewHeader from "../Header/NewHeader.js";
 import Main from "../Main/Main.js";
+import NewMain from "../Main/NewMain.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 
@@ -412,7 +414,7 @@ function App() {
   return (
     <div className="app">
       <CurrentUserContext.Provider value={currentUser}>
-        <video
+        {/* <video
           key={videoSrc}
           id="background-video"
           autoPlay
@@ -421,11 +423,11 @@ function App() {
           className="background-video"
         >
           <source src={videoSrc} type="video/mp4" />
-        </video>
-        <CurrentTemperatureUnitContext.Provider
+        </video> */}
+        {/* <CurrentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        >
-          <Header
+        > */}
+          {/* <Header
             onCreateModal={handleCreateModal}
             weatherData={weatherData}
             loggedIn={loggedIn}
@@ -438,6 +440,9 @@ function App() {
             activeModal={activeModal}
             handleCloseModal={handleCloseModal}
             onSignOut={onSignOut}
+          /> */}
+          <NewHeader
+          onRegister={handleOpenRegisterModal}
           />
           <Routes>
             <Route
@@ -624,7 +629,7 @@ function App() {
               isLoading={isLoading}
             />
           )}
-        </CurrentTemperatureUnitContext.Provider>
+        {/* </CurrentTemperatureUnitContext.Provider> */}
       </CurrentUserContext.Provider>
     </div>
   );

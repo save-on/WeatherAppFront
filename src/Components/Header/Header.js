@@ -50,12 +50,14 @@ const Header = ({
         <div className="header__logo">
           <div>
             <Link to="/">
+            
             <img
               src={TravelWearLogo}
               alt="logo"
               className="header__logo-image"
             />
             </Link>
+            <p className="header__logo-name">Packly</p>
           </div>
           {location !== "/search/result" &&
             location !== "/profile" &&
@@ -109,7 +111,7 @@ const Header = ({
                 type="button"
                 onClick={onRegister}
               >
-                Sign Up
+                Sign Up For Free
               </button>
               <button
                 className="header__button"

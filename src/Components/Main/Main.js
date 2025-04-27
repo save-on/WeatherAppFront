@@ -27,10 +27,10 @@ function Main({
 
   return (
     <main className="main">
-      <WeatherCard
+      {/* <WeatherCard
         weatherData={weatherData}
         handleBackgroundVideoChange={handleBackgroundVideoChange}
-      />
+      /> */}
       <div className="main-city_weather-container">
         {weatherData.condition && (
           <p className="main-city_weather-condition">
@@ -38,11 +38,11 @@ function Main({
           </p>
         )}
 
-        <LocationSearch
+        {/* <LocationSearch
           handleGetCityWeather={handleGetCityWeather}
           searchResults={searchResults}
           handleSearchedData={handleSearchedData}
-        />
+        /> */}
       </div>
       <section className="card_section">
         {locationData.locationAccess ? (
@@ -59,7 +59,7 @@ function Main({
         <div className="card_item-container">
           {locationData.locationAccess ? (
             <ul className="card_items">
-              {filteredClothingItems.map((item, index) => (
+              {/* {filteredClothingItems.map((item, index) => (
                 <ItemCard
                   key={`item-card=${index}`}
                   item={item}
@@ -67,11 +67,11 @@ function Main({
                   onCardLike={handleCardLike}
                   loggedIn={loggedIn}
                 />
-              ))}
+              ))} */}
             </ul>
           ) : (
             <ul className="card_items">
-              {clothingItems.map((item, index) => (
+              {/* {clothingItems.map((item, index) => (
                 <ItemCard
                   key={`item-card=${index}`}
                   item={item}
@@ -79,7 +79,7 @@ function Main({
                   onCardLike={handleCardLike}
                   loggedIn={loggedIn}
                 />
-              ))}
+              ))} */}
             </ul>
           )}
         </div>

@@ -26,6 +26,12 @@
   height: 70px;
 }
 
+.header__logo-name {
+  font-family: "KarlaBold", sans-serif;
+  font-size: 64px;
+  line-height: 36px;
+}
+
 .header__avatar-logo {
   display: flex;
   gap: 20px;
@@ -101,6 +107,11 @@
   font-size: 25px;
   margin: 0;
   opacity: 0.8;
+}
+
+@font-face {
+  font-family: KarlaBold;
+  src:url(../../fonts/Karla-ExtraBold.ttf);
 }
 
 @media screen and (max-width: 1000px) {
