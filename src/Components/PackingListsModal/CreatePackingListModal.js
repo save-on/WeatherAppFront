@@ -80,7 +80,6 @@ const CreatePackingListModal = ({
           name="location"
           minLength="2"
           maxLength="30"
-         
           placeholder="Location (Optional)"
           id="location"
           value={values.location}

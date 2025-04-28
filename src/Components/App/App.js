@@ -449,19 +449,20 @@ function App() {
               exact
               path="/"
               element={
-                <Main
-                  weatherData={weatherData}
-                  onSelectedCard={handleSelectedCard}
-                  clothingItems={clothingItems}
-                  handleCardLike={handleCardLike}
-                  handleOpenItemModal={handleOpenItemModal}
-                  loggedIn={loggedIn}
-                  handleBackgroundVideoChange={handleBackgroundVideoChange}
-                  handleGetCityWeather={handleGetCityWeather}
-                  searchResults={searchResults}
-                  handleSearchedData={handleSearchedData}
-                  locationData={locationData}
-                />
+                // <Main
+                //   weatherData={weatherData}
+                //   onSelectedCard={handleSelectedCard}
+                //   clothingItems={clothingItems}
+                //   handleCardLike={handleCardLike}
+                //   handleOpenItemModal={handleOpenItemModal}
+                //   loggedIn={loggedIn}
+                //   handleBackgroundVideoChange={handleBackgroundVideoChange}
+                //   handleGetCityWeather={handleGetCityWeather}
+                //   searchResults={searchResults}
+                //   handleSearchedData={handleSearchedData}
+                //   locationData={locationData}
+                // />
+                <NewMain />
               }
             />
             <Route

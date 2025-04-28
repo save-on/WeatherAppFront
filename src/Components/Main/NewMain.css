@@ -1,0 +1,82 @@
+.newMain__title {
+  display: flex;
+  justify-content: center;
+}
+
+.newMain__title-text {
+  font-family: KarlaLightItalic;
+  font-size: 80px;
+  margin-bottom: 40px;
+}
+
+.newMain__title-description {
+  font-family: KarlaRegular;
+  font-size: 24px;
+  margin: 38px 0 38px 0;
+}
+
+.newMain__inputs {
+  list-style-type: none;
+  width: 402px;
+  margin: auto;
+  padding: 0;
+}
+
+.newMain__input {
+  width: 402px;
+  height: 36px;
+  border-radius: 6px;
+  margin-bottom: 38px;
+  border-style: solid;
+  border-width: thin;
+  border-color: lightgray;
+}
+
+
+.newMain__list__inputs {
+  display: flex;
+}
+
+.newMain__input-header {
+  font-family: KarlaMedium, sans-serif;
+  font-size: 20px;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.newMain__input__activity__title-text {
+  margin: 0;
+}
+
+.newMain__input__activity-text {
+  font-family: KarlaLightItalic;
+  margin-left: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.submitButton {
+  width: 240px;
+  height: 48px;
+  border-radius: 21px;
+  color: #fff;
+  background-color: #000;
+  border-width: thin;
+  font-family: KarlaMedium;
+  font-size: 18px;
+}
+
+@font-face {
+  font-family: KarlaLightItalic;
+  src: url("../../fonts/Karla-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: KarlaRegular;
+  src: url("../../fonts/Karla-Regular.ttf");
+}
+
+@font-face {
+  font-family: KarlaMedium;
+  src: url("../../fonts/Karla-Medium.ttf");
+}
