@@ -66,6 +66,10 @@
   font-size: 18px;
 }
 
+.submitButton:hover {
+    cursor: pointer;
+}
+
 @font-face {
   font-family: KarlaLightItalic;
   src: url("../../fonts/Karla-LightItalic.ttf");
