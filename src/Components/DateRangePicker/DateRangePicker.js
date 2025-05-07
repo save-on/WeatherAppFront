@@ -2,41 +2,93 @@ import "./DateRangePicker.css";
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
-function DateRangePicker({}) {
+function DateRangePicker({ onDateChange, onClose}) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [dateRange, setDateRange] = useState(null);
 
   const handleDateSelection = (dates) => {
     const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-    if (onDateChange) {
-      onDateChange(start, end);
+
+    if (start && !end) {
+      setStartDate(start);
+      setEndDate(null);
+    } else if (start && end && end >= start) {
+      setStartDate(start);
+      setEndDate(end);
+      if (onDateChange) {
+        onDateChange(start, end);
+      }
+    } else if (start) {
+      setStartDate(start);
+      setEndDate(null);
     }
   };
 
-  const formatDate = (date) => {
-    if (date instanceof Date) {
-    const options = {year: 'numeric', month: 'long', day: 'numeric'};
-    return date.toLocaleDateString(undefined, options);
+  const handleCancel = () => {
+    setStartDate(null);
+    setEndDate(null);
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleSubmit = () => {
+    if (startDate && endDate && onDateChange) {
+      onDateChange(startDate, endDate);
+    }
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const formatDateDisplay = (date) => {
+    if (date) {
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
     }
     return "";
   };
+  
 
   return (
     <div className="dateRangePicker__container">
-      <div className="dateRangePicker__selected-dates">
-      </div>
       <DatePicker
         selected={startDate}
-        onDateChange={handleDateSelection}
+        onChange={handleDateSelection}
         startDate={startDate}
         endDate={endDate}
         selectsRange
         inline
-        minDate={new Date()}
+        monthsShown={2}
+        formatMonth={(date) => {
+          const options = {month: 'long'};
+          return new Intl.DateTimeFormat('en-US', options).format(date);
+        }}
       />
+     <div className="dateRangePicker__footer">
+      <div className="dateRangePicker__footer-left">
+        {startDate && endDate ? (
+          `${formatDateDisplay(startDate)} To ${formatDateDisplay(endDate)}`
+        ) : startDate ? (
+          `${formatDateDisplay(startDate)} To `
+        ) : (
+          "Select Dates"
+        )}
+      </div>
+      <div className="dateRangePicker__footer-right">
+        <button type="button" className="dateRangePicker__button dateRangePicker__button-cancel" onClick={handleCancel} >
+          Cancel
+        </button>
+        <button type="button" className="dateRangePicker__button dateRangePicker__button-submit" onClick={handleSubmit}>
+          Select Dates
+        </button>
+      </div>
+     </div>
     </div>
+    
   );
 }
 

@@ -4,7 +4,7 @@
 }
 
 .newMain__title-text {
-  font-family: KarlaLightItalic;
+  font-family: KarlaLightItalic,sans-serif;
   font-size: 80px;
   margin-bottom: 40px;
 }
@@ -30,11 +30,20 @@
   border-style: solid;
   border-width: thin;
   border-color: lightgray;
+  font-family: KarlaRegular, sans-serif;
 }
 
 
 .newMain__list__inputs {
   display: flex;
+  position: relative;
+ 
+}
+
+.dateRangePicker__wrapper {
+  position: absolute;
+  z-index: 10;
+  top: 45px;
 }
 
 .newMain__input-header {

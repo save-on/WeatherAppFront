@@ -23,6 +23,10 @@ function NewMain({}) {
     setIsDatePickerVisible(!isDatePickerVisible);
   }
 
+  const handleCloseDatePicker = () => {
+    setIsDatePickerVisible(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dateInputRef.current && !dateInputRef.current.contains(e.target) &&
@@ -48,14 +52,6 @@ function NewMain({}) {
     }
     return "";
   };
-
-  const handleSubmit = () => {
-    console.log("Location: ", values.location);
-    console.log("Start Date: ", travelDates.startDate);
-    console.log("End Date: ", travelDates.endDate);
-    console.log("Activity: ", values.activity);
-  }
-
 
   return (
     <div className="newMain">
@@ -102,11 +98,12 @@ function NewMain({}) {
           : travelDates.startDate ? formatDateForInput(travelDates.startDate) : ""}
            />
            {isDatePickerVisible && (
-            <div ref={datePickerRef} style={{position: 'absolute', zIndex: 10}} >
-              <DateRangePicker onDateChange={handleDateChange} />
+            <div   className="dateRangePicker__wrapper" ref={datePickerRef}  >
+              <DateRangePicker  onDateChange={handleDateChange} onClose={handleCloseDatePicker}/>
             </div>
            )}
           </li>
+          
           <label className="newMain__input-header" htmlFor="activity">
             <p className="newMain__input__activity__title-text">
               What will you be doing?
