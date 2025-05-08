@@ -80,6 +80,56 @@
     cursor: pointer;
 }
 
+.activities-input-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.activity-tag {
+  align-items: center;
+  background-color: #333; 
+  color: #fff;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.remove-activity {
+  background: none;
+  border: none;
+  color: #eee; 
+  font-size: 0.7rem;
+  margin-left: 8px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  outline: none;
+}
+
+.remove-activity:hover {
+  color: #fff;
+}
+
+.newMain__input[id="activity"] {
+  width: 402px;
+  height: 36px;
+  padding: 0;
+  border-radius: 6px;
+  margin-bottom: 38px;
+  border-style: solid;
+  border-width: thin;
+  border-color: lightgray;
+  font-family: KarlaRegular, sans-serif;
+}
+
+.newMain__input[id="activity"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
 @font-face {
   font-family: KarlaLightItalic;
   src: url("../../fonts/Karla-LightItalic.ttf");
