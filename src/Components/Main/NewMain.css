@@ -44,6 +44,7 @@
   position: absolute;
   z-index: 10;
   top: 45px;
+  left: -67px;
 }
 
 .newMain__input-header {

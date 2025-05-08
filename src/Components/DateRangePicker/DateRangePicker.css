@@ -1,5 +1,6 @@
 .react-datepicker {
-  border-radius: 8px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   box-shadow: 0 0px 12px 1px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   padding: 16px;
@@ -170,6 +171,11 @@
   justify-content: space-between;
   padding-top: 16px;
   border-top: 1px solid #ccc;
+  background-color: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 16px;
+  align-items: center;
 }
 
 .dateRangePicker__footer-left {
@@ -177,11 +183,15 @@
   padding-right: 8px;
   font-size: 0.9rem;
   color: #555;
+  background-color: #fff;
+  
 }
 
 .dateRangePicker__footer-right {
   display: flex;
   gap: 8px;
+  background-color: #fff;
+  
 }
 
 .dateRangePicker__button {
@@ -198,6 +208,7 @@
   border-radius: 6px;
   width: 120px;
   height: 36px;
+  border-color: rgba(63, 63, 70, 0.1);
 }
 
 .dateRangePicker__button-cancel:hover {
@@ -212,10 +223,25 @@
   border-radius: 6px;
   width: 120px;
   height: 36px;
+  border-color: rgba(63, 63, 70, 0.1);
 }
 
 .dateRangePicker__button-submit:hover {
   background-color: #ccc;
   border-color: #ccc;
+  color: #333;
 }
 
+.selected-date-box {
+  border: 1px solid;
+  border-width: thin;
+  font-family: KarlaMedium, sans-serif;
+  border-radius: 6px;
+  border-color: rgba(63,63,70,0.1);
+  padding: 5px;
+}
+
+@font-face {
+  font-family: KarlaMedium;
+  src: url("../../fonts/Karla-Medium.ttf");
+}
