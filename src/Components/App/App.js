@@ -384,7 +384,8 @@ function App() {
           setLoggedIn(true);
           setCurrentUser(res);
         })
-        .catch((err) => console.error(err.message));
+        .catch((err) => console.error(err.message))
+        .finally(() => setIsLoading(false));
     }
   }, []);
 
@@ -443,6 +444,13 @@ function App() {
           /> */}
           <NewHeader
           onRegister={handleOpenRegisterModal}
+          loggedIn={loggedIn}
+          isLoading={isLoading}
+          activeModal={activeModal}
+          handleOpenDropbox={handleOpenDropbox}
+          handleCloseModal={handleCloseModal}
+          onSignOut={onSignOut}
+          onLogin={handleOpenLoginModal}
           />
           <Routes>
             <Route
@@ -462,7 +470,9 @@ function App() {
                 //   handleSearchedData={handleSearchedData}
                 //   locationData={locationData}
                 // />
-                <NewMain />
+                <NewMain 
+                loggedIn={loggedIn}
+                />
               }
             />
             <Route
