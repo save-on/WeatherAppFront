@@ -137,6 +137,11 @@
   width: 402px;
 }
 
+.activity-input-field::placeholder {
+  opacity: 1;
+  color: #ccc;
+}
+
 .remove-activity-inside:hover {
   color: #fff;
 }
