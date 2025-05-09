@@ -65,6 +65,10 @@
   margin-bottom: 0;
 }
 
+.newMain__submitButton {
+  margin-top: 50px;
+}
+
 .submitButton {
   width: 240px;
   height: 48px;
@@ -84,24 +88,77 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 8px 0;
 }
 
-.activity-tag {
+.activity-tags-inside-input {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  background-color: #333; 
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  min-height: 36px;
+  background-color: white;
+}
+
+.activity-tag-inside {
+  display: inline-flex;
+  align-items: center;
+  background-color: #000; 
   color: #fff;
   border-radius: 16px;
   padding: 4px 8px;
   font-size: 0.85rem;
+  margin-right: 4px; 
+  top: 10px;
+  font-family: KarlaRegular, sans-serif;
+}
+
+.remove-activity-inside {
+  display: inline-flex;
+  background: none;
+  border: none;
+  color: #eee; 
+  font-size: 15px;
+  margin-right: 4px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  outline: none;
+}
+
+.activity-input-field {
+  border: none;
+  outline: none;
+  min-width: 120px;
+  flex: 1;
+  font-family: KarlaRegular, sans-serif;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
+.remove-activity-inside:hover {
+  color: #fff;
+}
+
+.activity-tags-inside-input:not(:empty) .activity-input-field::placeholder {
+  color: transparent; 
+}
+
+.activity-tag {
+  align-items: center;
+  background-color: #000; 
+  color: #fff;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 18px;
+  font-family: KarlaRegular, sans-serif;
 }
 
 .remove-activity {
   background: none;
   border: none;
   color: #eee; 
-  font-size: 0.7rem;
-  margin-left: 8px;
+  font-size: 15px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -112,7 +169,7 @@
   color: #fff;
 }
 
-.newMain__input[id="activity"] {
+.newMain__input:not([id="activity"]) {
   width: 402px;
   height: 36px;
   padding: 0;
@@ -127,7 +184,7 @@
 .newMain__input[id="activity"]:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  
 }
 
 @font-face {

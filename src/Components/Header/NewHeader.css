@@ -14,6 +14,7 @@
 .newHeader__title {
     font-family: KarlaBold, sans-serif;
     font-size: 64px;
+    margin: 0;
 }
 
 .newHeader__profile {
@@ -26,6 +27,10 @@
     text-decoration: none;
     font-family: KarlaMedium, sans-serif;
     color: #000;
+}
+
+.newHeader__avatar_image {
+    cursor: pointer;
 }
 
 .newHeader__signUp_button {

@@ -154,20 +154,22 @@ function NewMain({}) {
           </label>
           <li className="newMain__list__inputs">
             <div className="activities-input-container">
+              <div className="activity-tags-inside-input" >
               {activities.map((activity, index) => (
-                <span key={index} className="activity-tag">
-                  {activity}
+                <span key={index} className="activity-tag-inside">
                   <button
                     type="button"
-                    className="remove-activity"
+                    className="remove-activity-inside"
                     onClick={() => handleRemoveActivity(index)}
                   >
                     X
                   </button>
+                  {/* <span>  </span> */}
+                  {activity}
                 </span>
               ))}
               <input
-                className="newMain__input"
+                className="activity-input-field"
                 type="text"
                 name="activity"
                 placeholder={activities.length > 0 ? "" : "Add activity (press Enter or comma)"}
@@ -176,6 +178,7 @@ function NewMain({}) {
                 onChange={handleActivityInputChange}
                 onKeyDown={handleAddActivity}
               />
+              </div>
             </div>
           </li>
         </ul>
