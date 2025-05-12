@@ -171,7 +171,6 @@ function NewMain({}) {
                 className="activity-input-field"
                 type="text"
                 name="activity"
-                //placeholder={activities.length > 0 ? "" : "Add activity (press Enter or comma)"}
                 placeholder="Add Activity"
                 id="activity"
                 value={currentActivityInput}

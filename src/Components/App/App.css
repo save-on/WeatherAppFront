@@ -1,5 +1,9 @@
 .app {
   min-height: 100vh;
   margin: 0 auto;
-  background-color: #F7F7F8;
+  background-color: #f7f7f8;
+}
+
+.style-for-mytrips-page {
+  background-color: rgba(217,217,217,1);
 }

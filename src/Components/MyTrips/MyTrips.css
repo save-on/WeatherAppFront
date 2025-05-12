@@ -1,0 +1,127 @@
+.mytrips {
+  background-color: rgba(217, 217, 217, 1);
+}
+
+.mytrips__location {
+  height: 250px;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  padding-top: 40px;
+}
+
+.mytrips__location-destination {
+  height: 120px;
+  width: 683px;
+  margin: auto;
+}
+
+.mytrips__location-dates {
+  height: 36px;
+  width: 251px;
+  margin: auto;
+}
+
+.mytrips__weatherForecast {
+  height: 438px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mytrips__weatherForecast-title {
+  width: 100%;
+  font-family: KarlaMedium, sans-serif;
+  font-size: 30px;
+}
+
+.mytrips__weatherForecast-days {
+  width: 951px;
+  margin: 0 auto;
+}
+
+.mytrips__weatherForecast-days-list {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.mytrips__suggested-packing-list-title {
+  font-family: KarlaMedium, sans-serif;
+  font-size: 30px;
+}
+
+.mytrips__activities {
+  margin-bottom: 40px;
+}
+
+.mytrips__suggested-packing-list-items-container {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding-left: 148px;
+  padding-right: 148px;
+}
+
+.mytrips__item-category {
+  width: 255px;
+  height: 480px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.mytrips__item-category-title {
+  display: flex;
+  margin-top: -40px;
+  font-family: KarlaSemiBold, sans-serif;
+  font-size: 24px;
+}
+
+.mytrips__other-items {
+  display: flex;
+  padding-left: 148px;
+  margin-top: 80px;
+}
+
+.mytrips__other-items-text {
+  font-family: KarlaSemiBold, sans-serif;
+  font-size: 24px;
+  margin-top: -40px;
+  display: flex;
+}
+
+.mytrips__other-items-container {
+  background-color: #fff;
+  height: 179px;
+  width: 1096px;
+  border-radius: 10px;
+}
+
+.mytrips__email-packing-list {
+  margin-top: 40px;
+  height: 100px;
+}
+
+.mytrips__email-submit-button {
+  background-color: rgba(0, 0, 0);
+  color: rgba(255, 255, 255);
+  border-radius: 8px;
+  height: 48px;
+  width: 240px;
+  font-family: RobotoMedium, sans-serif;
+  font-size: 16px;
+  border-width: thin;
+}
+
+@font-face {
+  font-family: KarlaMedim;
+  src: url("../../fonts/Karla-Medium.ttf");
+}
+
+@font-face {
+  font-family: KarlaSemiBold;
+  src: url("../../fonts/Karla-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: RobotoMedium;
+  src: url("../../fonts/Roboto-Medium.ttf");
+}

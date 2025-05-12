@@ -2,9 +2,9 @@
   display: flex;
   align-items: end;
   color: #ccc;
-  opacity: 0.8;
+  
   padding: 0 0 0 40px;
-  margin: 60px 0 10px;
+ 
 }
 
 .footer_text {
@@ -14,4 +14,8 @@
   font-size: 20px;
   margin: 0;
   text-align: left;
+}
+
+.style-for-mytrips-page {
+  background-color: rgba(217,217,217,1);
 }

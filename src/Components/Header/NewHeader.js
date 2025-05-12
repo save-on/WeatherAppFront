@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import HeaderDropbox from "../HeaderDropbox/HeaderDropbox.jsx";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
+import "../App/App.css";
 
 function NewHeader({
   onRegister,
@@ -13,20 +14,23 @@ function NewHeader({
   handleCloseModal,
   handleOpenDropbox,
   onSignOut,
+  customStyle
 }) {
-    const currentUser = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
-    <div className="newHeader">
-        <Link to="/" className="newHeader__title-link">
-        <p className="newHeader__title">Packly</p>
-        </Link>
+    <div className={`newHeader ${customStyle}`} >
+      <Link to="/" className={`newHeader__title-link ${customStyle}`} >
+        <p className={`newHeader__title ${customStyle}`}>
+          Packly
+        </p>
+      </Link>
       <div className="newHeader__profile">
         {loggedIn ? (
           <div className="newHeader__profile">
-            <Link className="newHeader__profile-myTrips-link" to="/profile">
-                <p>My Trips</p>
-                </Link>
+            <Link className="newHeader__profile-myTrips-link" to="/mytrips">
+              <p>My Trips</p>
+            </Link>
             <img
               className="newHeader__avatar_image"
               src={currentUser.avatar || AvatarDefault}

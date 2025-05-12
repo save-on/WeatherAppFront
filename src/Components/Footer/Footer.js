@@ -1,8 +1,8 @@
 import "./Footer.css";
 
-const Footer = () => {
+const Footer = ({ customStyle }) => {
   return (
-    <footer className="footer">
+    <footer className={`footer ${customStyle}`} >
       <p className="footer_text">Developed By Sayvon & Sergio © 2025</p>
     </footer>
   );
