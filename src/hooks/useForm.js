@@ -1,7 +1,12 @@
 import { useState } from "react";
 
-export const useForm = (inputValues) => {
-  const [values, setValues] = useState(inputValues);
+export const useForm = (initialValues = {}) => {
+  const [values, setValues] = useState({
+    location: '',
+    activity: '',
+    travelDates: {startDate: null, endDate: null},
+    ...initialValues,
+  });
 
   const handleChanges = (e) => {
     const {name, value} = e.target;
@@ -10,5 +15,25 @@ export const useForm = (inputValues) => {
       [name]: value,
     }));
   };
-  return {values, handleChanges, setValues};
+
+  const handleDateChange = (name, value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      travelDates: {
+        ...prevValues.travelDates,
+        [name]: value,
+      },
+    }));
+  };
+
+  const resetForm = () => {
+    setValues({
+      location: '',
+      activity: '',
+      travelDates: {startDate: null, endDate: null},
+      ...initialValues,
+    });
+  };
+
+  return {values, handleChanges, handleDateChange, setValues, resetForm};
 };

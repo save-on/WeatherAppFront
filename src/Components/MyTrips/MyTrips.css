@@ -11,14 +11,15 @@
 
 .mytrips__location-destination {
   height: 120px;
-  width: 683px;
   margin: auto;
+  font-size: 80px;
+  margin-bottom: 50px;
 }
 
 .mytrips__location-dates {
   height: 36px;
-  width: 251px;
   margin: auto;
+  font-size: 25px;
 }
 
 .mytrips__weatherForecast {
@@ -30,7 +31,8 @@
 .mytrips__weatherForecast-title {
   width: 100%;
   font-family: KarlaMedium, sans-serif;
-  font-size: 30px;
+  font-size: 35px;
+  margin-top: 100px;
 }
 
 .mytrips__weatherForecast-days {
@@ -50,7 +52,36 @@
 }
 
 .mytrips__activities {
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+    display: inline-flex;
+  align-items: center;
+  border-radius: 16px;
+  padding: 4px 8px;
+  margin-right: 4px; 
+  font-family: KarlaRegular, sans-serif;
+}
+
+.mytrips__activity-tag-inside {
+  background-color: rgba(175,174,174,1); 
+  color: #000;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 18px;
+  margin-right: 4px; 
+  font-family: KarlaRegular, sans-serif;
+}
+
+.mytrips__remove-activity-inside {
+  display: inline-flex;
+  background: none;
+  border: none;
+  color: #000; 
+  font-size: 15px;
+  margin-right: 4px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  outline: none;
 }
 
 .mytrips__suggested-packing-list-items-container {

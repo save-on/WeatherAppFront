@@ -3,27 +3,27 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import DateRangePicker from "../DateRangePicker/DateRangePicker.js";
 import { useForm } from "../../hooks/useForm.js";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function NewMain({}) {
-  const { values, handleChanges, setValues } = useForm({
-    location: "",
-    activity: "",
-  });
+function NewMain({ onTripDetailsSubmit }) {
+  const { values, handleChanges, handleDateChange } = useForm();
 
   const [travelDates, setTravelDates] = useState({
     startDate: null,
     endDate: null,
   });
+  
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const dateInputRef = useRef(null);
   const datePickerRef = useRef(null);
   const [activities, setActivities] = useState([]);
   const [currentActivityInput, setCurrentActivityInput] = useState("");
-  const activityInputRef = useRef(null)
+  const activityInputRef = useRef(null);
 
-  const handleDateChange = (start, end) => {
-    setTravelDates({ startDate: start, endDate: end });
-  };
+  const onDateChange = (start, end) => {
+    handleDateChange("startDate", start);
+    handleDateChange("endDate", end);
+  }
 
   const handleDateInputClick = () => {
     setIsDatePickerVisible(!isDatePickerVisible);
@@ -85,6 +85,18 @@ function NewMain({}) {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleSubmit = () => { 
+    const tripData = {
+      location: values.location,
+      activities: activities,
+      travelDates: values.travelDates,
+    };
+    onTripDetailsSubmit(tripData);
+    navigate("/mytrips");
+  };
+
   return (
     <div className="newMain">
       <div className="newMain__title">
@@ -127,19 +139,19 @@ function NewMain({}) {
               ref={dateInputRef}
               onClick={handleDateInputClick}
               value={
-                travelDates.startDate && travelDates.endDate
+                values.travelDates.startDate && values.travelDates.endDate
                   ? `${formatDateForInput(
-                      travelDates.startDate
-                    )} - ${formatDateForInput(travelDates.endDate)}`
-                  : travelDates.startDate
-                  ? formatDateForInput(travelDates.startDate)
+                      values.travelDates.startDate
+                    )} - ${formatDateForInput(values.travelDates.endDate)}`
+                  : values.travelDates.startDate
+                  ? formatDateForInput(values.travelDates.startDate)
                   : ""
               }
             />
             {isDatePickerVisible && (
               <div className="dateRangePicker__wrapper" ref={datePickerRef}>
                 <DateRangePicker
-                  onDateChange={handleDateChange}
+                  onDateChange={onDateChange}
                   onClose={handleCloseDatePicker}
                 />
               </div>
@@ -182,7 +194,7 @@ function NewMain({}) {
           </li>
         </ul>
         <div className="newMain__submitButton">
-          <button className="submitButton">Create My Packing List</button>
+          <button className="submitButton" onClick={handleSubmit}>Create My Packing List</button>
         </div>
       </div>
     </div>

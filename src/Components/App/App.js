@@ -101,6 +101,11 @@ function App() {
     notice: "",
   });
   const [errMessage, setErrMessage] = useState("");
+  const [tripDetails, setTripDetails] = useState({
+    location: '',
+    activities:[],
+    travelDates: {startDate: null, endDate: null}
+  })
   
   const location = useLocation();
   let elementStyle;
@@ -139,6 +144,13 @@ function App() {
     setErrMessage("");
   };
 
+  const handleRemoveActivityFromTrip = (indexToRemove) => {
+    setTripDetails((prevDetails) => ({
+      ...prevDetails,
+      activities: prevDetails.activities.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
   useEffect(() => {
     if (!activeModal) return;
     const handleEscClose = (e) => {
@@ -154,7 +166,11 @@ function App() {
     };
   }, [activeModal]);
 
-  function handleOpenItemModal() {
+  const handleTripDetailsSubmit = (newDetails) => {
+    setTripDetails(newDetails);
+  }
+
+  const handleOpenItemModal = () => {
     setActiveModal("preview");
   }
 
@@ -474,14 +490,18 @@ function App() {
             exact
             path="/"
             element={
-              <NewMain loggedIn={loggedIn} />
+              <NewMain 
+              loggedIn={loggedIn} 
+              onTripDetailsSubmit={handleTripDetailsSubmit}
+              />
             }
           />
           <Route
             path="/mytrips"
             element={
               <ProtectedRoute path="mytrips" loggedIn={loggedIn}>
-                <MyTrips customStyle={elementStyle} />
+                <MyTrips customStyle={elementStyle} tripDetails={tripDetails} 
+                onRemoveActivity={handleRemoveActivityFromTrip}/>
               </ProtectedRoute>
             }
           />

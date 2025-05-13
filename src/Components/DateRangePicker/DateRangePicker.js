@@ -19,6 +19,9 @@ function DateRangePicker({ onDateChange, onClose }) {
       if (onDateChange) {
         onDateChange(start, end);
       }
+      if (onClose) {
+        onClose();
+      }
     } else if (start) {
       setStartDate(start);
       setEndDate(null);
@@ -33,14 +36,14 @@ function DateRangePicker({ onDateChange, onClose }) {
     }
   };
 
-  const handleSubmit = () => {
-    if (startDate && endDate && onDateChange) {
-      onDateChange(startDate, endDate);
-    }
-    if (onClose) {
-      onClose();
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (startDate && endDate && onDateChange) {
+  //     onDateChange(startDate, endDate);
+  //   }
+  //   if (onClose) {
+  //     onClose();
+  //   }
+  // };
 
   const formatDateDisplay = (date) => {
     if (date) {
@@ -101,7 +104,7 @@ function DateRangePicker({ onDateChange, onClose }) {
           <button
             type="button"
             className="dateRangePicker__button dateRangePicker__button-submit"
-            onClick={handleSubmit}
+            onClick={() => {if (startDate && endDate && onClose) onClose(); }}
           >
             Select Dates
           </button>
