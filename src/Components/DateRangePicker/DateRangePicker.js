@@ -16,11 +16,9 @@ function DateRangePicker({ onDateChange, onClose }) {
     } else if (start && end && end >= start) {
       setStartDate(start);
       setEndDate(end);
+    
       if (onDateChange) {
         onDateChange(start, end);
-      }
-      if (onClose) {
-        onClose();
       }
     } else if (start) {
       setStartDate(start);
@@ -35,15 +33,6 @@ function DateRangePicker({ onDateChange, onClose }) {
       onClose();
     }
   };
-
-  // const handleSubmit = () => {
-  //   if (startDate && endDate && onDateChange) {
-  //     onDateChange(startDate, endDate);
-  //   }
-  //   if (onClose) {
-  //     onClose();
-  //   }
-  // };
 
   const formatDateDisplay = (date) => {
     if (date) {
@@ -72,26 +61,28 @@ function DateRangePicker({ onDateChange, onClose }) {
       />
       <div className="dateRangePicker__footer">
         <div className="dateRangePicker__footer-left">
-          {startDate && endDate
-            ? (
-                <>
-                  <span className="selected-date-box">
-                    {formatDateDisplay(startDate)}
-                  </span>{" "}
-                  To{" "}
-                  <span className="selected-date-box">
-                    {formatDateDisplay(endDate)}
-                  </span>
-                </>
-            )
-            : startDate
-            ? (
-              <>
-              <span className="selected-date-box">{formatDateDisplay(startDate)}</span> To
-              </>
-            )
-            : (<>
-            <span className="selected-date-box">Select Dates</span></>)}
+          {startDate && endDate ? (
+            <>
+              <span className="selected-date-box">
+                {formatDateDisplay(startDate)}
+              </span>{" "}
+              To{" "}
+              <span className="selected-date-box">
+                {formatDateDisplay(endDate)}
+              </span>
+            </>
+          ) : startDate ? (
+            <>
+              <span className="selected-date-box">
+                {formatDateDisplay(startDate)}
+              </span>{" "}
+              To
+            </>
+          ) : (
+            <>
+              <span className="selected-date-box">Select Dates</span>
+            </>
+          )}
         </div>
         <div className="dateRangePicker__footer-right">
           <button
@@ -104,7 +95,9 @@ function DateRangePicker({ onDateChange, onClose }) {
           <button
             type="button"
             className="dateRangePicker__button dateRangePicker__button-submit"
-            onClick={() => {if (startDate && endDate && onClose) onClose(); }}
+            onClick={() => {
+              if (startDate && endDate && onClose) onClose();
+            }}
           >
             Select Dates
           </button>

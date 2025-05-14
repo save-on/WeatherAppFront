@@ -131,14 +131,14 @@
 
 .react-datepicker__day:hover,
 .react-datepicker__day--keyboard-selected {
-  background-color: #000;
+  background-color: rgba(115,87,255,1);
   color: #fff;
   border-radius: 16px;
 }
 
 
 .react-datepicker__day--selected {
-  background-color: #000;
+  background-color: rgba(115,87,255,1);
   color: #fff;
   border-radius: 16px;
   font-weight: bold;
@@ -154,12 +154,20 @@
 } 
 
 
-.react-datepicker__day--in-range:not(.react-datepicker__day--start):not(
-    .react-datepicker__day--end
-  ) {
-  background-color: #f0f0f0;
+.react-datepicker__day--in-range{
+  background-color: rgba(115,87,255,.1);
   color: #000;
 } 
+
+.react-datepicker__day--in-range--start {
+background-color: rgba(115,87,255,1);
+color: #fff;
+}
+
+.react-datepicker__day--end {
+background-color: rgba(115,87,255,1);
+color: #fff;
+}
 
 .react-datepicker__day--outside-month {
   color: #ccc;
@@ -204,7 +212,7 @@
 
 .dateRangePicker__button-cancel {
   background-color: #f8f8f8;
-  color: #333;
+  color: #000;
   border-radius: 6px;
   width: 120px;
   height: 36px;
@@ -212,24 +220,17 @@
 }
 
 .dateRangePicker__button-cancel:hover {
-  background-color: #000;
-  border-color: #000;
-  color: #fff;
+  background-color: rgba(115,87,255,.5);
+  color: #000;
 }
 
 .dateRangePicker__button-submit {
-  background-color: #000;
+  background-color: rgba(115,87,255,1);
   color: #fff;
   border-radius: 6px;
   width: 120px;
   height: 36px;
   border-color: rgba(63, 63, 70, 0.1);
-}
-
-.dateRangePicker__button-submit:hover {
-  background-color: #ccc;
-  border-color: #ccc;
-  color: #333;
 }
 
 .selected-date-box {
