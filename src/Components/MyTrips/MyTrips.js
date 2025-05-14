@@ -15,6 +15,14 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     return "";
   };
 
+  const formatDateDay = (date) => {
+    if (date instanceof Date) {
+      const options = { weekday: "long", month: "long", day: "numeric" };
+      return date.toLocaleDateString("en-US", options);
+    }
+    return "";
+  };
+
   const handleRemoveActivity = (index) => {
     if (onRemoveActivity) {
       onRemoveActivity(index);
@@ -52,7 +60,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 1
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  Specific Date
+                  {formatDateDay(tripDetails.travelDates.startDate)}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
                   Sunny, 80°
@@ -69,7 +77,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 2
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  Specific Date
+                  {formatDateDay(new Date(tripDetails.travelDates.startDate.getTime() + 24 * 60 * 60 * 1000))}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
                   Partly Cloudy, 76°
@@ -86,7 +94,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 3
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  Specific Date
+                  {formatDateDay(new Date(tripDetails.travelDates.startDate.getTime() + 2 * 24 * 60 * 60 * 1000))}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
                   Scattered Showers, 83°
