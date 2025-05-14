@@ -31,7 +31,6 @@ export function postItems(item, token) {
       Authorization: `Bearer ${token}`,
     },
     body: item,
-    
   });
 }
 
@@ -59,50 +58,46 @@ export function getPackingLists(token) {
 
 export const getPackingListItems = async (packingListId, token) => {
   try {
-      const res = await fetch(`${baseUrl}profile/packing-lists/${packingListId}/items`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`, 
-          },
-      });
-
-      if (!res.ok) {
-          const message = `Error: ${res.status}`;
-          throw new Error(message);
+    const res = await fetch(
+      `${baseUrl}profile/packing-lists/${packingListId}/items`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
-      const data = await res.json();
-      return data; 
+    );
+
+    if (!res.ok) {
+      const message = `Error: ${res.status}`;
+      throw new Error(message);
+    }
+    const data = await res.json();
+    return data;
   } catch (error) {
-      console.error("Error fetching packing list items: ", error);
-      throw error; 
+    console.error("Error fetching packing list items: ", error);
+    throw error;
   }
 };
-
-// export function postPackingList(packingList, token) {
-//   return processServerRequest(`${baseUrl}profile/packing-lists`, {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: packingList,
-//   });
-// }
 
 export const postPackingList = async (formData, token) => {
   try {
     const res = await fetch(`${baseUrl}profile/packing-lists`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     });
 
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(`HTTP error! status: ${res.status}, message: ${errorData.message || 'Failed to create packing list'}`);
+      throw new Error(
+        `HTTP error! status: ${res.status}, message: ${
+          errorData.message || "Failed to create packing list"
+        }`
+      );
     }
 
     return await res.json();
@@ -112,49 +107,60 @@ export const postPackingList = async (formData, token) => {
   }
 };
 
-export const postPackingListItem = async (packingListId, clothingItemIds, token) => { 
-  if (!Array.isArray(clothingItemIds)) { 
-      console.error("Error: clothingItemIds must be an array.");
-      throw new Error("clothingItemIds must be an array."); 
+export const postPackingListItem = async (
+  packingListId,
+  clothingItemIds,
+  token
+) => {
+  if (!Array.isArray(clothingItemIds)) {
+    console.error("Error: clothingItemIds must be an array.");
+    throw new Error("clothingItemIds must be an array.");
   }
 
-  if (clothingItemIds.length === 0) { 
-      console.warn("Warning: clothingItemIds array is empty. No items will be added.");
-      return; 
+  if (clothingItemIds.length === 0) {
+    console.warn(
+      "Warning: clothingItemIds array is empty. No items will be added."
+    );
+    return;
   }
-
 
   try {
-      const res = await fetch(`${baseUrl}profile/packing-lists/${packingListId}/items`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({ clothing_item_ids: clothingItemIds }), 
-      });
-
-      if (!res.ok) {
-          const message = `Error: ${res.status}`;
-          throw new Error(message);
+    const res = await fetch(
+      `${baseUrl}profile/packing-lists/${packingListId}/items`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ clothing_item_ids: clothingItemIds }),
       }
-      const data = await res.json();
-      return data; 
+    );
+
+    if (!res.ok) {
+      const message = `Error: ${res.status}`;
+      throw new Error(message);
+    }
+    const data = await res.json();
+    return data;
   } catch (error) {
-      console.error("Error adding items to packing list: ", error);
-      throw error;
+    console.error("Error adding items to packing list: ", error);
+    throw error;
   }
 };
 
 export function deletePackingList(packingListId, token) {
-  return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return processServerRequest(
+    `${baseUrl}profile/packing-lists/${packingListId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 }
 
 export const deletePackingListItem = async (packingListId, itemId, token) => {
@@ -176,15 +182,18 @@ export const deletePackingListItem = async (packingListId, itemId, token) => {
 };
 
 export function updatePackingList(packingListId, packingList, token) {
-  return processServerRequest(`${baseUrl}profile/packing-lists/${packingListId}`, {
-    method: "PUT", 
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(packingList),
-  });
+  return processServerRequest(
+    `${baseUrl}profile/packing-lists/${packingListId}`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(packingList),
+    }
+  );
 }
 
 //Card Likes
@@ -220,4 +229,31 @@ export const getCityLocationData = (location) => {
     },
     body: JSON.stringify(location),
   });
+};
+
+export const sendPackingListEmail = async (packingList, token) => {
+  try {
+    const res = await fetch(`${baseUrl}send-packing-list`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(packingList),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(
+        `HTTP error! status: ${res.status}, message: ${
+          errorData.message || "Failed to send packing list email"
+        }`
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error sending packing list email: ", error);
+    throw error;
+  }
 };

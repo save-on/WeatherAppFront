@@ -5,6 +5,8 @@ import ScatteredShowers from "../../Images/scattered-showers.svg";
 import Plus from "../../Images/plus.svg";
 import { useState } from "react";
 import Trashcan from "../../Images/trashcan.svg";
+import { sendPackingListEmail } from "../../Utils/Api";
+import { checkLoggedIn } from "../../Utils/token";
 
 function MyTrips({ tripDetails, onRemoveActivity }) {
   const [clothesItems, setClothesItems] = useState([]);
@@ -123,6 +125,33 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         break;
       default:
         break;
+    }
+  };
+
+  const handleEmailPackingList = () => {
+    const packingList = {
+      clothes: clothesItems,
+      footwear: footwearItems,
+      accessories: accessoriesItems,
+      personal: personalItems,
+    };
+    const authToken = localStorage.getItem("authToken");
+
+    if (!authToken) {
+      alert("You must be logged in to email your packing list.");
+      return "";
+    }
+
+    try {
+      const response = await sendPackingListEmail(packingList, authToken);
+      if (response && response.message) {
+        alert(response.message);
+      } else {
+        alert("Packing list sent to your email!");
+      }
+    } catch (error) {
+      console.error("Error sending packing list email: ", error);
+      alert(error.message || "Failed to send packing list. Please try again.");
     }
   };
 
@@ -519,7 +548,8 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         </div>
       </div>
       <div className="mytrips__email-packing-list">
-        <button className="mytrips__email-submit-button">
+        <button className="mytrips__email-submit-button"
+        onClick={handleEmailPackingList}>
           Email Packing List
         </button>
       </div>
