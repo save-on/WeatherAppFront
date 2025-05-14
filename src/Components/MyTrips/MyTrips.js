@@ -5,8 +5,8 @@ import ScatteredShowers from "../../Images/scattered-showers.svg";
 import Plus from "../../Images/plus.svg";
 import { useState } from "react";
 import Trashcan from "../../Images/trashcan.svg";
-import { sendPackingListEmail } from "../../Utils/Api";
-import { checkLoggedIn } from "../../Utils/token";
+import { sendPackingListEmail } from "../../Utils/Api.js";
+import { checkLoggedIn } from "../../Utils/token.js";
 
 function MyTrips({ tripDetails, onRemoveActivity }) {
   const [clothesItems, setClothesItems] = useState([]);
@@ -128,7 +128,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     }
   };
 
-  const handleEmailPackingList = () => {
+  const handleEmailPackingList = async () => {
     const packingList = {
       clothes: clothesItems,
       footwear: footwearItems,
