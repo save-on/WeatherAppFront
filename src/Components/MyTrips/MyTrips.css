@@ -51,6 +51,31 @@
   font-size: 30px;
 }
 
+.mytrips__weatherForecast-day {
+  width: 350px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+}
+
+.mytrips__weatherForecast-day-weather-image {
+  height: 100px;
+  width: 100px;
+  margin-right: 16px;
+}
+
+.mytrips__weatherForecast-day-details {
+
+}
+
+.mytrips__weatherForecast-day-details-text {
+  margin: 5px 0;
+  display: flex;
+  font-family: KarlaMedium, sans-serif;
+  font-size: 20px;
+  width: 300px;
+}
+
 .mytrips__activities {
   margin-bottom: 80px;
     display: inline-flex;
