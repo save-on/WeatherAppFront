@@ -9,10 +9,17 @@ import { sendPackingListEmail } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 
 function MyTrips({ tripDetails, onRemoveActivity }) {
-  const [clothesItems, setClothesItems] = useState([]);
-  const [footwearItems, setFootwearItems] = useState([]);
-  const [accessoriesItems, setAccessoriesItems] = useState([]);
-  const [personalItems, setPersonalItems] = useState([]);
+  const initialEmptyItems = Array(8).fill({
+    name: "Add Item",
+    quantity: 0,
+    isEmpty: true,
+  });
+  const [clothesItems, setClothesItems] = useState([...initialEmptyItems]);
+  const [footwearItems, setFootwearItems] = useState([...initialEmptyItems]);
+  const [accessoriesItems, setAccessoriesItems] = useState([
+    ...initialEmptyItems,
+  ]);
+  const [personalItems, setPersonalItems] = useState([...initialEmptyItems]);
 
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState([1]);
@@ -45,20 +52,59 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
 
   const handleAddItem = (category) => {
     if (newItemName.trim()) {
-      const newItem = { name: newItemName.trim(), quantity: newItemQuantity };
+      const newItem = {
+        name: newItemName.trim(),
+        quantity: newItemQuantity,
+        isEmpty: false,
+      };
       switch (category) {
         case "Clothes":
-          const newClothes = [...clothesItems, newItem];
-          setClothesItems(newClothes);
+          const firstEmptyIndexClothes = clothesItems.findIndex(
+            (item) => item.isEmpty
+          );
+          if (firstEmptyIndexClothes !== -1) {
+            const newClothes = [...clothesItems];
+            newClothes[firstEmptyIndexClothes] = newItem;
+            setClothesItems(newClothes);
+          } else {
+            setClothesItems([...clothesItems, newItem]);
+          }
           break;
         case "Footwear":
-          setFootwearItems([...footwearItems, newItem]);
+          const firstEmptyIndexFootwear = footwearItems.findIndex(
+            (item) => item.isEmpty
+          );
+          if (firstEmptyIndexFootwear !== -1) {
+            const newFootwear = [...footwearItems];
+            newFootwear[firstEmptyIndexFootwear] = newItem;
+            setFootwearItems(newFootwear);
+          } else {
+            setFootwearItems([...footwearItems, newItem]);
+          }
           break;
         case "Accessories":
-          setAccessoriesItems([...accessoriesItems, newItem]);
+          const firstEmptyIndexAccessories = accessoriesItems.findIndex(
+            (item) => item.isEmpty
+          );
+          if (firstEmptyIndexAccessories !== -1) {
+            const newAccessories = [...accessoriesItems];
+            newAccessories[firstEmptyIndexAccessories] = newItem;
+            setAccessoriesItems(newAccessories);
+          } else {
+            setAccessoriesItems([...accessoriesItems, newItem]);
+          }
           break;
         case "Personal Items":
-          setPersonalItems([...personalItems, newItem]);
+          const firstEmptyIndexPersonal = personalItems.findIndex(
+            (item) => item.isEmpty
+          );
+          if (firstEmptyIndexPersonal !== -1) {
+            const newPersonal = [...personalItems];
+            newPersonal[firstEmptyIndexPersonal] = newItem;
+            setPersonalItems(newPersonal);
+          } else {
+            setPersonalItems([...personalItems, newItem]);
+          }
           break;
         default:
           break;
@@ -267,10 +313,15 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                 <input
                   className="mytrips__item-category__added-item-checkbox"
                   type="checkbox"
+                  disabled={item.isEmpty}
                 />
                 <span className="mytrips__item-category__added-item-text">
-                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                  {item.name}{" "}
+                  {item.quantity > 0 && !item.isEmpty
+                    ? `(${item.quantity})`
+                    : ""}
                 </span>
+                {!item.isEmpty}
                 <div className="mytrips__quantity-controls">
                   <button
                     type="button"
@@ -355,10 +406,39 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                 <input
                   className="mytrips__item-category__added-item-checkbox"
                   type="checkbox"
+                  disabled={item.isEmpty}
                 />
                 <span>
-                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                  {item.name}{" "}
+                  {item.quantity > 0 && !item.isEmpty
+                    ? `(${item.quantity})`
+                    : ""}
                 </span>
+                {!item.isEmpty}
+                <div className="mytrips__quantity-controls">
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange("Footwear", index, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange(
+                        "Footwear",
+                        index,
+                        Math.max(0, item.quantity - 1)
+                      )
+                    }
+                  >
+                    -
+                  </button>
+                </div>
                 <button
                   type="button"
                   className="mytrips__delete-item-button"
@@ -419,10 +499,40 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                 <input
                   className="mytrips__item-category__added-item-checkbox"
                   type="checkbox"
+                  disabled={item.isEmpty}
                 />
                 <span>
                   {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
                 </span>
+                {!item.isEmpty}
+                <div className="mytrips__quantity-controls">
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange(
+                        "Accessories",
+                        index,
+                        item.quantity + 1
+                      )
+                    }
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange(
+                        "Accessories",
+                        index,
+                        Math.max(0, item.quantity - 1)
+                      )
+                    }
+                  >
+                    -
+                  </button>
+                </div>
                 <button
                   type="button"
                   className="mytrips__delete-item-button"
@@ -483,10 +593,40 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                 <input
                   className="mytrips__item-category__added-item-checkbox"
                   type="checkbox"
+                  disabled={item.isEmpty}
                 />
                 <span>
                   {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
                 </span>
+                {!item.isEmpty}
+                <div className="mytrips__quantity-controls">
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange(
+                        "Personal Items",
+                        index,
+                        item.quantity + 1
+                      )
+                    }
+                  >
+                    +
+                  </button>
+                  <button
+                    type="button"
+                    className="mytrips__quantity-button"
+                    onClick={() =>
+                      handleQuantityChange(
+                        "Personal Items",
+                        index,
+                        Math.max(0, item.quantity - 1)
+                      )
+                    }
+                  >
+                    -
+                  </button>
+                </div>
                 <button
                   type="button"
                   className="mytrips__delete-item-button"
@@ -548,8 +688,10 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         </div>
       </div>
       <div className="mytrips__email-packing-list">
-        <button className="mytrips__email-submit-button"
-        onClick={handleEmailPackingList}>
+        <button
+          className="mytrips__email-submit-button"
+          onClick={handleEmailPackingList}
+        >
           Email Packing List
         </button>
       </div>
