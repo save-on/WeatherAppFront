@@ -1,10 +1,21 @@
 import "./MyTrips.css";
-import { handleRemoveActivity } from "../Main/NewMain.js";
 import Sunny from "../../Images/sunny.svg";
 import PartlyCloudy from "../../Images/partly-cloudy.svg";
 import ScatteredShowers from "../../Images/scattered-showers.svg";
+import Plus from "../../Images/plus.svg";
+import { useState } from "react";
 
 function MyTrips({ tripDetails, onRemoveActivity }) {
+  const [clothesItems, setClothesItems] = useState([]);
+  const [footwearItems, setFootwearItems] = useState([]);
+  const [accessoriesItems, setAccessoriesItems] = useState([]);
+  const [personalItems, setPersonalItems] = useState([]);
+
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemQuantity, setNewItemQuantity] = useState([1]);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [isAddingItem, setIsAddingItem] = useState(false);
+
   const formatDate = (date) => {
     if (date instanceof Date) {
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -26,6 +37,33 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const handleRemoveActivity = (index) => {
     if (onRemoveActivity) {
       onRemoveActivity(index);
+    }
+  };
+
+  const handleAddItem = (category) => {
+    if (newItemName.trim()) {
+      const newItem = { name: newItemName.trim(), quantity: newItemQuantity };
+      switch (category) {
+        case "Clothes":
+          const newClothes = [...clothesItems, newItem];
+          setClothesItems(newClothes);
+          break;
+        case "Footwear":
+          setFootwearItems([...footwearItems, newItem]);
+          break;
+        case "Accessories":
+          setAccessoriesItems([...accessoriesItems, newItem]);
+          break;
+        case "Personal Items":
+          setPersonalItems([...personalItems, newItem]);
+          break;
+        default:
+          break;
+      }
+      setNewItemName("");
+      setNewItemQuantity(1);
+      setIsAddingItem(false);
+      setCurrentCategory(null);
     }
   };
 
@@ -77,7 +115,12 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 2
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {formatDateDay(new Date(tripDetails.travelDates.startDate.getTime() + 24 * 60 * 60 * 1000))}
+                  {formatDateDay(
+                    new Date(
+                      tripDetails.travelDates.startDate.getTime() +
+                        24 * 60 * 60 * 1000
+                    )
+                  )}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
                   Partly Cloudy, 76°
@@ -94,7 +137,12 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 3
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {formatDateDay(new Date(tripDetails.travelDates.startDate.getTime() + 2 * 24 * 60 * 60 * 1000))}
+                  {formatDateDay(
+                    new Date(
+                      tripDetails.travelDates.startDate.getTime() +
+                        2 * 24 * 60 * 60 * 1000
+                    )
+                  )}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
                   Scattered Showers, 83°
@@ -126,16 +174,233 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         <ul className="mytrips__suggested-packing-list-items-container">
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Clothes</p>
+            {clothesItems.map((item, index) => (
+              <div key={index} className="mytrips__item-category__added-item">
+                <input
+                  className="mytrips__item-category__added-item-checkbox"
+                  type="checkbox"
+                />
+                <span className="mytrips__item-category__added-item-text">
+                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                </span>
+              </div>
+            ))}
+            {!isAddingItem || currentCategory !== "Clothes" ? (
+              <div className="mytrips__item-category-add-item">
+                <button
+                  className="mytrips__item-category-add-item-button"
+                  type="button"
+                  onClick={() => {
+                    setIsAddingItem(true);
+                    setCurrentCategory("Clothes");
+                  }}
+                >
+                  <img src={Plus} alt="Add Item" />
+                </button>
+                <p className="mytrips__item-category-add-item-text">Add Item</p>
+              </div>
+            ) : (
+              <div className="mytrips__item-category-add-item-form">
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  value={newItemQuantity}
+                  onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
+                  className="mytrips__item-category-add-item-form-quantity"
+                />
+                <button onClick={() => handleAddItem("Clothes")}>Add</button>
+                <button onClick={() => setIsAddingItem(false)}>Cancel</button>
+              </div>
+            )}
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Footwear</p>
+            {footwearItems.map((item, index) => (
+              <div key={index} className="mytrips__item-category__added-item">
+                <input
+                  className="mytrips__item-category__added-item-checkbox"
+                  type="checkbox"
+                />
+                <span>
+                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                </span>
+              </div>
+            ))}
+            {!isAddingItem || currentCategory !== "Footwear" ? (
+              <div className="mytrips__item-category-add-item">
+                <button
+                  className="mytrips__item-category-add-item-button"
+                  type="button"
+                  onClick={() => {
+                    setIsAddingItem(true);
+                    setCurrentCategory("Footwear");
+                  }}
+                >
+                  <img src={Plus} alt="Add Item" />
+                </button>
+                <p className="mytrips__item-category-add-item-text">Add Item</p>
+              </div>
+            ) : (
+              <div className="mytrips__item-category-add-item-form">
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  value={newItemQuantity}
+                  onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
+                  className="mytrips__item-category-add-item-form-quantity"
+                />
+                <button onClick={() => handleAddItem("Footwear")}>Add</button>
+                <button onClick={() => setIsAddingItem(false)}>Cancel</button>
+              </div>
+            )}
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Accessories</p>
+            {accessoriesItems.map((item, index) => (
+              <div key={index} className="mytrips__item-category__added-item">
+                <input
+                  className="mytrips__item-category__added-item-checkbox"
+                  type="checkbox"
+                />
+                <span>
+                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                </span>
+              </div>
+            ))}
+            {!isAddingItem || currentCategory !== "Accessories" ? (
+              <div className="mytrips__item-category-add-item">
+                <button
+                  className="mytrips__item-category-add-item-button"
+                  type="button"
+                  onClick={() => {
+                    setIsAddingItem(true);
+                    setCurrentCategory("Accessories");
+                  }}
+                >
+                  <img src={Plus} alt="Add Item" />
+                </button>
+                <p className="mytrips__item-category-add-item-text">Add Item</p>
+              </div>
+            ) : (
+              <div className="mytrips__item-category-add-item-form">
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  value={newItemQuantity}
+                  onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
+                  className="mytrips__item-category-add-item-form-quantity"
+                />
+                <button onClick={() => handleAddItem("Accessories")}>
+                  Add
+                </button>
+                <button onClick={() => setIsAddingItem(false)}>Cancel</button>
+              </div>
+            )}
+          </li>
+          <li className="mytrips__item-category">
+            <p className="mytrips__item-category-title">Personal Items</p>
+            {personalItems.map((item, index) => (
+              <div key={index} className="mytrips__item-category__added-item">
+                <input
+                  className="mytrips__item-category__added-item-checkbox"
+                  type="checkbox"
+                />
+                <span>
+                  {item.name} {item.quantity > 0 ? `(${item.quantity})` : ""}
+                </span>
+              </div>
+            ))}
+            {!isAddingItem || currentCategory !== "Personal Items" ? (
+              <div className="mytrips__item-category-add-item">
+                <button
+                  className="mytrips__item-category-add-item-button"
+                  type="button"
+                  onClick={() => {
+                    setIsAddingItem(true);
+                    setCurrentCategory("Personal Items");
+                  }}
+                >
+                  <img src={Plus} alt="Add Item" />
+                </button>
+                <p className="mytrips__item-category-add-item-text">Add Item</p>
+              </div>
+            ) : (
+              <div className="mytrips__item-category-add-item-form">
+                <input
+                  type="text"
+                  placeholder="Item Name"
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  value={newItemQuantity}
+                  onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
+                  className="mytrips__item-category-add-item-form-quantity"
+                />
+                <button onClick={() => handleAddItem("Personal Items")}>
+                  Add
+                </button>
+                <button onClick={() => setIsAddingItem(false)}>Cancel</button>
+              </div>
+            )}
+          </li>
+
+          {/* <li className="mytrips__item-category">
+            <p className="mytrips__item-category-title">Footwear</p>
+            <div className="mytrips__item-category-add-item">
+              <button
+                className="mytrips__item-category-add-item-button"
+                type="button"
+              >
+                <img src={Plus} />
+              </button>
+              <p className="mytrips__item-category-add-item-text">Add Item</p>
+            </div>
+          </li>
+          <li className="mytrips__item-category">
+            <p className="mytrips__item-category-title">Accessories</p>
+            <div className="mytrips__item-category-add-item">
+              <button
+                className="mytrips__item-category-add-item-button"
+                type="button"
+              >
+                <img src={Plus} />
+              </button>
+              <p className="mytrips__item-category-add-item-text">Add Item</p>
+            </div>
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title"> Personal Items</p>
-          </li>
+            <div className="mytrips__item-category-add-item">
+              <button
+                className="mytrips__item-category-add-item-button"
+                type="button"
+              >
+                <img src={Plus} />
+              </button>
+              <p className="mytrips__item-category-add-item-text">Add Item</p>
+            </div>
+          </li> */}
         </ul>
       </div>
       <div className="mytrips__other-items">

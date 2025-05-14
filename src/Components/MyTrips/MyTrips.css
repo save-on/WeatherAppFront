@@ -131,6 +131,49 @@
   font-size: 24px;
 }
 
+.mytrips__item-category-add-item {
+  display: flex;
+  align-items: center;
+}
+
+.mytrips__item-category-add-item-button {
+  margin-left: 20px;
+  margin-right: 10px;
+  font-size: 20px;
+  border: none;
+  background-color: #fff;
+  padding: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.mytrips__item-category-add-item-button:hover {
+  cursor: pointer;
+}
+
+.mytrips__item-category-add-item-text {
+  margin: 0;
+  font-family: KarlaRegular, sans-serif;
+  color: rgba(68,68,68,1);
+  font-size: 18px;
+}
+
+.mytrips__item-category__added-item {
+  display: flex;
+  margin: 0 0 20px 20px;
+}
+
+.mytrips__item-category__added-item-text {
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+}
+
+.mytrips__item-category__added-item-checkbox {
+  width: 20px;
+  height: 20px;
+  margin: 0 10px 0 0;
+}
+
 .mytrips__other-items {
   display: flex;
   padding-left: 148px;
@@ -165,6 +208,11 @@
   font-family: RobotoMedium, sans-serif;
   font-size: 16px;
   border-width: thin;
+}
+
+@font-face {
+  font-family: KarlaRegular;
+  src: url("../../fonts//Karla-Regular.ttf");
 }
 
 @font-face {
