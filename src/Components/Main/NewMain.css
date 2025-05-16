@@ -4,7 +4,7 @@
 }
 
 .newMain__title-text {
-  font-family: KarlaLightItalic,sans-serif;
+  font-family: KarlaLightItalic, sans-serif;
   font-size: 80px;
   margin-bottom: 40px;
 }
@@ -30,14 +30,16 @@
   border-style: solid;
   border-width: thin;
   border-color: lightgray;
-  font-family: KarlaRegular, sans-serif;
 }
 
+.newMain__input::placeholder {
+  color: #000;
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+}
 
 .newMain__list__inputs {
-  display: flex;
   position: relative;
- 
 }
 
 .dateRangePicker__wrapper {
@@ -59,7 +61,8 @@
 }
 
 .newMain__input__activity-text {
-  font-family: KarlaLightItalic;
+  font-family: KarlaExtraLightItalic;
+  font-size: 20px;
   margin-left: 10px;
   margin-top: 0;
   margin-bottom: 0;
@@ -81,14 +84,9 @@
 }
 
 .submitButton:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.activities-input-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 
 .activity-tags-inside-input {
   display: flex;
@@ -103,12 +101,12 @@
 .activity-tag-inside {
   display: inline-flex;
   align-items: center;
-  background-color: #000; 
+  background-color: #000;
   color: #fff;
   border-radius: 16px;
   padding: 4px 8px;
   font-size: 0.85rem;
-  margin-right: 4px; 
+  margin-right: 4px;
   top: 10px;
   font-family: KarlaRegular, sans-serif;
 }
@@ -117,7 +115,7 @@
   display: inline-flex;
   background: none;
   border: none;
-  color: #eee; 
+  color: #eee;
   font-size: 15px;
   margin-right: 4px;
   cursor: pointer;
@@ -131,28 +129,31 @@
   outline: none;
   min-width: 120px;
   flex: 1;
-  font-family: KarlaRegular, sans-serif;
+
   padding: 4px;
   margin-bottom: 4px;
   width: 402px;
 }
 
 .activity-input-field::placeholder {
-  opacity: 1;
-  color: #ccc;
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+  color: #000;
+  align-items: center;
+}
+
+.activity-input-field:not(:empty) ~ .activity-input-field::placeholder,
+.activity-tag-inside ~ .activity-input-field::placeholder {
+  color: transparent;
 }
 
 .remove-activity-inside:hover {
   color: #fff;
 }
 
-.activity-tags-inside-input:not(:empty) .activity-input-field::placeholder {
-  color: transparent; 
-}
-
 .activity-tag {
   align-items: center;
-  background-color: #000; 
+  background-color: #000;
   color: #fff;
   border-radius: 16px;
   padding: 4px 8px;
@@ -163,7 +164,7 @@
 .remove-activity {
   background: none;
   border: none;
-  color: #eee; 
+  color: #eee;
   font-size: 15px;
   cursor: pointer;
   padding: 0;
@@ -190,12 +191,11 @@
 .newMain__input[id="activity"]:focus {
   outline: none;
   border-color: #007bff;
-  
 }
 
 @font-face {
-  font-family: KarlaLightItalic;
-  src: url("../../fonts/Karla-LightItalic.ttf");
+  font-family: KarlaExtraLightItalic;
+  src: url("../../fonts/Karla-ExtraLightItalic.ttf");
 }
 
 @font-face {
@@ -206,4 +206,9 @@
 @font-face {
   font-family: KarlaMedium;
   src: url("../../fonts/Karla-Medium.ttf");
+}
+
+@font-face {
+  font-family: KarlaMediumSemiBold;
+  src: url("../../fonts//Karla-SemiBold.ttf");
 }

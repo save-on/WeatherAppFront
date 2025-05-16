@@ -121,7 +121,7 @@ function NewMain({ onTripDetailsSubmit }) {
               minLength="2"
               maxLength="50"
               required
-              placeholder="Destination"
+              placeholder="   Destination"
               id="location"
               value={values.location}
               onChange={handleChanges}
@@ -134,7 +134,7 @@ function NewMain({ onTripDetailsSubmit }) {
             <input
               className="newMain__input"
               type="text"
-              placeholder="Select Dates"
+              placeholder="   Select Dates"
               readOnly
               ref={dateInputRef}
               onClick={handleDateInputClick}
@@ -165,7 +165,7 @@ function NewMain({ onTripDetailsSubmit }) {
             <p className="newMain__input__activity-text">(Optional)</p>
           </label>
           <li className="newMain__list__inputs">
-            <div className="activities-input-container">
+            <div className="activities-input-container" >
               <div className="activity-tags-inside-input" >
               {activities.map((activity, index) => (
                 <span key={index} className="activity-tag-inside">
@@ -183,7 +183,7 @@ function NewMain({ onTripDetailsSubmit }) {
                 className="activity-input-field"
                 type="text"
                 name="activity"
-                placeholder="Add Activity"
+                placeholder="   Activities"
                 id="activity"
                 value={currentActivityInput}
                 onChange={handleActivityInputChange}

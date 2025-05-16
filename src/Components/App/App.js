@@ -566,7 +566,7 @@ function App() {
           />
         </Routes>
 
-        <Footer customStyle={elementStyle}/>
+        {/* <Footer customStyle={elementStyle}/> */}
 
         {activeModal === "login" && (
           <LoginModal
