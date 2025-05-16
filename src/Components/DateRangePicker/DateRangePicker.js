@@ -16,7 +16,7 @@ function DateRangePicker({ onDateChange, onClose }) {
     } else if (start && end && end >= start) {
       setStartDate(start);
       setEndDate(end);
-    
+
       if (onDateChange) {
         onDateChange(start, end);
       }
