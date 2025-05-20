@@ -4,7 +4,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import defaultAvatar from "../../Images/default-avatar.jpg";
 import { useNavigate } from "react-router";
 
-const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut }) => {
+const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut, loggedIn }) => {
   const currentUser = useContext(CurrentUserContext);
   const dropboxRef = useRef(null);
   const navigate = useNavigate();

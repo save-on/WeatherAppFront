@@ -190,6 +190,12 @@ function App() {
     setActiveModal("dropbox");
   };
 
+  const handleOpenLoginDropbox = () => {
+    setActiveModal("logindropbox")
+  }
+
+
+
   const registerUser = (values) => {
     setIsLoading(true);
     register(values)
@@ -484,6 +490,7 @@ function App() {
           onSignOut={onSignOut}
           onLogin={handleOpenLoginModal}
           customStyle={elementStyle}
+          handleOpenLoginDropbox={handleOpenLoginDropbox}
         />
         <Routes>
           <Route
