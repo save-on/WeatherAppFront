@@ -205,7 +205,6 @@
 .mytrips__quantity-controls {
   display: flex;
   margin-left: auto;
-  width: 20px;
   flex-wrap: wrap;
 }
 

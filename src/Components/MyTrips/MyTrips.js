@@ -3,6 +3,8 @@ import Sunny from "../../Images/sunny.svg";
 import PartlyCloudy from "../../Images/partly-cloudy.svg";
 import ScatteredShowers from "../../Images/scattered-showers.svg";
 import Plus from "../../Images/plus.svg";
+import Increment from "../../Images/Increment.svg";
+import Decrement from "../../Images/decrement.svg";
 import { useState } from "react";
 import Trashcan from "../../Images/trashcan.svg";
 import { sendPackingListEmail } from "../../Utils/Api.js";
@@ -317,22 +319,25 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                 />
                 <span className="mytrips__item-category__added-item-text">
                   {item.name}{" "}
-                  {item.quantity > 0 && !item.isEmpty
-                    ? `(${item.quantity})`
-                    : ""}
                 </span>
                 {!item.isEmpty}
                 <div className="mytrips__quantity-controls">
-                  <button
+                  {/* <button
                     type="button"
                     className="mytrips__quantity-button"
                     onClick={() =>
                       handleQuantityChange("Clothes", index, item.quantity + 1)
                     }
                   >
-                    +
-                  </button>
-                  <button
+                    
+                  </button> */}
+                  <img className="mytrips__quantity-button" src={Increment} onClick={() => handleQuantityChange("Clothes", index, item.quantity + 1)} />
+                  <span className="mytrips__item-category__added-item-text">
+                  {item.quantity > 0 && !item.isEmpty
+                    ? `(${item.quantity})`
+                    : ""}
+                </span>
+                  {/* <button
                     type="button"
                     className="mytrips__quantity-button"
                     onClick={() =>
@@ -344,7 +349,8 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                     }
                   >
                     -
-                  </button>
+                  </button> */}
+                  <img className="mytrips__quantity-button" src={Decrement} onClick={() => handleQuantityChange("Clothes", index, Math.max(0, item.quantity - 1))}/>
                 </div>
                 <button
                   type="button"
