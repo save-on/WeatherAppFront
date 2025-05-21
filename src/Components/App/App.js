@@ -490,7 +490,7 @@ function App() {
           onSignOut={onSignOut}
           onLogin={handleOpenLoginModal}
           customStyle={elementStyle}
-          handleOpenLoginDropbox={handleOpenLoginDropbox}
+          
         />
         <Routes>
           <Route

@@ -4,7 +4,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import defaultAvatar from "../../Images/default-avatar.jpg";
 import { useNavigate } from "react-router";
 
-const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut, loggedIn }) => {
+const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut, loggedIn, onLogin, onRegister }) => {
   const currentUser = useContext(CurrentUserContext);
   const dropboxRef = useRef(null);
   const navigate = useNavigate();
@@ -29,64 +29,26 @@ const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut, loggedIn }) => {
       className={`headerdropbox ${isOpened && "headerdropbox_visible"}`}
       ref={dropboxRef}
     >
-      <li className="headerdropbox__user-info">
-        <img
-          className="headerdropbox__user-avatar"
-          src={currentUser?.avatar || defaultAvatar}
-          alt=""
-        />
-        <div className="headerdropbox__user">
-          <p className="headerdropbox__user-name">{currentUser.name}</p>
-          <button
-            className="headerdropbox__profile-button"
-            type="button"
-            onClick={() => {
-              navigate("/profile");
-              handleCloseModal();
-            }}
-          >
-            View profile
-          </button>
-        </div>
-      </li>
       <ul className="headerdropbox__list">
         <li className="headerdropbox__list-item">
           <button
             className="headerdropbox__button"
             type="button"
-            onClick={() => {
-              navigate("/favorites");
-              handleCloseModal();
-            }}
+            onClick={onLogin}
           >
-            favorites
+            Login
           </button>
         </li>
         <li className="headerdropbox__list-item">
           <button
             className="headerdropbox__button"
             type="button"
-            onClick={() => {
-              navigate("/profile/packing-lists");
-              handleCloseModal();
-            }}
+            onClick={onRegister}
           >
-            packing lists
+            Sign Up
           </button>
         </li>
       </ul>
-      <li className="headerdropbox__signout">
-        <button
-          className="headerdropbox__signout-button"
-          type="button"
-          onClick={() => {
-            onSignOut();
-            handleCloseModal();
-          }}
-        >
-          Sign out
-        </button>
-      </li>
     </ul>
   );
 };

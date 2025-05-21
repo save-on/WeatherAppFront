@@ -1,28 +1,17 @@
-@keyframes slide-in {
-  from {
-    transform: translateY(-25%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
 .headerdropbox {
   position: absolute;
-  width: 270px;
-  right: 5px;
-  top: 45px;
+  width: 188px;
+  right: 30px;
+  top: 100px;
   z-index: 999;
-  padding: 15px 0 0;
-  border: 3px solid rgb(0, 174, 255);
   border-radius: 10px;
-  background-color: #f2f2f2;
+  background-color: #fff;
   list-style-type: none;
   margin: 0;
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.15s ease-in-out 0s;
+  padding: 0;
 }
 
 .headerdropbox_visible {
@@ -30,6 +19,8 @@
   opacity: 1;
   transition: opacity 0.15s ease-in-out 0s;
   animation: slide-in 0.15s ease-out;
+   box-shadow: 0 3px 4.8px 1px rgba(68,68,68,.39);
+   height: 112px;
 }
 
 .headerdropbox__user-info {
@@ -80,14 +71,13 @@
   list-style-type: none;
   padding: 0;
   width: 100%;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .headerdropbox__list-item {
   display: flex;
   height: 40px;
   width: 100%;
+  margin-top: 10px;
 }
 
 .headerdropbox__button {
@@ -126,4 +116,14 @@
 
 .headerdropbox__signout-button:hover {
   color: rgba(0, 0, 0, 0.6);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-25%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
 }

@@ -3,7 +3,6 @@ import "./NewHeader.css";
 import { Link } from "react-router";
 import { useContext } from "react";
 import HeaderDropbox from "../HeaderDropbox/HeaderDropbox.jsx";
-import LoginDropbox from "../LoginDropbox/LoginDropbox.jsx";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import "../App/App.css";
 
@@ -15,7 +14,6 @@ function NewHeader({
   activeModal,
   handleCloseModal,
   handleOpenDropbox,
-  handleOpenLoginDropbox,
   onSignOut,
   customStyle,
 }) {
@@ -54,10 +52,10 @@ function NewHeader({
               className="newHeader__avatar_image"
               src={AvatarDefault}
               alt="Avatar Default"
-              onClick={handleOpenLoginDropbox}
+              onClick={handleOpenDropbox}
             />
-             <LoginDropbox
-              isOpened={activeModal === "logindropbox"}
+             <HeaderDropbox
+              isOpened={activeModal === "dropbox"}
               handleCloseModal={handleCloseModal}
               onRegister={onRegister}
               onLogin={onLogin}
