@@ -9,12 +9,14 @@ const ModalWithForm = ({
   formRef,
   errMessage,
 }) => {
+
+
   return (
     <div className={`modal modal_type_${name}`}>
-      <div className="modal__content">
-        <h3 className="modal-form-header">
+      <div className={`modal__content_type_${name}`}>
+        <h3 className={`modal-form-header_type_${name}`}>
           {title}
-          <button className="close" type="button" onClick={onClose}></button>
+          <button className={`close_type_${name}`} type="button" onClick={onClose}></button>
         </h3>
         <form
           ref={formRef}

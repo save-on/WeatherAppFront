@@ -18,15 +18,6 @@ const RegisterModal = ({
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
 
-  // const handleInputReset = () => {
-  //   setValues({
-  //     email: "",
-  //     password: "",
-  //     name: "",
-  //     avatar: "",
-  //   });
-  // };
-
   const onRegister = (e) => {
     e.preventDefault();
     registerUser(values);
@@ -35,14 +26,34 @@ const RegisterModal = ({
   return (
     <ModalWithForm
       name="register"
-      title="Sign Up"
+      title="Sign up to get your free personalized packing list!"
       onClose={onClose}
       buttonText="Sign Up"
       onSubmit={onRegister}
       formRef={formRef}
       errMessage={errMessage}
     >
-      <ul className="inputs">
+      <ul className="inputs-signup">
+        <li>
+          <label className="input-header" htmlFor="name">
+            Name
+          </label>
+          <input
+            className="input"
+            name="name"
+            id="name"
+            type="text"
+            placeholder="   Name"
+            minLength="2"
+            maxLength="50"
+            required
+            value={values.name}
+            onChange={handleChanges}
+          />
+          {errors.name && (
+            <p className="modal-form_input-error">{errors.name}</p>
+          )}
+        </li>
         <label className="input-header" htmlFor="email">
           Email
         </label>
@@ -52,7 +63,7 @@ const RegisterModal = ({
             name="email"
             id="email"
             type="email"
-            placeholder="Email"
+            placeholder="   Email"
             required
             value={values.email}
             onChange={handleChanges}
@@ -70,7 +81,7 @@ const RegisterModal = ({
             name="password"
             id="password"
             type="password"
-            placeholder="Password"
+            placeholder="   Password"
             minLength="6"
             maxLength="50"
             required
@@ -81,49 +92,23 @@ const RegisterModal = ({
             <p className="modal-form_input-error">{errors.password}</p>
           )}
         </li>
-        <li>
-          <label className="input-header" htmlFor="name">
-            Name
-          </label>
-          <input
-            className="input"
-            name="name"
-            id="name"
-            type="text"
-            placeholder="Name"
-            minLength="2"
-            maxLength="50"
-            required
-            value={values.name}
-            onChange={handleChanges}
-          />
-          {errors.name && (
-            <p className="modal-form_input-error">{errors.name}</p>
-          )}
-        </li>
-        <li>
-          <label className="input-header" htmlFor="avatar">
-            Avatar URL
-          </label>
-          <input
-            className="input"
-            name="avatar"
-            id="avatar"
-            type="url"
-            placeholder="Avatar URL"
-            value={values.avatar}
-            onChange={handleChanges}
-          />
-        </li>
       </ul>
-      <div className="modal-form-buttons">
+         <div className="modal-form-buttons">
         <button
-          className="modal-form-submit"
+          className="modal-form-submit-signup"
           disabled={isDisabled}
           type="submit"
         >
-          {isLoading ? "Signing up..." : "Sign Up"}
+          {isLoading ? "Creating account..." : "Create account"}
         </button>
+      </div>
+       <p className="modal-form-forgot-password-signup">
+        Did you forget your password?
+      </p>
+        <div className="modal-form-signup">
+       <p className="modal-form-signup-text">Already have an account?</p>
+        <p className="modal-form-signup-text-description">Click below to sign in</p>
+
         <button
           className="modal__signup"
           type="button"
@@ -132,8 +117,10 @@ const RegisterModal = ({
             setErrMessage("");
           }}
         >
-          Or Log In
+          Login
         </button>
+        
+ 
       </div>
     </ModalWithForm>
   );

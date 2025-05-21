@@ -20,7 +20,7 @@
   transition: opacity 0.15s ease-in-out 0s;
   animation: slide-in 0.15s ease-out;
    box-shadow: 0 3px 4.8px 1px rgba(68,68,68,.39);
-   height: 112px;
+   
      padding: 0;
 }
 
