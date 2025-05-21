@@ -11,7 +11,7 @@
   opacity: 0;
   visibility: hidden;
   transition: visibility 0.15s ease-in-out 0s;
-  padding: 0;
+
 }
 
 .headerdropbox_visible {
@@ -21,6 +21,7 @@
   animation: slide-in 0.15s ease-out;
    box-shadow: 0 3px 4.8px 1px rgba(68,68,68,.39);
    height: 112px;
+     padding: 0;
 }
 
 .headerdropbox__user-info {
@@ -78,21 +79,23 @@
   height: 40px;
   width: 100%;
   margin-top: 10px;
+
 }
 
 .headerdropbox__button {
   padding: 0 0 0 15px;
   margin: 0;
   border: none;
-  font-size: 18px;
   font-weight: 700;
   text-transform: capitalize;
   background-color: transparent;
   width: 100%;
   text-align: left;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.7);
   transition: background-color 0.05s linear 0s;
+  font-family: KarlaRegular;
+  font-size: 18px;
+  color: #000;
 }
 
 .headerdropbox__button:hover {
@@ -126,4 +129,14 @@
   to {
     transform: translateY(0);
   }
+}
+
+@font-face {
+  font-family: KarlaMedium;
+  src: url("../../fonts/Karla-Medium.ttf");
+}
+
+@font-face {
+  font-family: KarlaRegular;
+  src: url("../../fonts/Karla-Regular.ttf");
 }

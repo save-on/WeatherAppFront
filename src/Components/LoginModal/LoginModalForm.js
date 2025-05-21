@@ -16,13 +16,6 @@ const LoginModal = ({
   });
   const { formRef, errors, isDisabled } = useFormValidator(values);
 
-  // const handleInputReset = () => {
-  //   setValues({
-  //     name: "",
-  //     password: "",
-  //   });
-  // };
-
   const onLogin = (e) => {
     e.preventDefault();
     loginUser(values);
