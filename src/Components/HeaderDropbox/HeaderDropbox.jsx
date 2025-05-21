@@ -48,6 +48,15 @@ const HeaderDropbox = ({ isOpened, handleCloseModal, onSignOut, loggedIn, onLogi
             Sign Up
           </button>
         </li>
+          <li className="headerdropbox__list-item">
+          <button
+            className="headerdropbox__button"
+            type="button"
+            onClick={onSignOut}
+          >
+            Sign Out
+          </button>
+        </li>
       </ul>
     </ul>
   );

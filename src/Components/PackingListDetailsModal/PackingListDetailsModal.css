@@ -13,16 +13,6 @@
     align-items: center;
 }
 
-.modal__content {
-    background-color: #fefefe;
-    margin: 15% auto; 
-    
-    border: 1px solid #888;
- 
-    border-radius: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    position: relative; 
-}
 
 .modal__header {
     display: flex;

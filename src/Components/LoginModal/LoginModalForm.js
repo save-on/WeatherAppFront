@@ -23,7 +23,7 @@ const LoginModal = ({
 
   return (
     <ModalWithForm
-      title="Log In"
+      title="Login"
       onClose={onClose}
       onSubmit={onLogin}
       buttonText="Log In"
@@ -42,7 +42,7 @@ const LoginModal = ({
             name="email"
             minLength="1"
             maxLength="50"
-            placeholder="Email"
+            placeholder="   Email"
             id="email"
             value={values.email}
             onChange={handleChanges}
@@ -60,7 +60,7 @@ const LoginModal = ({
             className="input"
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="   Password"
             id="password"
             minLength="6"
             maxLength="50"
@@ -79,8 +79,16 @@ const LoginModal = ({
           disabled={isDisabled}
           type="submit"
         >
-          {isLoading ? "Logging In..." : "Log In"}
+          {isLoading ? "Logging In..." : "Login"}
         </button>
+      </div>
+      <p className="modal-form-forgot-password">
+        Did you forget your password?
+      </p>
+        <div className="modal-form-signup">
+       <p className="modal-form-signup-text">Sign Up</p>
+        <p className="modal-form-signup-text-description">Click below to sign up for a new account</p>
+
         <button
           className="modal__signup"
           type="button"
@@ -89,8 +97,10 @@ const LoginModal = ({
             setErrMessage("");
           }}
         >
-          or Sign Up
+          Create account
         </button>
+        
+ 
       </div>
     </ModalWithForm>
   );
