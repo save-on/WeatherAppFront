@@ -36,26 +36,15 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
   useEffect(() => {
-    // --- ADD THIS CONSOLE.LOG ---
     console.log("MyTrips.js: currentUser from context:", currentUser);
     if (currentUser && currentUser.email) {
       console.log("MyTrips.js: User email available:", currentUser.email);
+      setEmailStatus("");
     } else {
       console.log("MyTrips.js: User email NOT available in context.");
-    }
-    // --- END ADDITION ---
-
-    if (!isLoggedIn || !currentUser || !currentUser.email) {
-      console.warn(
-        "User not logged in or email not available for MyTrips email feature."
-      );
       setEmailStatus("Please sign in to email your packing list.");
-    } else {
-      setEmailStatus("");
     }
-  }, [isLoggedIn, currentUser]); // Re-run if login status or currentUser changes
-
-  // ... (rest of your MyTrips component) ...
+  }, [currentUser]);
 
   const formatDate = (date) => {
     if (date instanceof Date) {
@@ -259,7 +248,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
 
   const handleEmailPackingList = async () => {
     console.log("Attempting to send email. Current user:", currentUser);
-    const recipientEmail = currentUser?.email; // Use optional chaining for safety
+    const recipientEmail = currentUser?.email;
 
     if (!recipientEmail) {
       alert("Error: User email not found. Please log in again.");
@@ -273,15 +262,36 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       accessories: accessoriesItems,
       personal: personalItems,
     };
-    const authToken = localStorage.getItem("authToken");
+    const authToken = localStorage.getItem("jwt");
+    console.log('Auth Token: ', authToken);
 
     if (!authToken) {
       alert("You must be logged in to email your packing list.");
       return "";
     }
 
+    const tripName = tripDetails.location || "Your Trip";
+    let tripDates = "";
+    if (
+      tripDetails.travelDates &&
+      tripDetails.travelDates.startDate &&
+      tripDetails.travelDates.endDate
+    ) {
+      const formattedStartDate = formatDate(tripDetails.travelDates.startDate);
+      const formattedEndDate = formatDate(tripDetails.travelDates.endDate);
+      tripDates = `${formattedStartDate} - ${formattedEndDate}`;
+    }
+
     try {
-      const response = await sendPackingListEmail(packingList, authToken);
+      const response = await sendPackingListEmail(
+        {
+          ...packingList,
+          tripName,
+          tripDates,
+        },
+        authToken
+      );
+
       if (response && response.message) {
         alert(response.message);
       } else {
@@ -922,9 +932,14 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         </div>
       </div>
       <div className="mytrips__email-packing-list">
+        {emailStatus && (
+          <p className="mytrips__email-status-message">{emailStatus}</p>
+        )}
         <button
+          type="button"
           className="mytrips__email-submit-button"
           onClick={handleEmailPackingList}
+          disabled={!!emailStatus}
         >
           Email Packing List
         </button>
