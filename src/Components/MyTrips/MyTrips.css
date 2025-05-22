@@ -135,17 +135,28 @@
   align-items: center;
 }
 
+.mytrips__item-category__add-item.mytrips__item-not-empty:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.mytrips__item-category__added-item-checkbox:disabled + .custom-checkbox-box {
+    background-color: #f0f0f0;
+    border-color: #cccccc;
+    cursor: auto;
+}
+
 .mytrips__item-category-add-item-button {
   margin-left: 20px;
   margin-right: 10px;
   font-size: 20px;
-  border: none;
+  border: 1px solid #000;
   background-color: #fff;
   padding: 0;
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
+  border-radius: 5px;
 }
-
 .mytrips__item-category-add-item-button:hover {
   cursor: pointer;
 }
@@ -161,6 +172,7 @@
   display: flex;
   gap: 5px;
   margin-left: 20px;
+  align-items: center;
 }
 
 .mytrips__item-category-add-item-form-input {
@@ -186,6 +198,10 @@
   border-width: thin;
 }
 
+.mytrips__item-name-text {
+
+}
+
 .mytrips__item-category__added-item {
   display: flex;
   margin: 0 0 20px 20px;
@@ -194,18 +210,48 @@
 .mytrips__item-category__added-item-text {
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  border: 1px solid #000;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 .mytrips__item-category__added-item-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.custom-checkbox-box {
+  display: inline-block;
   width: 20px;
   height: 20px;
-  margin: 0 10px 0 0;
+  border: 1px solid #000;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.custom-checkbox-box:hover {
+  background-color: #B7B7B7;
+}
+
+
+
+.mytrips__checkmark {
+  width: 20px;
+  height: 20px;
 }
 
 .mytrips__quantity-controls {
   display: flex;
   margin-left: auto;
-  flex-wrap: wrap;
 }
 
 .mytrips__quantity-button {
@@ -223,6 +269,16 @@
   background-color: #fff;
   border: none;
   margin-right: 20px;
+}
+
+.mytrips__item-category__added-item:hover .mytrips__delete-icon {
+  visibility: visible;
+  opacity: 1;
+}
+
+.mytrips__delete-icon {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .mytrips__delete-item-button:hover {
