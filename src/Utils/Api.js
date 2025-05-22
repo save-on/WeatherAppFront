@@ -233,13 +233,17 @@ export const getCityLocationData = (location) => {
 
 export const sendPackingListEmail = async (packingList, token) => {
   try {
-    const res = await fetch(`${baseUrl}send-packing-list`, {
+    const res = await fetch(`${baseUrl}packinglist/send-packing-list`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(packingList),
+      body: JSON.stringify({
+        packingList,
+        tripName: "Your Trip",
+        tripDates: "Your Dates",
+      }),
     });
 
     if (!res.ok) {

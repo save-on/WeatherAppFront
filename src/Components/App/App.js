@@ -197,6 +197,7 @@ function App() {
 
 
   const registerUser = (values) => {
+    console.log("Values: ", values);
     setIsLoading(true);
     register(values)
       .then(() => loginUser(values))
@@ -452,7 +453,7 @@ function App() {
 
   return (
     <div className="app">
-      <CurrentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={{ currentUser, loggedIn, loginUser, onSignOut}}>
         {/* <video
           key={videoSrc}
           id="background-video"

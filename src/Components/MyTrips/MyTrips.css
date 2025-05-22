@@ -321,6 +321,10 @@
   border-width: thin;
 }
 
+.mytrips__email-submit-button:hover {
+  cursor: pointer;
+}
+
 @font-face {
   font-family: KarlaRegular;
   src: url("../../fonts//Karla-Regular.ttf");

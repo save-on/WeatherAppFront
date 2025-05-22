@@ -6,10 +6,11 @@ import Plus from "../../Images/Plus.svg";
 import Increment from "../../Images/Increment.svg";
 import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import Trashcan from "../../Images/trashcan.svg";
 import { sendPackingListEmail } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
+import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
 function MyTrips({ tripDetails, onRemoveActivity }) {
   const initialEmptyItems = Array(9).fill({
@@ -29,6 +30,32 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const [newItemQuantity, setNewItemQuantity] = useState(1);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [isAddingItem, setIsAddingItem] = useState(false);
+
+  const [emailStatus, setEmailStatus] = useState("");
+
+  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    // --- ADD THIS CONSOLE.LOG ---
+    console.log("MyTrips.js: currentUser from context:", currentUser);
+    if (currentUser && currentUser.email) {
+      console.log("MyTrips.js: User email available:", currentUser.email);
+    } else {
+      console.log("MyTrips.js: User email NOT available in context.");
+    }
+    // --- END ADDITION ---
+
+    if (!isLoggedIn || !currentUser || !currentUser.email) {
+      console.warn(
+        "User not logged in or email not available for MyTrips email feature."
+      );
+      setEmailStatus("Please sign in to email your packing list.");
+    } else {
+      setEmailStatus("");
+    }
+  }, [isLoggedIn, currentUser]); // Re-run if login status or currentUser changes
+
+  // ... (rest of your MyTrips component) ...
 
   const formatDate = (date) => {
     if (date instanceof Date) {
@@ -231,6 +258,15 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   };
 
   const handleEmailPackingList = async () => {
+    console.log("Attempting to send email. Current user:", currentUser);
+    const recipientEmail = currentUser?.email; // Use optional chaining for safety
+
+    if (!recipientEmail) {
+      alert("Error: User email not found. Please log in again.");
+      console.error("Recipient email is null or undefined.");
+      return;
+    }
+
     const packingList = {
       clothes: clothesItems,
       footwear: footwearItems,
@@ -262,7 +298,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       e.preventDefault();
       handleAddItem(currentCategory);
     }
-  }
+  };
 
   return (
     <div className="mytrips">
