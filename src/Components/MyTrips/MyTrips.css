@@ -337,6 +337,10 @@
   background-color: transparent;
 }
 
+.mytrips__delete-trip-button {
+  cursor: pointer;
+}
+
 @font-face {
   font-family: KarlaRegular;
   src: url("../../fonts//Karla-Regular.ttf");
