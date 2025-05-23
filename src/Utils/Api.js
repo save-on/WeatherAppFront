@@ -231,28 +231,27 @@ export const getCityLocationData = (location) => {
   });
 };
 
-export const sendPackingListEmail = async (packingList, token) => {
+export const sendPackingListEmail = async (dataToSend, token) => {
   try {
-    const res = await fetch(`${baseUrl}packinglist/send-packing-list`, {
+    const res = await fetch(`${baseUrl}packing-lists/send-packing-list`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        packingList,
-        tripName: "Your Trip",
-        tripDates: "Your Dates",
-      }),
+      body: JSON.stringify(dataToSend),
     });
 
     if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(
-        `HTTP error! status: ${res.status}, message: ${
-          errorData.message || "Failed to send packing list email"
-        }`
-      );
+      const errorText = await res.text();
+      let errorMessage = `HTTP error! status: ${res.status}`;
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.message || errorMessage;
+      } catch (e) {
+        errorMessage = errorText || errorMessage;
+      }
+      throw new Error(errorMessage);
     }
 
     return await res.json();

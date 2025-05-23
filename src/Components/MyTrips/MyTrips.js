@@ -944,6 +944,11 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
           Email Packing List
         </button>
       </div>
+      <div>
+        <button>
+          Delete Trip
+        </button>
+      </div>
     </div>
   );
 }
