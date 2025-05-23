@@ -3,6 +3,7 @@ import "./NewHeader.css";
 import { Link } from "react-router";
 import { useContext } from "react";
 import HeaderDropbox from "../HeaderDropbox/HeaderDropbox.jsx";
+import TripsDropbox from "../TripsDropBox/TripsDropbox.jsx";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import "../App/App.css";
 
@@ -14,6 +15,7 @@ function NewHeader({
   activeModal,
   handleCloseModal,
   handleOpenDropbox,
+  handleOpenTripDropbox,
   onSignOut,
   customStyle,
 }) {
@@ -27,9 +29,21 @@ function NewHeader({
       <div className="newHeader__profile">
         {loggedIn ? (
           <div className="newHeader__profile">
-            <Link className="newHeader__profile-myTrips-link" to="/mytrips">
+            {/* <Link className="newHeader__profile-myTrips-link" to="/mytrips">
               <p>My Trips</p>
-            </Link>
+            </Link> */}
+            <p
+              className="newHeader__profile-myTrips-link"
+              onClick={handleOpenTripDropbox}
+            >
+              MyTrips
+            </p>
+            <TripsDropbox
+              isOpened={activeModal === "tripdropbox"}
+              handleCloseModal={handleCloseModal}
+              loggeIn={loggedIn}
+            />
+
             <img
               className="newHeader__avatar_image"
               src={currentUser.avatar || AvatarDefault}
@@ -54,7 +68,7 @@ function NewHeader({
               alt="Avatar Default"
               onClick={handleOpenDropbox}
             />
-             <HeaderDropbox
+            <HeaderDropbox
               isOpened={activeModal === "dropbox"}
               handleCloseModal={handleCloseModal}
               onRegister={onRegister}

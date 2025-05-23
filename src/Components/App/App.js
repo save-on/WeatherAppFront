@@ -190,9 +190,13 @@ function App() {
     setActiveModal("dropbox");
   };
 
+  const handleOpenTripDropbox = () => {
+    setActiveModal("tripdropbox");
+  };
+
   const handleOpenLoginDropbox = () => {
-    setActiveModal("logindropbox")
-  }
+    setActiveModal("logindropbox");
+  };
 
 
 
@@ -487,6 +491,7 @@ function App() {
           isLoading={isLoading}
           activeModal={activeModal}
           handleOpenDropbox={handleOpenDropbox}
+          handleOpenTripDropbox={handleOpenTripDropbox}
           handleCloseModal={handleCloseModal}
           onSignOut={onSignOut}
           onLogin={handleOpenLoginModal}

@@ -358,11 +358,13 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 2
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {formatDateDay(
-                    new Date(
-                      tripDetails.travelDates.startDate.getTime() +
-                        24 * 60 * 60 * 1000
+                  {tripDetails.traveDates && tripDetails.travelDates.startDate ? (
+                    formatDateDay(
+                    new Date(new Date(  tripDetails.travelDates.startDate).getTime() +
+                        24 * 60 * 60 * 1000)                    
                     )
+                  ) : (
+                    <span>No Start Date</span>
                   )}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
@@ -380,11 +382,13 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 3
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {formatDateDay(
-                    new Date(
-                      tripDetails.travelDates.startDate.getTime() +
-                        2 * 24 * 60 * 60 * 1000
+                  {tripDetails.traveDates && tripDetails.travelDates.startDate ? (
+                    formatDateDay(
+                    new Date(new Date(  tripDetails.travelDates.startDate).getTime() +
+                        24 * 60 * 60 * 1000)                    
                     )
+                  ) : (
+                    <span>No Start Date</span>
                   )}
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
@@ -943,11 +947,11 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         >
           Email Packing List
         </button>
-      </div>
-      <div>
-        <button>
+         <div className="mytrips__delete-trip">
+        <button className="mytrips__delete-trip-button">
           Delete Trip
         </button>
+      </div>
       </div>
     </div>
   );

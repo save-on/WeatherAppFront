@@ -1,0 +1,59 @@
+.tripdropbox {
+  position: absolute;
+  width: 135px;
+  height: 208px;
+  right: 30px;
+  top: 100px;
+  z-index: 999;
+  border-radius: 10px;
+  background-color: #fff;
+  list-style-type: none;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.15s ease-in-out 0s;
+}
+
+.tripdropbox_visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out 0s;
+  animation: slide-in 0.15s ease-out;
+  box-shadow: 0 3px 4.8px 1px rgba(68, 68, 68, 0.39);
+  padding: 0;
+}
+
+.tripdropbox__list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.tripdropbox__list-item {
+  display: flex;
+  height: 40px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.tripdropbox__button {
+  padding: 0 0 0 15px;
+  margin: 0;
+  border: none;
+  font-weight: 700;
+  text-transform: capitalize;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.05s linear 0s;
+  font-family: KarlaRegular;
+  font-size: 18px;
+  color: #000;
+}
+
+.tripdropbox__button:hover {
+  background-color: #eaeaea;
+}
