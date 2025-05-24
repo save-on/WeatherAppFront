@@ -24,6 +24,7 @@ export const useForm = (initialValues = {}) => {
   };
 
   const resetForm = () => {
+    console.log("4. useForm setValues called with: ", newDateRangeObject);
     setValues({
       location: "",
       activity: "",

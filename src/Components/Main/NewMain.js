@@ -20,8 +20,8 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
   const activityInputRef = useRef(null);
 
   const onDateChange = (start, end) => {
+    console.log("DateRangePicker onDateChange -  start: ", start, "end: ", end);
     handleDateChange("travelDates", { startDate: start, endDate: end });
-    console.log({ datePickerStart: start, datePickerEnd: end});
   };
 
   const handleDateInputClick = () => {
@@ -86,6 +86,9 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log("2. handleSubmit - values.travelDates BEFORE constructing tripData: ", values.travelDates);
+
     const tripData = {
       location: values.location,
       startDate: values.travelDates.startDate
@@ -96,7 +99,7 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
         : null,
       activities: activities.join(", "),
     };
-    console.log("Trip data being sent from Newmain: ", tripData);
+    console.log("3. Trip data being sent from Newmain: ", tripData);
     onNewTripAttempt(tripData);
   };
 
