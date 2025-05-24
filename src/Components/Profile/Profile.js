@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SideBar from "./SideBar.js";
 import ClothesSection from "./ClothesSection.js";
-import PackingListList from "../PackingListList/PackingListList.js";
+import PackingListList from "../../Components/PackingListList/PackingListList.js";
 import PackingListDetailsModal from "../PackingListDetailsModal/PackingListDetailsModal.js";
 import PackingListCard from "../PackingListCard/PackingListCard.js";
 import "./Profile.css";
@@ -20,15 +20,15 @@ const Profile = ({
   isPackingListModalOpen,
   selectedPackingList,
   closePackingListModal,
-  packingLists
+  packingLists,
 }) => {
-
-
-
-  const handlePackingListDeleted = (deletedPackingListId) => { // [✅] **Define handlePackingListDeleted in Profile**
+  const handlePackingListDeleted = (deletedPackingListId) => {
+    // [✅] **Define handlePackingListDeleted in Profile**
     // Update the packing lists state to remove the deleted list
-    setPackingLists(prevLists => prevLists.filter(list => list.id !== deletedPackingListId));
-};
+    setPackingLists((prevLists) =>
+      prevLists.filter((list) => list.id !== deletedPackingListId)
+    );
+  };
 
   return (
     <div className="profile">
@@ -46,7 +46,6 @@ const Profile = ({
               Add New Item
             </button>
           </div>
-
 
           <ClothesSection
             clothingItems={clothingItems}
@@ -67,10 +66,7 @@ const Profile = ({
           handlePackingListDeleted={handlePackingListDeleted}
           packingLists={packingLists}
         />
-   
-
       </div>
-
     </div>
   );
 };

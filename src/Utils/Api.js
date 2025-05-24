@@ -261,13 +261,36 @@ export const sendPackingListEmail = async (dataToSend, token) => {
   }
 };
 
-export const postTripWithPackinglist = (tripData, token) => {
-  return fetch(`${baseUrl}trips`, {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(tripData),
-  }).then(processServerRequest);
-}
+export const postTripWithPackinglist = async (tripData, token) => {
+  try {
+    const res = await fetch(`${baseUrl}trips`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tripData),
+    });
+
+    if (!res.ok) {
+      // If the response is not OK (e.g., 4xx or 5xx),
+      // try to parse the error message from the backend.
+      let errorMessage = `HTTP error! status: ${res.status}`;
+      try {
+        const errorData = await res.json(); // Backend sends JSON errors
+        errorMessage = errorData.message || errorMessage;
+      } catch (err) {
+        // Fallback if the error response itself isn't JSON
+        const errorText = await res.text();
+        errorMessage = errorText || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    // If the response is OK, parse the successful JSON data
+    return await res.json();
+  } catch (error) {
+    console.error("Error posting trip with packing list: ", error);
+    throw error; // Re-throw for App.js to catch
+  }
+};
