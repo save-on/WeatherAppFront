@@ -5,14 +5,13 @@ import { useForm } from "../../hooks/useForm.js";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function NewMain({ onTripDetailsSubmit }) {
+function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
   const { values, handleChanges, handleDateChange } = useForm();
 
   const [travelDates, setTravelDates] = useState({
     startDate: null,
     endDate: null,
   });
-  
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const dateInputRef = useRef(null);
   const datePickerRef = useRef(null);
@@ -21,9 +20,9 @@ function NewMain({ onTripDetailsSubmit }) {
   const activityInputRef = useRef(null);
 
   const onDateChange = (start, end) => {
-    handleDateChange("startDate", start);
-    handleDateChange("endDate", end);
-  }
+    handleDateChange("travelDates", { startDate: start, endDate: end });
+    console.log({ datePickerStart: start, datePickerEnd: end});
+  };
 
   const handleDateInputClick = () => {
     setIsDatePickerVisible(!isDatePickerVisible);
@@ -85,16 +84,20 @@ function NewMain({ onTripDetailsSubmit }) {
     }
   };
 
-  const navigate = useNavigate();
-
-  const handleSubmit = () => { 
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const tripData = {
       location: values.location,
-      activities: activities,
-      travelDates: values.travelDates,
+      startDate: values.travelDates.startDate
+        ? values.travelDates.startDate.toISOString()
+        : null,
+      endDate: values.travelDates.endDate
+        ? values.travelDates.endDate.toISOString()
+        : null,
+      activities: activities.join(", "),
     };
-    onTripDetailsSubmit(tripData);
-    navigate("/mytrips");
+    console.log("Trip data being sent from Newmain: ", tripData);
+    onNewTripAttempt(tripData);
   };
 
   return (
@@ -109,93 +112,106 @@ function NewMain({ onTripDetailsSubmit }) {
         </p>
       </div>
       <div className="newMain__container">
-        <ul className="newMain__inputs">
-          <label className="newMain__input-header" htmlFor="location">
-            Where
-          </label>
-          <li className="newMain__list__inputs">
-            <input
-              className="newMain__input"
-              type="text"
-              name="location"
-              minLength="2"
-              maxLength="50"
-              required
-              placeholder="   Destination"
-              id="location"
-              value={values.location}
-              onChange={handleChanges}
-            />
-          </li>
-          <label className="newMain__input-header" htmlFor="date">
-            When
-          </label>
-          <li className="newMain__list__inputs">
-            <input
-              className="newMain__input"
-              type="text"
-              placeholder="   Select Dates"
-              readOnly
-              ref={dateInputRef}
-              onClick={handleDateInputClick}
-              value={
-                values.travelDates.startDate && values.travelDates.endDate
-                  ? `${formatDateForInput(
-                      values.travelDates.startDate
-                    )} - ${formatDateForInput(values.travelDates.endDate)}`
-                  : values.travelDates.startDate
-                  ? formatDateForInput(values.travelDates.startDate)
-                  : ""
-              }
-            />
-            {isDatePickerVisible && (
-              <div className="dateRangePicker__wrapper" ref={datePickerRef}>
-                <DateRangePicker
-                  onDateChange={onDateChange}
-                  onClose={handleCloseDatePicker}
-                />
-              </div>
-            )}
-          </li>
-
-          <label className="newMain__input-header" htmlFor="activity">
-            <p className="newMain__input__activity__title-text">
-              What will you be doing?
-            </p>{" "}
-            <p className="newMain__input__activity-text">(Optional)</p>
-          </label>
-          <li className="newMain__list__inputs">
-            <div className="activities-input-container" >
-              <div className="activity-tags-inside-input" >
-              {activities.map((activity, index) => (
-                <span key={index} className="activity-tag-inside">
-                  <button
-                    type="button"
-                    className="remove-activity-inside"
-                    onClick={() => handleRemoveActivity(index)}
-                  >
-                    X
-                  </button>
-                  {activity}
-                </span>
-              ))}
+        <form onSubmit={handleSubmit}>
+          <ul className="newMain__inputs">
+            <label className="newMain__input-header" htmlFor="location">
+              Where
+            </label>
+            <li className="newMain__list__inputs">
               <input
-                className="activity-input-field"
+                className="newMain__input"
                 type="text"
-                name="activity"
-                placeholder="   Activities"
-                id="activity"
-                value={currentActivityInput}
-                onChange={handleActivityInputChange}
-                onKeyDown={handleAddActivity}
+                name="location"
+                minLength="2"
+                maxLength="50"
+                required
+                placeholder="   Destination"
+                id="location"
+                value={values.location || ""}
+                onChange={handleChanges}
               />
+            </li>
+            <label className="newMain__input-header" htmlFor="date">
+              When
+            </label>
+            <li className="newMain__list__inputs">
+              <input
+                className="newMain__input"
+                type="text"
+                placeholder="   Select Dates"
+                readOnly
+                ref={dateInputRef}
+                onClick={handleDateInputClick}
+                value={
+                  values.travelDates &&
+                  values.travelDates.startDate &&
+                  values.travelDates.endDate
+                    ? `${formatDateForInput(
+                        values.travelDates.startDate
+                      )} - ${formatDateForInput(values.travelDates.endDate)}`
+                    : values.travelDates && values.travelDates.startDate
+                    ? formatDateForInput(values.travelDates.startDate)
+                    : ""
+                }
+              />
+              {isDatePickerVisible && (
+                <div className="dateRangePicker__wrapper" ref={datePickerRef}>
+                  <DateRangePicker
+                    onDateChange={onDateChange}
+                    onClose={handleCloseDatePicker}
+                    selectedStartDate={values.travelDates?.startDate}
+                    selectedEndDate={values.travelDates?.endDate}
+                  />
+                </div>
+              )}
+            </li>
+
+            <label className="newMain__input-header" htmlFor="activity">
+              <p className="newMain__input__activity__title-text">
+                What will you be doing?
+              </p>{" "}
+              <p className="newMain__input__activity-text">(Optional)</p>
+            </label>
+            <li className="newMain__list__inputs">
+              <div className="activities-input-container">
+                <div className="activity-tags-inside-input">
+                  {activities.map((activity, index) => (
+                    <span key={index} className="activity-tag-inside">
+                      <button
+                        type="button"
+                        className="remove-activity-inside"
+                        onClick={() => handleRemoveActivity(index)}
+                      >
+                        X
+                      </button>
+                      {activity}
+                    </span>
+                  ))}
+                  <input
+                    className="activity-input-field"
+                    type="text"
+                    name="activity"
+                    placeholder="   Activities"
+                    id="activity"
+                    value={currentActivityInput}
+                    onChange={handleActivityInputChange}
+                    onKeyDown={handleAddActivity}
+                    ref={activityInputRef}
+                  />
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
-        <div className="newMain__submitButton">
-          <button className="submitButton" onClick={handleSubmit}>Create My Packing List</button>
-        </div>
+            </li>
+          </ul>
+          <div className="newMain__submitButton">
+            <button
+              type="submit"
+              className="submitButton"
+              onClick={handleSubmit}
+            >
+              Create My Packing List
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

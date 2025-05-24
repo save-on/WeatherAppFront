@@ -260,3 +260,14 @@ export const sendPackingListEmail = async (dataToSend, token) => {
     throw error;
   }
 };
+
+export const postTripWithPackinglist = (tripData, token) => {
+  return fetch(`${baseUrl}trips`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(tripData),
+  }).then(processServerRequest);
+}

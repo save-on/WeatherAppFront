@@ -263,7 +263,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       personal: personalItems,
     };
     const authToken = localStorage.getItem("jwt");
-    console.log('Auth Token: ', authToken);
+    console.log("Auth Token: ", authToken);
 
     if (!authToken) {
       alert("You must be logged in to email your packing list.");
@@ -358,10 +358,13 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 2
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {tripDetails.traveDates && tripDetails.travelDates.startDate ? (
+                  {tripDetails.traveDates &&
+                  tripDetails.travelDates.startDate ? (
                     formatDateDay(
-                    new Date(new Date(  tripDetails.travelDates.startDate).getTime() +
-                        24 * 60 * 60 * 1000)                    
+                      new Date(
+                        new Date(tripDetails.travelDates.startDate).getTime() +
+                          24 * 60 * 60 * 1000
+                      )
                     )
                   ) : (
                     <span>No Start Date</span>
@@ -382,10 +385,13 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
                   Day 3
                 </p>
                 <p className="mytrips__weatherForecast-day-details-text">
-                  {tripDetails.traveDates && tripDetails.travelDates.startDate ? (
+                  {tripDetails.traveDates &&
+                  tripDetails.travelDates.startDate ? (
                     formatDateDay(
-                    new Date(new Date(  tripDetails.travelDates.startDate).getTime() +
-                        24 * 60 * 60 * 1000)                    
+                      new Date(
+                        new Date(tripDetails.travelDates.startDate).getTime() +
+                          24 * 60 * 60 * 1000
+                      )
                     )
                   ) : (
                     <span>No Start Date</span>
@@ -947,11 +953,9 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         >
           Email Packing List
         </button>
-         <div className="mytrips__delete-trip">
-        <button className="mytrips__delete-trip-button">
-          Delete Trip
-        </button>
-      </div>
+        <div className="mytrips__delete-trip">
+          <button className="mytrips__delete-trip-button">Delete Trip</button>
+        </div>
       </div>
     </div>
   );

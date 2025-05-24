@@ -44,6 +44,7 @@ import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 //React imports
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 //Utility imports
 import {
@@ -59,6 +60,7 @@ import {
   addCardLike,
   removeCardLike,
   getCityLocationData,
+  postTripWithPackinglist,
 } from "../../Utils/Api.js";
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 import {
@@ -102,11 +104,14 @@ function App() {
   });
   const [errMessage, setErrMessage] = useState("");
   const [tripDetails, setTripDetails] = useState({
-    location: '',
-    activities:[],
-    travelDates: {startDate: null, endDate: null}
-  })
-  
+    location: "",
+    activities: [],
+    travelDates: { startDate: null, endDate: null },
+  });
+  const [pendingTripData, setPendingTripData] = useState(null);
+
+  const navigate = useNavigate();
+
   const location = useLocation();
   let elementStyle;
 
@@ -147,7 +152,9 @@ function App() {
   const handleRemoveActivityFromTrip = (indexToRemove) => {
     setTripDetails((prevDetails) => ({
       ...prevDetails,
-      activities: prevDetails.activities.filter((_, index) => index !== indexToRemove),
+      activities: prevDetails.activities.filter(
+        (_, index) => index !== indexToRemove
+      ),
     }));
   };
 
@@ -168,11 +175,11 @@ function App() {
 
   const handleTripDetailsSubmit = (newDetails) => {
     setTripDetails(newDetails);
-  }
+  };
 
   const handleOpenItemModal = () => {
     setActiveModal("preview");
-  }
+  };
 
   const handleOpenLoginModal = () => {
     setActiveModal("login");
@@ -198,8 +205,6 @@ function App() {
     setActiveModal("logindropbox");
   };
 
-
-
   const registerUser = (values) => {
     console.log("Values: ", values);
     setIsLoading(true);
@@ -221,6 +226,11 @@ function App() {
           setCurrentUser(res);
           setLoggedIn(true);
           handleCloseModal();
+        }
+        if (pendingTripData) {
+          handleSaveTrip(pendingTripData);
+          setPendingTripData(null);
+          navigate("/mytrips");
         }
         // history.push("/profile");
       })
@@ -253,6 +263,45 @@ function App() {
     setCurrentUser({});
     setLoggedIn(false);
     // history.push("/");
+  };
+
+  // Handling trip save and trip details attempt for "paywall"
+  const handleNewTripAttempt = (tripData) => {
+    if (loggedIn) {
+      handleSaveTrip(tripData);
+    } else {
+      setPendingTripData(tripData);
+      setActiveModal("register");
+    }
+  };
+
+  const handleSaveTrip = (tripData) => {
+    console.log("Savings Trip: ", tripData, " for user: ", currentUser?.id);
+
+    //set up data to send to backend for trip
+    const dataForBackend = {
+      destination: tripData.location,
+      startDate: tripData.startDate,
+      endDate: tripData.endDate,
+      activities: tripData.activities,
+    };
+
+    //check for user token
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      console.error("Cannot save trip: User token not found.");
+      return;
+    }
+
+    //call api to send tripData to backend
+    postTripWithPackinglist(dataForBackend, token)
+      .then((res) => {
+        console.log("Trip and Packing List created successfully: ", res);
+        navigate("/mytrips");
+      })
+      .catch((err) => {
+        console.error("Failed to save trip and packing list: ", err);
+      });
   };
 
   const handleCardLike = (id, isLiked) => {
@@ -457,7 +506,9 @@ function App() {
 
   return (
     <div className="app">
-      <CurrentUserContext.Provider value={{ currentUser, loggedIn, loginUser, onSignOut}}>
+      <CurrentUserContext.Provider
+        value={{ currentUser, loggedIn, loginUser, onSignOut }}
+      >
         {/* <video
           key={videoSrc}
           id="background-video"
@@ -496,16 +547,16 @@ function App() {
           onSignOut={onSignOut}
           onLogin={handleOpenLoginModal}
           customStyle={elementStyle}
-          
         />
         <Routes>
           <Route
             exact
             path="/"
             element={
-              <NewMain 
-              loggedIn={loggedIn} 
-              onTripDetailsSubmit={handleTripDetailsSubmit}
+              <NewMain
+                loggedIn={loggedIn}
+                onTripDetailsSubmit={handleTripDetailsSubmit}
+                onNewTripAttempt={handleNewTripAttempt}
               />
             }
           />
@@ -513,8 +564,11 @@ function App() {
             path="/mytrips"
             element={
               <ProtectedRoute path="mytrips" loggedIn={loggedIn}>
-                <MyTrips customStyle={elementStyle} tripDetails={tripDetails} 
-                onRemoveActivity={handleRemoveActivityFromTrip}/>
+                <MyTrips
+                  customStyle={elementStyle}
+                  tripDetails={tripDetails}
+                  onRemoveActivity={handleRemoveActivityFromTrip}
+                />
               </ProtectedRoute>
             }
           />
