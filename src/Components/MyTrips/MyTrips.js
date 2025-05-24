@@ -36,12 +36,9 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
 
   useEffect(() => {
-    console.log("MyTrips.js: currentUser from context:", currentUser);
     if (currentUser && currentUser.email) {
-      console.log("MyTrips.js: User email available:", currentUser.email);
       setEmailStatus("");
     } else {
-      console.log("MyTrips.js: User email NOT available in context.");
       setEmailStatus("Please sign in to email your packing list.");
     }
   }, [currentUser]);

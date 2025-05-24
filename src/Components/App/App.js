@@ -276,8 +276,6 @@ function App() {
   };
 
   const handleSaveTrip = (tripData) => {
-    console.log("Savings Trip: ", tripData, " for user: ", currentUser?.id);
-
     //set up data to send to backend for trip
     const dataForBackend = {
       destination: tripData.location,
@@ -296,7 +294,6 @@ function App() {
     //call api to send tripData to backend
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
-        console.log("Trip and Packing List created successfully: ", res);
         navigate("/mytrips");
       })
       .catch((err) => {

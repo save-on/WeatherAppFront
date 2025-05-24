@@ -291,6 +291,17 @@ export const postTripWithPackinglist = async (tripData, token) => {
     return await res.json();
   } catch (error) {
     console.error("Error posting trip with packing list: ", error);
-    throw error; // Re-throw for App.js to catch
+    throw error; 
   }
 };
+
+export const getTrips = (token) => {
+  return processServerRequest(`${baseUrl}trips`, {
+    method: "GET",
+    headers: {
+    Accept: "application/json", 
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+});
+}
