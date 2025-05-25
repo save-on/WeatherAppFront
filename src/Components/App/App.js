@@ -284,8 +284,6 @@ function App() {
       activities: tripData.activities,
     };
 
-    console.log("DataForBackend: ", dataForBackend);
-
     //check for user token
     const token = localStorage.getItem("jwt");
     if (!token) {
@@ -296,7 +294,6 @@ function App() {
     //call api to send tripData to backend
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
-        console.log("Backend response after savings trip: ", res);
         setTripDetails(res);
         navigate("/mytrips");
       })

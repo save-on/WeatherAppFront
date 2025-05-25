@@ -49,10 +49,10 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const destination = tripDetails?.trip?.destination;
   const tripDateString = tripDetails?.trip?.trip_date;
 
-  console.log("tripDetails object: ", tripDetails);
-  console.log("tripDetails.trip_date: ", tripDetails?.trip?.trip_date);
-  console.log("tripDetails destination: ", destination);
-  console.log("tripDetails trip date string: ", tripDateString);
+  // console.log("tripDetails object: ", tripDetails);
+  // console.log("tripDetails.trip_date: ", tripDetails?.trip?.trip_date);
+  // console.log("tripDetails destination: ", destination);
+  // console.log("tripDetails trip date string: ", tripDateString);
 
   const initialEmptyItems = Array(9).fill({
     name: "Item",
