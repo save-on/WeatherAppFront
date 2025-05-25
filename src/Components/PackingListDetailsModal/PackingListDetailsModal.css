@@ -1,5 +1,5 @@
 /* PackingListDetailsModal.css */
-.modal {
+/* .modal {
     position: fixed; 
     z-index: 1000; 
     left: 0;
@@ -11,6 +11,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+} */
+
+.modal--blurred {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 

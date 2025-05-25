@@ -8,11 +8,12 @@ const ModalWithForm = ({
   onSubmit,
   formRef,
   errMessage,
+  isBlurredBackground,
 }) => {
 
 
   return (
-    <div className={`modal modal_type_${name}`}>
+    <div className={`modal ${isBlurredBackground ? "modal--blurred" : ""}`}>
       <div className={`modal__content_type_${name}`}>
         <h3 className={`modal-form-header_type_${name}`}>
           {title}

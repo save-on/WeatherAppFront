@@ -19,6 +19,7 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
   const [currentActivityInput, setCurrentActivityInput] = useState("");
   const activityInputRef = useRef(null);
 
+  const navigate = useNavigate();
   const onDateChange = (start, end) => {
     handleDateChange("travelDates", { startDate: start, endDate: end });
   };
@@ -97,7 +98,9 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
         : null,
       activities: activities.join(", "),
     };
+    navigate("/mytrips");
     onNewTripAttempt(tripData);
+    navigate("/mytrips");
   };
 
   return (

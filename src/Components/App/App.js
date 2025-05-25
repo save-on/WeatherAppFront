@@ -109,9 +109,9 @@ function App() {
     travelDates: { startDate: null, endDate: null },
   });
   const [pendingTripData, setPendingTripData] = useState(null);
+  const [isPendingTripModal, setIsPendingTripModal] = useState(false);
 
   const navigate = useNavigate();
-
   const location = useLocation();
   let elementStyle;
 
@@ -147,6 +147,8 @@ function App() {
   const handleCloseModal = () => {
     setActiveModal("");
     setErrMessage("");
+    setIsPendingTripModal(false);
+    console.log("DEBUG: isPendingTripModal set to false on modal close");
   };
 
   const handleRemoveActivityFromTrip = (indexToRemove) => {
@@ -173,9 +175,9 @@ function App() {
     };
   }, [activeModal]);
 
-  const handleTripDetailsSubmit = (newDetails) => {
-    setTripDetails(newDetails);
-  };
+  // const handleTripDetailsSubmit = (newDetails) => {
+  //   handleNewTripAttempt(newDetails);
+  // };
 
   const handleOpenItemModal = () => {
     setActiveModal("preview");
@@ -183,10 +185,16 @@ function App() {
 
   const handleOpenLoginModal = () => {
     setActiveModal("login");
+    setIsPendingTripModal(false);
+    console.log("DEBIG: isPendingTripModal set to false on normal login open");
   };
 
   const handleOpenRegisterModal = () => {
     setActiveModal("register");
+    setIsPendingTripModal(false);
+    console.log(
+      "DEBUG: isPendingTripModal set to false on normal register open"
+    );
   };
 
   const handleOpenEditProfileModal = () => {
@@ -209,7 +217,18 @@ function App() {
     console.log("Values: ", values);
     setIsLoading(true);
     register(values)
-      .then(() => loginUser(values))
+      .then((res) => {
+        if (res.token) {
+          loginUser(values);
+        } else {
+          console.error("Register successful but no token received.");
+          setErrMessage(
+            "Registration successful, but login failed. Please try logging in."
+          );
+          setActiveModal("login");
+          setIsPendingTripModal(false);
+        }
+      })
       .catch((err) => {
         console.error(err.message);
         setErrMessage(err.message);
@@ -222,17 +241,28 @@ function App() {
     login(user)
       .then((res) => {
         if (res.token) {
-          setToken(res.token);
+          setToken(res.token); //Storing token
           setCurrentUser(res);
           setLoggedIn(true);
           handleCloseModal();
+
+          const storedPendingTrip = localStorage.getItem("pendingTrip");
+          if (storedPendingTrip) {
+            const parsedTripData = JSON.parse(storedPendingTrip);
+            console.log(
+              "User logged in with pending trip data. Saving now: ",
+              parsedTripData
+            );
+            handleSaveTrip(parsedTripData, true);
+            localStorage.removeItem("pendingTrip");
+            setPendingTripData(null);
+          } else {
+            navigate("/mytrips");
+          }
+        } else {
+          console.error("Login successful but no token received.");
+          setErrMessage("Login successful, but no token. Please try again.");
         }
-        if (pendingTripData) {
-          handleSaveTrip(pendingTripData);
-          setPendingTripData(null);
-          navigate("/mytrips");
-        }
-        // history.push("/profile");
       })
       .catch((err) => {
         console.error(err.message);
@@ -262,20 +292,33 @@ function App() {
     removeToken();
     setCurrentUser({});
     setLoggedIn(false);
-    // history.push("/");
+    navigate("/");
   };
 
   // Handling trip save and trip details attempt for "paywall"
   const handleNewTripAttempt = (tripData) => {
-    if (loggedIn) {
-      handleSaveTrip(tripData);
-    } else {
+
+    if (!loggedIn) {
+      //User not logged in
+      localStorage.setItem("pendingTrip", JSON.stringify(tripData)); //store pending trip data
       setPendingTripData(tripData);
+      navigate("/mytrips");
       setActiveModal("register");
+      setIsPendingTripModal(true);
+    
+    } else {
+      console.log("User logged in. Saving trip directly.");
+      handleSaveTrip(tripData);
     }
   };
 
-  const handleSaveTrip = (tripData) => {
+  const handleSaveTrip = (tripData, isPendingSave = false) => {
+    console.log(
+      "handleSaveTrip (actual save) called. Trip data: ",
+      tripData,
+      "Is Pending Save: ",
+      isPendingSave
+    );
     //set up data to send to backend for trip
     const dataForBackend = {
       destination: tripData.location,
@@ -285,20 +328,30 @@ function App() {
     };
 
     //check for user token
-    const token = localStorage.getItem("jwt");
+    const token = checkLoggedIn();
     if (!token) {
-      console.error("Cannot save trip: User token not found.");
+      console.error(
+        "Cannot save trip: User token not found. This shouldn't happen if handleNewAttempt works correctly."
+      );
       return;
     }
 
     //call api to send tripData to backend
+    setIsLoading(true);
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
+        console.log("Trip and packing list saved successfully: ", res);
         setTripDetails(res);
-        navigate("/mytrips");
+        if (!isPendingSave) {
+          navigate("/mytrips");
+        }
       })
       .catch((err) => {
         console.error("Failed to save trip and packing list: ", err);
+        setErrMessage(err.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -558,7 +611,7 @@ function App() {
             element={
               <NewMain
                 loggedIn={loggedIn}
-                onTripDetailsSubmit={handleTripDetailsSubmit}
+                //onTripDetailsSubmit={handleNewTripAttempt}
                 onNewTripAttempt={handleNewTripAttempt}
               />
             }
@@ -566,13 +619,13 @@ function App() {
           <Route
             path="/mytrips"
             element={
-              <ProtectedRoute path="mytrips" loggedIn={loggedIn}>
-                <MyTrips
-                  customStyle={elementStyle}
-                  tripDetails={tripDetails}
-                  onRemoveActivity={handleRemoveActivityFromTrip}
-                />
-              </ProtectedRoute>
+              //<ProtectedRoute path="mytrips" loggedIn={loggedIn}>
+              <MyTrips
+                customStyle={elementStyle}
+                tripDetails={tripDetails}
+                onRemoveActivity={handleRemoveActivityFromTrip}
+              />
+              //</ProtectedRoute>
             }
           />
           <Route
@@ -646,6 +699,7 @@ function App() {
             isLoading={isLoading}
             errMessage={errMessage}
             setErrMessage={setErrMessage}
+            isBlurredBackground={isPendingTripModal}
           />
         )}
 
@@ -657,6 +711,7 @@ function App() {
             isLoading={isLoading}
             errMessage={errMessage}
             setErrMessage={setErrMessage}
+            isBlurredBackground={isPendingTripModal}
           />
         )}
 

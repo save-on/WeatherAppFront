@@ -9,7 +9,9 @@ const LoginModal = ({
   isLoading,
   errMessage,
   setErrMessage,
+  isBlurredBackground,
 }) => {
+  
   const { values, handleChanges } = useForm({
     email: "",
     password: "",
@@ -30,6 +32,7 @@ const LoginModal = ({
       name="login"
       formRef={formRef}
       errMessage={errMessage}
+      isBlurredBackground={isBlurredBackground}
     >
       <ul className="inputs">
         <label className="input-header" htmlFor="email">

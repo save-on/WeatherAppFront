@@ -9,6 +9,7 @@ const RegisterModal = ({
   isLoading,
   errMessage,
   setErrMessage,
+  isBlurredBackground,
 }) => {
   const { values, handleChanges } = useForm({
     email: "",
@@ -32,6 +33,7 @@ const RegisterModal = ({
       onSubmit={onRegister}
       formRef={formRef}
       errMessage={errMessage}
+      isBlurredBackground={isBlurredBackground}
     >
       <ul className="inputs-signup">
         <li>
