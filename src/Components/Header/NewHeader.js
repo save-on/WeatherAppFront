@@ -18,6 +18,7 @@ function NewHeader({
   handleOpenTripDropbox,
   onSignOut,
   customStyle,
+  userTrips,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
@@ -42,6 +43,7 @@ function NewHeader({
               isOpened={activeModal === "tripdropbox"}
               handleCloseModal={handleCloseModal}
               loggeIn={loggedIn}
+              userTrips={userTrips}
             />
 
             <img

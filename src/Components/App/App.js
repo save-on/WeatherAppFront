@@ -110,6 +110,7 @@ function App() {
   });
   const [pendingTripData, setPendingTripData] = useState(null);
   const [isPendingTripModal, setIsPendingTripModal] = useState(false);
+  const [userTrips, setUserTrips] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -219,6 +220,7 @@ function App() {
     register(values)
       .then((res) => {
         if (res.token) {
+          setToken(res.token);
           loginUser(values);
         } else {
           console.error("Register successful but no token received.");
@@ -245,6 +247,12 @@ function App() {
           setCurrentUser(res);
           setLoggedIn(true);
           handleCloseModal();
+
+          const storedTrips = JSON.parse(
+            localStorage.getItem("userSavedTrips") || "[]"
+          );
+          setUserTrips(storedTrips);
+          console.log("DEBUG: Logged in. Loaded user trips: ", storedTrips);
 
           const storedPendingTrip = localStorage.getItem("pendingTrip");
           if (storedPendingTrip) {
@@ -292,12 +300,13 @@ function App() {
     removeToken();
     setCurrentUser({});
     setLoggedIn(false);
+    setUserTrips([]);
+    localStorage.removeItem("userSavedTrips");
     navigate("/");
   };
 
   // Handling trip save and trip details attempt for "paywall"
   const handleNewTripAttempt = (tripData) => {
-
     if (!loggedIn) {
       //User not logged in
       localStorage.setItem("pendingTrip", JSON.stringify(tripData)); //store pending trip data
@@ -305,7 +314,6 @@ function App() {
       navigate("/mytrips");
       setActiveModal("register");
       setIsPendingTripModal(true);
-    
     } else {
       console.log("User logged in. Saving trip directly.");
       handleSaveTrip(tripData);
@@ -319,6 +327,14 @@ function App() {
       "Is Pending Save: ",
       isPendingSave
     );
+
+    const token = checkLoggedIn();
+    if (!token) {
+      console.error(
+        "Cannot save trip: User token not found. This shouldn't happen if handleNewAttempt works correctly."
+      );
+      return;
+    }
     //set up data to send to backend for trip
     const dataForBackend = {
       destination: tripData.location,
@@ -328,22 +344,30 @@ function App() {
     };
 
     //check for user token
-    const token = checkLoggedIn();
-    if (!token) {
-      console.error(
-        "Cannot save trip: User token not found. This shouldn't happen if handleNewAttempt works correctly."
-      );
-      return;
-    }
 
     //call api to send tripData to backend
     setIsLoading(true);
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
         console.log("Trip and packing list saved successfully: ", res);
+        const savedTripFromBackend = {
+          id: res._id || "generateUniqueId()",
+          destination: res.destination || tripData.location,
+          startDate: res.startDate || tripData.travelDates.startDate,
+          endDate: res.endDate || tripData.travelDates.endDate,
+          activities: res.activities,
+          packinglistId: res.packinglist?._id || "generated-packing-list-id",
+        };
         setTripDetails(res);
+
+        //update user trips
+        const updatedUserTrips = [...userTrips, savedTripFromBackend];
+        setUserTrips(updatedUserTrips);
+        localStorage.setItem("userSavedTrips", JSON.stringify(updatedUserTrips));
+        console.log("DEBUG: userTrips state and localStorage updated: ", updatedUserTrips);
+
         if (!isPendingSave) {
-          navigate("/mytrips");
+          navigate(`mytrips/${savedTripFromBackend}`);
         }
       })
       .catch((err) => {
@@ -526,12 +550,18 @@ function App() {
         .then((res) => {
           setLoggedIn(true);
           setCurrentUser({ ...res, token: token });
+          const storedTrips = JSON.parse(
+            localStorage.getItem("userSavedTrips") || "[]"
+          );
+          setUserTrips(storedTrips);
+          console.log("DEBUG: User data and trips loaded.");
         })
         .catch((err) => {
           console.log("Error fetching user data: ", err.message);
           localStorage.removeItem("jwt");
           setLoggedIn(false);
           setCurrentUser(null);
+          setUserTrips([]);
         })
         .finally(() => setIsLoading(false));
     }
@@ -559,6 +589,11 @@ function App() {
       videoMapping[`${option?.type}-${option?.day ? "day" : "night"}`]
     );
   };
+
+  const handleSelectTrip = (tripId) => {
+    console.log("DEBUG: Navigating to packing list for trip ID: ", tripId);
+    navigate(`/mytrips/${tripId}`);
+  }
 
   return (
     <div className="app">
@@ -603,6 +638,8 @@ function App() {
           onSignOut={onSignOut}
           onLogin={handleOpenLoginModal}
           customStyle={elementStyle}
+          userTrips={userTrips}
+          onSelectTrip={handleSelectTrip}
         />
         <Routes>
           <Route
@@ -613,6 +650,8 @@ function App() {
                 loggedIn={loggedIn}
                 //onTripDetailsSubmit={handleNewTripAttempt}
                 onNewTripAttempt={handleNewTripAttempt}
+                userTrips={userTrips}
+                onSelectTrip={handleSelectTrip}
               />
             }
           />
@@ -624,9 +663,19 @@ function App() {
                 customStyle={elementStyle}
                 tripDetails={tripDetails}
                 onRemoveActivity={handleRemoveActivityFromTrip}
+                userTrips={userTrips}
+                onSelectTrip={handleSelectTrip}
               />
               //</ProtectedRoute>
             }
+          />
+          <Route 
+          path="/mytrips/:tripId"
+          element={
+            <ProtectedRoute path="mytrips/:tripId" loggedIn={loggedIn}>
+              <MyTrips />
+            </ProtectedRoute>
+          }
           />
           <Route
             path="/profile/packing-lists"

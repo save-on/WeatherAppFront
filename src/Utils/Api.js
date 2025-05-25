@@ -291,7 +291,7 @@ export const postTripWithPackinglist = async (tripData, token) => {
     return await res.json();
   } catch (error) {
     console.error("Error posting trip with packing list: ", error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -299,9 +299,30 @@ export const getTrips = (token) => {
   return processServerRequest(`${baseUrl}trips`, {
     method: "GET",
     headers: {
-    Accept: "application/json", 
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-});
-}
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getTripById = (tripId, token) => {
+  if (!tripId) {
+    return Promise.reject(
+      new Error("Trip ID is required to fetch a single trip.")
+    );
+  }
+  if (!token) {
+    return Promise.reject(
+      new Error("Authentication token not found. Please log in.")
+    );
+  }
+
+  return processServerRequest(`${baseUrl}mytrips/${tripId}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
