@@ -284,6 +284,8 @@ function App() {
       activities: tripData.activities,
     };
 
+    console.log("DataForBackend: ", dataForBackend);
+
     //check for user token
     const token = localStorage.getItem("jwt");
     if (!token) {
@@ -294,6 +296,8 @@ function App() {
     //call api to send tripData to backend
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
+        console.log("Backend response after savings trip: ", res);
+        setTripDetails(res);
         navigate("/mytrips");
       })
       .catch((err) => {
@@ -471,9 +475,14 @@ function App() {
       getUserData(token)
         .then((res) => {
           setLoggedIn(true);
-          setCurrentUser(res);
+          setCurrentUser({ ...res, token: token });
         })
-        .catch((err) => console.error(err.message))
+        .catch((err) => {
+          console.log("Error fetching user data: ", err.message);
+          localStorage.removeItem("jwt");
+          setLoggedIn(false);
+          setCurrentUser(null);
+        })
         .finally(() => setIsLoading(false));
     }
   }, []);

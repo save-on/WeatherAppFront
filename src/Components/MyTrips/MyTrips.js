@@ -8,42 +8,11 @@ import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
 import { useState, useContext, useEffect } from "react";
 import Trashcan from "../../Images/trashcan.svg";
-import { sendPackingListEmail } from "../../Utils/Api.js";
+import { sendPackingListEmail, getTrips } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 
-function MyTrips({ tripDetails, onRemoveActivity }) {
-  const initialEmptyItems = Array(9).fill({
-    name: "Item",
-    quantity: 0,
-    isEmpty: true,
-    isChecked: false,
-  });
-  const [clothesItems, setClothesItems] = useState([...initialEmptyItems]);
-  const [footwearItems, setFootwearItems] = useState([...initialEmptyItems]);
-  const [accessoriesItems, setAccessoriesItems] = useState([
-    ...initialEmptyItems,
-  ]);
-  const [personalItems, setPersonalItems] = useState([...initialEmptyItems]);
-
-  const [newItemName, setNewItemName] = useState("");
-  const [newItemQuantity, setNewItemQuantity] = useState(1);
-  const [currentCategory, setCurrentCategory] = useState(null);
-  const [isAddingItem, setIsAddingItem] = useState(false);
-
-  const [emailStatus, setEmailStatus] = useState("");
-
-  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
-
-  useEffect(() => {
-    if (currentUser && currentUser.email) {
-      setEmailStatus("");
-    } else {
-      setEmailStatus("Please sign in to email your packing list.");
-    }
-  }, [currentUser]);
-
-  const formatDate = (date) => {
+const formatDate = (date) => {
     if (date instanceof Date) {
       const month = (date.getMonth() + 1).toString().padStart(2, "0");
       const day = date.getDate().toString().padStart(2, "0");
@@ -60,6 +29,91 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     }
     return "";
   };
+
+  const formatTripDates = (dateRangeString) => {
+    if (!dateRangeString) return "N/A";
+
+    const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
+    if (parts.length < 2) return dateRangeString;
+
+      const startDate = new Date(parts[0]);
+      const endDate = new Date(parts[1]);
+
+      const formattedStartDate = formatDate(startDate);
+      const formattedEndDate = formatDate(endDate);
+
+    return `${formattedStartDate} - ${formattedEndDate}`;
+  };
+
+function MyTrips({ tripDetails, onRemoveActivity }) {
+  const destination = tripDetails?.trip?.destination;
+  const tripDateString = tripDetails?.trip?.trip_date;
+
+  console.log("tripDetails object: ", tripDetails);
+  console.log("tripDetails.trip_date: ", tripDetails?.trip?.trip_date);
+  console.log("tripDetails destination: ", destination);
+  console.log("tripDetails trip date string: ", tripDateString);
+
+  const initialEmptyItems = Array(9).fill({
+    name: "Item",
+    quantity: 0,
+    isEmpty: true,
+    isChecked: false,
+  });
+  const [clothesItems, setClothesItems] = useState([...initialEmptyItems]);
+  const [footwearItems, setFootwearItems] = useState([...initialEmptyItems]);
+  const [accessoriesItems, setAccessoriesItems] = useState([
+    ...initialEmptyItems,
+  ]);
+  const [personalItems, setPersonalItems] = useState([...initialEmptyItems]);
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemQuantity, setNewItemQuantity] = useState(1);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [isAddingItem, setIsAddingItem] = useState(false);
+  const [emailStatus, setEmailStatus] = useState("");
+
+  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    if (currentUser && currentUser.email) {
+      setEmailStatus("");
+    } else {
+      setEmailStatus("Please sign in to email your packing list.");
+    }
+  }, [currentUser]);
+
+  // const formatDate = (date) => {
+  //   if (date instanceof Date) {
+  //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //     const day = date.getDate().toString().padStart(2, "0");
+  //     const year = date.getFullYear();
+  //     return `${month}/${day}/${year}`;
+  //   }
+  //   return "";
+  // };
+
+  // const formatDateDay = (date) => {
+  //   if (date instanceof Date) {
+  //     const options = { weekday: "long", month: "long", day: "numeric" };
+  //     return date.toLocaleDateString("en-US", options);
+  //   }
+  //   return "";
+  // };
+
+  // const formatTripDates = (dateRangeString) => {
+  //   if (!dateRangeString) return "N/A";
+
+  //   const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
+  //   if (parts.length < 2) return dateRangeString;
+
+  //     const startDate = new Date(parts[0]);
+  //     const endDate = new Date(parts[1]);
+
+  //     const formattedStartDate = formatDate(startDate);
+  //     const formattedEndDate = formatDate(endDate);
+
+  //   return `${formattedStartDate} - ${formattedEndDate}`;
+  // };
 
   const handleRemoveActivity = (index) => {
     if (onRemoveActivity) {
@@ -244,12 +298,11 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   };
 
   const handleEmailPackingList = async () => {
-    console.log("Attempting to send email. Current user:", currentUser);
     const recipientEmail = currentUser?.email;
 
     if (!recipientEmail) {
       alert("Error: User email not found. Please log in again.");
-      console.error("Recipient email is null or undefined.");
+
       return;
     }
 
@@ -260,23 +313,16 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       personal: personalItems,
     };
     const authToken = localStorage.getItem("jwt");
-    console.log("Auth Token: ", authToken);
 
     if (!authToken) {
       alert("You must be logged in to email your packing list.");
       return "";
     }
 
-    const tripName = tripDetails.location || "Your Trip";
+    const tripName = tripDetails.destination || "Your Trip";
     let tripDates = "";
-    if (
-      tripDetails.travelDates &&
-      tripDetails.travelDates.startDate &&
-      tripDetails.travelDates.endDate
-    ) {
-      const formattedStartDate = formatDate(tripDetails.travelDates.startDate);
-      const formattedEndDate = formatDate(tripDetails.travelDates.endDate);
-      tripDates = `${formattedStartDate} - ${formattedEndDate}`;
+    if (tripDetails.trip_date) {
+      tripDates = formatTripDates(tripDates.trip_date);
     }
 
     try {
@@ -307,98 +353,148 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     }
   };
 
+ let weatherForecastDaysContent = null; // Initialize a variable to hold the JSX we want to render
+
+  if (!tripDateString) {
+    // If no tripDateString, set the content to the "No trip selected" message
+    weatherForecastDaysContent = (
+      <span>No trip selected or dates unavailable for weather forecast.</span>
+    );
+  } else {
+    // If tripDateString exists, proceed with parsing and calculating dates
+    const dateParts = tripDateString.replace(/[\[\]()]/g, "").split(",");
+    const rawStartDate = dateParts.length > 0 ? new Date(dateParts[0].trim()) : null;
+
+    if (!rawStartDate || isNaN(rawStartDate.getTime())) {
+      // If parsing fails, set the content to the error message
+      weatherForecastDaysContent = (
+        <span>No valid trip dates for weather forecast (parsing failed)</span>
+      );
+    } else {
+      // If dates are valid, calculate and prepare the JSX for the three days
+      const day1Date = rawStartDate;
+      const day2Date = new Date(day1Date.getTime() + 24 * 60 * 60 * 1000);
+      const day3Date = new Date(day1Date.getTime() + 2 * 24 * 60 * 60 * 1000);
+
+      weatherForecastDaysContent = (
+        <>
+          {/* Day 1 */}
+          <li className="mytrips__weatherForecast-day">
+            <img className="mytrips__weatherForecast-day-weather-image" src={Sunny} alt="Sunny weather icon"/>
+            <div className="mytrips__weatherForecast-day-details">
+              <p className="mytrips__weatherForecast-day-details-text">Day 1</p>
+              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day1Date)}</p>
+              <p className="mytrips__weatherForecast-day-details-text">Sunny, 80°</p>
+            </div>
+          </li>
+
+          {/* Day 2 */}
+          <li className="mytrips__weatherForecast-day">
+            <img className="mytrips__weatherForecast-day-weather-image" src={PartlyCloudy} alt="Partly Cloudy weather icon"/>
+            <div className="mytrips__weatherForecast-day-details">
+              <p className="mytrips__weatherForecast-day-details-text">Day 2</p>
+              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day2Date)}</p>
+              <p className="mytrips__weatherForecast-day-details-text">Partly Cloudy, 76°</p>
+            </div>
+          </li>
+
+          {/* Day 3 */}
+          <li className="mytrips__weatherForecast-day">
+            <img className="mytrips__weatherForecast-day-weather-image" src={ScatteredShowers} alt="Scattered Showers weather icon"/>
+            <div className="mytrips__weatherForecast-day-details">
+              <p className="mytrips__weatherForecast-day-details-text">Day 3</p>
+              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day3Date)}</p>
+              <p className="mytrips__weatherForecast-day-details-text">Scattered Showers, 83°</p>
+            </div>
+          </li>
+        </>
+      );
+    }
+  }
+
   return (
     <div className="mytrips">
       <div className="mytrips__location">
-        {tripDetails.location && (
+        {destination && (
           <p className="mytrips__location-destination">
-            {tripDetails.location}{" "}
+            {destination}{" "}
           </p>
         )}
-        {tripDetails.travelDates &&
-          tripDetails.travelDates.startDate &&
-          tripDetails.travelDates.endDate && (
-            <p className="mytrips__location-dates">
-              {formatDate(tripDetails.travelDates.startDate)} -{" "}
-              {formatDate(tripDetails.travelDates.endDate)}
-            </p>
-          )}
+        {tripDateString && (
+          <p className="mytrips__location-dates">
+            {formatTripDates(tripDateString)}
+          </p>
+        )}
       </div>
       <div className="mytrips__weatherForecast">
         <p className="mytrips__weatherForecast-title">Weather Forecast</p>
         <div className="mytrips__weatherForecast-days">
-          <ul className="mytrips__weatherForecast-days-list">
-            <li className="mytrips__weatherForecast-day">
-              <img
-                className="mytrips__weatherForecast-day-weather-image"
-                src={Sunny}
-              />
-              <div className="mytrips__weatherForecast-day-details">
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Day 1
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  {formatDateDay(tripDetails.travelDates.startDate)}
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Sunny, 80°
-                </p>
-              </div>
-            </li>
-            <li className="mytrips__weatherForecast-day">
-              <img
-                className="mytrips__weatherForecast-day-weather-image"
-                src={PartlyCloudy}
-              />
-              <div className="mytrips__weatherForecast-day-details">
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Day 2
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  {tripDetails.traveDates &&
-                  tripDetails.travelDates.startDate ? (
-                    formatDateDay(
-                      new Date(
-                        new Date(tripDetails.travelDates.startDate).getTime() +
-                          24 * 60 * 60 * 1000
-                      )
-                    )
-                  ) : (
-                    <span>No Start Date</span>
-                  )}
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Partly Cloudy, 76°
-                </p>
-              </div>
-            </li>
-            <li className="mytrips__weatherForecast-day">
-              <img
-                className="mytrips__weatherForecast-day-weather-image"
-                src={ScatteredShowers}
-              />
-              <div className="mytrips__weatherForecast-day-details">
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Day 3
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  {tripDetails.traveDates &&
-                  tripDetails.travelDates.startDate ? (
-                    formatDateDay(
-                      new Date(
-                        new Date(tripDetails.travelDates.startDate).getTime() +
-                          24 * 60 * 60 * 1000
-                      )
-                    )
-                  ) : (
-                    <span>No Start Date</span>
-                  )}
-                </p>
-                <p className="mytrips__weatherForecast-day-details-text">
-                  Scattered Showers, 83°
-                </p>
-              </div>
-            </li>
+          < ul className="mytrips__weatherForecast-days-list">
+          {weatherForecastDaysContent}        
+         
+            {/* {tripDetails.travelDates?.startDate && (
+              <>
+                <li className="mytrips__weatherForecast-day">
+                  <img
+                    className="mytrips__weatherForecast-day-weather-image"
+                    src={Sunny}
+                  />
+                  <div className="mytrips__weatherForecast-day-details">
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Day 1
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      {formatDateDay(new Date(tripDetails.trip_date.replace(/[\[)]/g, '').split(',')[0]))}
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Sunny, 80°
+                    </p>
+                  </div>
+                </li>
+                <li className="mytrips__weatherForecast-day">
+                  <img
+                    className="mytrips__weatherForecast-day-weather-image"
+                    src={PartlyCloudy}
+                  />
+                  <div className="mytrips__weatherForecast-day-details">
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Day 2
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                        {formatDateDay(
+                        new Date(
+                          new Date(tripDetails.trip_date.replace(/[\[)]/g, '').split(',')[0]).getTime() + 24 * 60 * 60 * 1000
+                        )
+                      )}
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Partly Cloudy, 76°
+                    </p>
+                  </div>
+                </li>
+                <li className="mytrips__weatherForecast-day">
+                  <img
+                    className="mytrips__weatherForecast-day-weather-image"
+                    src={ScatteredShowers}
+                  />
+                  <div className="mytrips__weatherForecast-day-details">
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Day 3
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                     {formatDateDay(
+                        new Date(
+                          new Date(tripDetails.trip_date.replace(/[\[)]/g, '').split(',')[0]).getTime() + 2 * 24 * 60 * 60 * 1000
+                        )
+                      )}
+                    </p>
+                    <p className="mytrips__weatherForecast-day-details-text">
+                      Scattered Showers, 83°
+                    </p>
+                  </div>
+                </li>
+              </>
+            )} */}
           </ul>
         </div>
       </div>
@@ -408,18 +504,19 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         </p>
 
         <div className="mytrips__activities">
-          {tripDetails.activities.map((activity, index) => (
-            <span key={index} className="mytrips__activity-tag-inside">
-              <button
-                type="button"
-                className="mytrips__remove-activity-inside"
-                onClick={() => handleRemoveActivity(index)}
-              >
-                X
-              </button>
-              {activity}
-            </span>
-          ))}
+          {tripDetails.activities &&
+            tripDetails.activities.map((activity, index) => (
+              <span key={index} className="mytrips__activity-tag-inside">
+                <button
+                  type="button"
+                  className="mytrips__remove-activity-inside"
+                  onClick={() => handleRemoveActivity(index)}
+                >
+                  X
+                </button>
+                {activity}
+              </span>
+            ))}
         </div>
         <ul className="mytrips__suggested-packing-list-items-container">
           <li className="mytrips__item-category">
