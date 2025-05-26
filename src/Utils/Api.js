@@ -328,11 +328,13 @@ export const getTripById = (tripId, token) => {
 };
 
 export const deleteTrip = (tripId, token) => {
-  if(!tripId) {
+  if (!tripId) {
     return Promise.reject(new Error("Trip ID is required for deletion."));
   }
-  if(!token) {
-    return Promise.reject(new Error("Authentication token not found. Please log in."));
+  if (!token) {
+    return Promise.reject(
+      new Error("Authentication token not found. Please log in.")
+    );
   }
 
   return processServerRequest(`${baseUrl}trips/${tripId}`, {
@@ -342,4 +344,35 @@ export const deleteTrip = (tripId, token) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const updateTrip = async (tripId, tripData, token) => {
+  try {
+    const res = await fetch(`${baseUrl}trips/${tripId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(tripData),
+    });
+
+    if (!res.ok) {
+      let errorMessage = `HTTP error! status: ${res.status}`;
+      try {
+        const errorData = await res.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch (err) {
+        // Fallback if the error response itself isn't JSON
+        const errorText = await res.text();
+        errorMessage = errorText || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+    // If the response is OK, parse the successful JSON data
+    return await res.json();
+  } catch (error) {
+    console.error("Error updating trip:", error);
+    throw error;
+  }
 };

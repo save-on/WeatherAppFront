@@ -1,4 +1,5 @@
 import "./MyTrips.css";
+import Footer from "../Footer/Footer.js";
 import Sunny from "../../Images/sunny.svg";
 import PartlyCloudy from "../../Images/partly-cloudy.svg";
 import ScatteredShowers from "../../Images/scattered-showers.svg";
@@ -6,13 +7,13 @@ import Plus from "../../Images/Plus.svg";
 import Increment from "../../Images/increment.svg";
 import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback, useRef } from "react";
 import Trashcan from "../../Images/trashcan.svg";
 import {
   sendPackingListEmail,
-  getTrips,
   getTripById,
   deleteTrip,
+  updateTrip,
 } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
@@ -36,49 +37,127 @@ const formatDateDay = (date) => {
   return "";
 };
 
+// const formatTripDates = (dateRangeString) => {
+//   if (!dateRangeString) return "N/A";
+
+//   const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
+//   if (parts.length < 2) return dateRangeString;
+
+//   const startDate = new Date(parts[0]);
+//   const endDate = new Date(parts[1]);
+
+//   const formattedStartDate = formatDate(startDate);
+//   const formattedEndDate = formatDate(endDate);
+
+//   return `${formattedStartDate} - ${formattedEndDate}`;
+// };
 const formatTripDates = (dateRangeString) => {
-  if (!dateRangeString) return "N/A";
-
-  const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
-  if (parts.length < 2) return dateRangeString;
-
-  const startDate = new Date(parts[0]);
-  const endDate = new Date(parts[1]);
-
-  const formattedStartDate = formatDate(startDate);
-  const formattedEndDate = formatDate(endDate);
-
-  return `${formattedStartDate} - ${formattedEndDate}`;
+  if (!dateRangeString) return "";
+  try {
+    const [startDateISO, endDateISO] = dateRangeString
+      .replace(/[{}"\[\]]/g, "")
+      .split(",");
+    const startDate = new Date(startDateISO.trim());
+    const endDate = new Date(endDateISO.trim());
+    // Adjust format as needed
+    return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+  } catch (e) {
+    console.error("Error formatting trip dates:", e);
+    return "";
+  }
 };
 
-function MyTrips({ onRemoveActivity, onTripDeleted }) {
+function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
   const { tripId } = useParams();
   const { currentUser, loggedIn } = useContext(CurrentUserContext);
   const navigate = useNavigate();
+  const saveChangesTimeoutRef = useRef(null);
 
   //State for fetched trip details
   const [trip, setTrip] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const initialEmptyItems = Array(9).fill({
+  const initialEmptyItems = Array.from({ length: 9 }, () => ({
     name: "Item",
     quantity: 0,
     isEmpty: true,
     isChecked: false,
-  });
+  }));
   const [clothesItems, setClothesItems] = useState([...initialEmptyItems]);
   const [footwearItems, setFootwearItems] = useState([...initialEmptyItems]);
   const [accessoriesItems, setAccessoriesItems] = useState([
     ...initialEmptyItems,
   ]);
-  const [personalItems, setPersonalItems] = useState([...initialEmptyItems]);
+  const [personal_items, setPersonal_items] = useState([...initialEmptyItems]);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState(1);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
+  const [currentActivities, setCurrentActivities] = useState("");
+  const [savePending, setSavePending] = useState(false);
 
+  let saveChangesTimeout;
+
+  // useEffect(() => {
+  //   const fetchTripDetails = async () => {
+  //     if (tripId && loggedIn) {
+  //       setIsLoading(true);
+  //       try {
+  //         const token = localStorage.getItem("jwt");
+  //         if (!token) {
+  //           console.error("No token found for fetching trip details.");
+  //           setIsLoading(false);
+  //           return;
+  //         }
+
+  //         const fetchedTrip = await getTripById(tripId, token);
+  //         setTrip(fetchedTrip.trip);
+  //         console.log("Fetched Trip: ", fetchedTrip.trip);
+
+  //         if (fetchedTrip.trip.activities) {
+  //           setCurrentActivities(fetchedTrip.trip.activities);
+  //         }
+  //         if (fetchedTrip.trip.packingList) {
+  //           //set each items to each category
+  //           setClothesItems(
+  //             fetchedTrip.trip.packingList.clothes || [...initialEmptyItems]
+  //           );
+  //           setFootwearItems(
+  //             fetchedTrip.trip.packingList.footwear || [...initialEmptyItems]
+  //           );
+  //           setAccessoriesItems(
+  //             fetchedTrip.trip.packingList.accessories || [...initialEmptyItems]
+  //           );
+  //           setPersonal_items(
+  //             fetchedTrip.trip.packingList.personal_items || [
+  //               ...initialEmptyItems,
+  //             ]
+  //           );
+  //         } else {
+  //           //if no items set each category to no items
+  //           setClothesItems([...initialEmptyItems]);
+  //           setFootwearItems([...initialEmptyItems]);
+  //           setAccessoriesItems([...initialEmptyItems]);
+  //           setPersonal_items([...initialEmptyItems]);
+  //         }
+  //       } catch (err) {
+  //         console.error("Failed to fetch trip:", err.message || err);
+  //         setError(err.message || "Failed to load trip details.");
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     } else if (!tripId && loggedIn) {
+  //       console.log(
+  //         "MyTrips: No specific tripId, probably rendering all trips."
+  //       );
+  //       setIsLoading(false);
+  //     } else if (!loggedIn) {
+  //       console.log("MyTrips: User not logged in.");
+  //       setIsLoading(false);
+  //     }
+  //   };
   useEffect(() => {
     const fetchTripDetails = async () => {
       if (tripId && loggedIn) {
@@ -92,104 +171,104 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
           }
 
           const fetchedTrip = await getTripById(tripId, token);
+          setTrip(fetchedTrip.trip);
+          console.log("Fetched Trip: ", fetchedTrip.trip);
 
-          setTrip(fetchedTrip);
+          if (fetchedTrip.trip.activities) {
+            setCurrentActivities(fetchedTrip.trip.activities);
+          }
+          const loadedClothes = fetchedTrip.trip.packingList?.clothes || [];
+          setClothesItems([
+            ...loadedClothes,
+            ...initialEmptyItems.slice(loadedClothes.length),
+          ]);
+
+          // A safer way to ensure a fixed size (e.g., 9 total slots) and fill remaining with placeholders:
+          const getPaddedList = (list) => {
+            const items = list || [];
+            const paddedItems = [...items];
+            while (paddedItems.length < 9) {
+              // Ensure at least 9 slots
+              paddedItems.push({
+                name: "Item",
+                quantity: 0,
+                isEmpty: true,
+                isChecked: false,
+              });
+            }
+            return paddedItems;
+          };
+
+          setClothesItems(getPaddedList(fetchedTrip.trip.packingList?.clothes));
+          setFootwearItems(
+            getPaddedList(fetchedTrip.trip.packingList?.footwear)
+          );
+          setAccessoriesItems(
+            getPaddedList(fetchedTrip.trip.packingList?.accessories)
+          );
+          setPersonal_items(
+            getPaddedList(fetchedTrip.trip.packingList?.personal_items)
+          );
         } catch (err) {
           console.error("Failed to fetch trip:", err.message || err);
+          setError(err.message || "Failed to load trip details.");
         } finally {
           setIsLoading(false);
         }
-      } else if (!tripId) {
-        console.log(
-          "MyTrips: No specific tripId, probably rendering all trips."
-        );
       }
     };
 
     fetchTripDetails();
   }, [tripId, loggedIn]);
 
-  useEffect(() => {
-    if (currentUser && currentUser.email) {
-      setEmailStatus("");
-    } else {
-      setEmailStatus("Please sign in to email your packing list.");
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser && currentUser.email) {
+  //     setEmailStatus("");
+  //   } else {
+  //     setEmailStatus("Please sign in to email your packing list.");
+  //   }
+  // }, [currentUser]);
 
-  const handleRemoveActivity = (index) => {
-    if (onRemoveActivity) {
-      onRemoveActivity(index);
-    }
-  };
+  // const handleRemoveActivity = (index) => {
+  //   if (onRemoveActivity) {
+  //     onRemoveActivity(index);
+  //   }
+  // };
 
-  const handleAddItem = (category) => {
-    if (newItemName.trim()) {
-      const newItem = {
-        name: newItemName.trim(),
-        quantity: newItemQuantity,
-        isEmpty: false,
-        isChecked: false,
-      };
-      switch (category) {
-        case "Clothes":
-          const firstEmptyIndexClothes = clothesItems.findIndex(
-            (item) => item.isEmpty
-          );
-          if (firstEmptyIndexClothes !== -1) {
-            const newClothes = [...clothesItems];
-            newClothes[firstEmptyIndexClothes] = newItem;
-            setClothesItems(newClothes);
-          } else {
-            setClothesItems([...clothesItems, newItem]);
-          }
-          break;
-        case "Footwear":
-          const firstEmptyIndexFootwear = footwearItems.findIndex(
-            (item) => item.isEmpty
-          );
-          if (firstEmptyIndexFootwear !== -1) {
-            const newFootwear = [...footwearItems];
-            newFootwear[firstEmptyIndexFootwear] = newItem;
-            setFootwearItems(newFootwear);
-          } else {
-            setFootwearItems([...footwearItems, newItem]);
-          }
-          break;
-        case "Accessories":
-          const firstEmptyIndexAccessories = accessoriesItems.findIndex(
-            (item) => item.isEmpty
-          );
-          if (firstEmptyIndexAccessories !== -1) {
-            const newAccessories = [...accessoriesItems];
-            newAccessories[firstEmptyIndexAccessories] = newItem;
-            setAccessoriesItems(newAccessories);
-          } else {
-            setAccessoriesItems([...accessoriesItems, newItem]);
-          }
-          break;
-        case "Personal Items":
-          const firstEmptyIndexPersonal = personalItems.findIndex(
-            (item) => item.isEmpty
-          );
-          if (firstEmptyIndexPersonal !== -1) {
-            const newPersonal = [...personalItems];
-            newPersonal[firstEmptyIndexPersonal] = newItem;
-            setPersonalItems(newPersonal);
-          } else {
-            setPersonalItems([...personalItems, newItem]);
-          }
-          break;
-        default:
-          break;
-      }
-      setNewItemName("");
-      setNewItemQuantity(1);
-      setIsAddingItem(false);
-      setCurrentCategory(null);
-    }
-  };
-
+  // const handleDeleteItem = (category, indexToDelete) => {
+  //   switch (category) {
+  //     case "Clothes":
+  //       setClothesItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Footwear":
+  //       setFootwearItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Accessories":
+  //       setAccessoriesItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Personal Items":
+  //       setPersonal_items((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
   const handleDeleteItem = (category, indexToDelete) => {
     switch (category) {
       case "Clothes":
@@ -214,7 +293,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
         });
         break;
       case "Personal Items":
-        setPersonalItems((prevItems) => {
+        setPersonal_items((prevItems) => {
           const newItems = [...prevItems];
           newItems[indexToDelete] = { ...initialEmptyItems[0] };
           return newItems;
@@ -224,6 +303,183 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
         break;
     }
   };
+
+  const handleSaveTripChanges = useCallback(async () => {
+    console.log("handleSaveTripChanges triggered.");
+    console.log("Current clothesItems state:", clothesItems); // This should now show your updated item!
+    console.log("Current footwearItems state:", footwearItems);
+    console.log("Current accessoriesItems state:", accessoriesItems);
+    console.log("Current personal_items state:", personal_items);
+
+    if (!tripId || !loggedIn) {
+      console.log(
+        "Cannot save changes: Trip not loaded or user is not logged in."
+      );
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        console.error("No token found for saving trip changes.");
+        setIsLoading(false);
+        return;
+      }
+
+      const packingListToSave = {
+        clothes: clothesItems.filter((item) => !item.isEmpty),
+        footwear: footwearItems.filter((item) => !item.isEmpty),
+        accessories: accessoriesItems.filter((item) => !item.isEmpty),
+        personal_items: personal_items.filter((item) => !item.isEmpty),
+      };
+
+      console.log(
+        "packingListToSave prepared (should be sent to backend):",
+        packingListToSave
+      );
+      console.log("Sending trip update data: ", {
+        destination: trip.destination, // Assuming trip is always up-to-date or its relevant parts
+        startDate: trip.trip_date
+          ? new Date(trip.trip_date.replace(/[\[\]\)]/g, "").split(",")[0])
+          : null,
+        endDate: trip.trip_date
+          ? new Date(trip.trip_date.replace(/[\[\]\)]/g, "").split(",")[1])
+          : null,
+        activities: currentActivities,
+        packingList: packingListToSave,
+      });
+
+      const tripDataToUpdate = {
+        destination: trip.destination,
+        startDate: trip.trip_date
+          ? new Date(trip.trip_date.replace(/[\[\]\)]/g, "").split(",")[0])
+          : null,
+        endDate: trip.trip_date
+          ? new Date(trip.trip_date.replace(/[\[\]\)]/g, "").split(",")[1])
+          : null,
+        activities: currentActivities,
+        packingList: packingListToSave,
+      };
+
+      const response = await updateTrip(tripId, tripDataToUpdate, token);
+      console.log("Trip updated successfully: ", response);
+    } catch (error) {
+      console.error("Error saving trip changes:", error);
+      // You might want to show an error message to the user
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    tripId,
+    loggedIn,
+    trip, // If you're reading `trip.destination` or `trip.trip_date` directly
+    clothesItems,
+    footwearItems,
+    accessoriesItems,
+    personal_items,
+    currentActivities,
+  ]);
+
+  const handleAddItem = useCallback(
+    (category) => {
+      if (newItemName.trim()) {
+        const newItem = {
+          name: newItemName.trim(),
+          quantity: newItemQuantity,
+          isEmpty: false,
+          isChecked: false,
+        };
+
+        // Determine which state setter to use based on category
+        let setState;
+        let currentItems;
+
+        switch (category) {
+          case "Clothes":
+            setState = setClothesItems;
+            currentItems = clothesItems; // This now comes from the latest 'clothesItems' due to useCallback dependencies
+            break;
+          case "Footwear":
+            setState = setFootwearItems;
+            currentItems = footwearItems; // This now comes from the latest 'footwearItems'
+            break;
+          case "Accessories":
+            setState = setAccessoriesItems;
+            currentItems = accessoriesItems; // This now comes from the latest 'accessoriesItems'
+            break;
+          case "Personal Items": // Ensure this matches your JSX exactly
+            setState = setPersonal_items;
+            currentItems = personal_items; // This now comes from the latest 'personal_items'
+            break;
+          default:
+            console.warn(`Unknown category: ${category}`);
+            return; // Exit if category is not recognized
+        }
+
+        const firstEmptyIndex = currentItems.findIndex((item) => item.isEmpty);
+        if (firstEmptyIndex !== -1) {
+          const updatedItems = [...currentItems];
+          updatedItems[firstEmptyIndex] = newItem;
+          setState(updatedItems);
+        } else {
+          setState([...currentItems, newItem]);
+        }
+
+        setNewItemName("");
+        setNewItemQuantity(1);
+        setIsAddingItem(false);
+
+        setSavePending(true);
+        setCurrentCategory(null);
+      }
+    },
+    [
+      // IMPORTANT: Include all state variables and setters that handleAddItem reads or uses
+      newItemName, // Read directly
+      newItemQuantity, // Read directly
+      clothesItems, // Read directly
+      footwearItems, // Read directly
+      accessoriesItems, // Read directly
+      personal_items, // Read directly
+      setClothesItems, // Setter (stable reference)
+      setFootwearItems, // Setter (stable reference)
+      setAccessoriesItems, // Setter (stable reference)
+      setPersonal_items, // Setter (stable reference)
+      setNewItemName, // Setter (stable reference)
+      setNewItemQuantity, // Setter (stable reference)
+      setIsAddingItem, // Setter (stable reference)
+      setCurrentCategory, // Setter (stable reference)
+      handleSaveTripChanges, // Function being called (should be memoized with useCallback too)
+      saveChangesTimeoutRef, // The ref itself (stable reference)
+    ]
+  );
+
+  useEffect(() => {
+    if (savePending) {
+      // Clear any previous timeout if a new item was added quickly
+      if (saveChangesTimeoutRef.current) {
+        clearTimeout(saveChangesTimeoutRef.current);
+      }
+
+      saveChangesTimeoutRef.current = setTimeout(() => {
+        console.log("Debounced save triggered by savePending flag.");
+        handleSaveTripChanges(); // This should now see the latest state
+        setSavePending(false); // Reset the flag after triggering save
+      }, 500);
+    }
+
+    // Cleanup function: clear timeout if component unmounts or effect re-runs
+    return () => {
+      if (saveChangesTimeoutRef.current) {
+        clearTimeout(saveChangesTimeoutRef.current);
+      }
+    };
+  }, [
+    savePending, // This effect runs when savePending changes
+    handleSaveTripChanges, // This function should be stable (memoized with useCallback)
+    saveChangesTimeoutRef, // The ref itself
+  ]);
 
   const handleDeleteTrip = async (tripIdToDelete) => {
     const confirmDelete = window.confirm(
@@ -280,53 +536,105 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
         setAccessoriesItems(updatedAccessoriesItems);
         break;
       case "Personal Items":
-        const updatedPersonalItems = personalItems.map((item, index) =>
+        const updatedPersonalItems = personal_items.map((item, index) =>
           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
         );
-        setPersonalItems(updatedPersonalItems);
+        setPersonal_items(updatedPersonalItems);
         break;
       default:
         break;
     }
   };
+  // const handleQuantityChange = (category, indexToUpdate, newQuantity) => {
+  //   switch (category) {
+  //     case "clothes":
+  //       setClothesItems((prevItems) => {
+  //         const updatedItems = prevItems.map((item, index) =>
+  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
+  //         );
+  //         setTimeout(() => handleSaveTripChanges(), 0);
+  //         return updatedItems;
+  //       });
+  //       break;
+  //     case "footwear":
+  //       setFootwearItems((prevItems) => {
+  //         const updatedItems = prevItems.map((item, index) =>
+  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
+  //         );
+  //         setTimeout(() => handleSaveTripChanges(), 0);
+  //         return updatedItems;
+  //       });
+  //       break;
+  //     case "accessories":
+  //       setAccessoriesItems((prevItems) => {
+  //         const updatedItems = prevItems.map((item, index) =>
+  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
+  //         );
+  //         setTimeout(() => handleSaveTripChanges(), 0);
+  //         return updatedItems;
+  //       });
+  //       break;
+  //     case "personal_items": // <--- Updated category name
+  //       setPersonal_items((prevItems) => {
+  //         // <--- Updated state variable
+  //         const updatedItems = prevItems.map((item, index) =>
+  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
+  //         );
+  //         setTimeout(() => handleSaveTripChanges(), 0);
+  //         return updatedItems;
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   const handleItemCheck = (category, indexToUpdate) => {
     switch (category) {
-      case "Clothes":
-        setClothesItems((prevItems) =>
-          prevItems.map((item, index) =>
+      case "clothes":
+        setClothesItems((prevItems) => {
+          const updatedItems = prevItems.map((item, index) =>
             index === indexToUpdate
               ? { ...item, isChecked: !item.isChecked }
               : item
-          )
-        );
+          );
+          setTimeout(() => handleSaveTripChanges(), 0);
+          return updatedItems;
+        });
         break;
-      case "Footwear":
-        setFootwearItems((prevItems) =>
-          prevItems.map((item, index) =>
+      case "footwear":
+        setFootwearItems((prevItems) => {
+          const updatedItems = prevItems.map((item, index) =>
             index === indexToUpdate
               ? { ...item, isChecked: !item.isChecked }
               : item
-          )
-        );
+          );
+          setTimeout(() => handleSaveTripChanges(), 0);
+          return updatedItems;
+        });
         break;
-      case "Accessories":
-        setAccessoriesItems((prevItems) =>
-          prevItems.map((item, index) =>
+      case "accessories":
+        setAccessoriesItems((prevItems) => {
+          const updatedItems = prevItems.map((item, index) =>
             index === indexToUpdate
               ? { ...item, isChecked: !item.isChecked }
               : item
-          )
-        );
+          );
+          setTimeout(() => handleSaveTripChanges(), 0);
+          return updatedItems;
+        });
         break;
-      case "Personal Items":
-        setPersonalItems((prevItems) =>
-          prevItems.map((item, index) =>
+      case "personal_items": // <--- Updated category name
+        setPersonal_items((prevItems) => {
+          // <--- Updated state variable
+          const updatedItems = prevItems.map((item, index) =>
             index === indexToUpdate
               ? { ...item, isChecked: !item.isChecked }
               : item
-          )
-        );
+          );
+          setTimeout(() => handleSaveTripChanges(), 0);
+          return updatedItems;
+        });
         break;
       default:
         break;
@@ -343,10 +651,18 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
     }
 
     const packingList = {
-      clothes: clothesItems,
-      footwear: footwearItems,
-      accessories: accessoriesItems,
-      personal: personalItems,
+      clothes: clothesItems.filter(
+        (item) => !item.isEmpty && item.quantity > 0
+      ),
+      footwear: footwearItems.filter(
+        (item) => !item.isEmpty && item.quantity > 0
+      ),
+      accessories: accessoriesItems.filter(
+        (item) => !item.isEmpty && item.quantity > 0
+      ),
+      personal_items: personal_items.filter(
+        (item) => !item.isEmpty && item.quantity > 0
+      ),
     };
     const authToken = localStorage.getItem("jwt");
 
@@ -355,10 +671,10 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
       return "";
     }
 
-    const tripName = tripDetails.destination || "Your Trip";
+    const tripName = trip?.destination || "Your Trip";
     let tripDates = "";
-    if (tripDetails.trip_date) {
-      tripDates = formatTripDates(tripDates.trip_date);
+    if (trip?.trip_date) {
+      tripDates = formatTripDates(trip.trip_date);
     }
 
     try {
@@ -389,8 +705,30 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
     }
   };
 
+  // -- ACTIVITY HANDLERS --
+  const handleAddActivity = (newActivityName) => {
+    if (newActivityName.trim()) {
+      setCurrentActivities((prevActivities) => {
+        const updatedActivities = [...prevActivities, newActivityName.trim()];
+        setTimeout(() => handleSaveTripChanges(), 0);
+        return updatedActivities;
+      });
+    }
+  };
+
+  const handleRemoveActivity = (indexToRemove) => {
+    setCurrentActivities((prevActivities) => {
+      const updatedActivities = prevActivities.filter(
+        (_, index) => index !== indexToRemove
+      );
+      setTimeout(() => handleSaveTripChanges(), 0);
+      return updatedActivities;
+    });
+  };
+
   const destination = trip?.destination;
   const tripDateString = trip?.trip_date;
+  const activities = trip?.activities;
 
   let weatherForecastDaysContent = null; // Initialize a variable to hold the JSX we want to render
 
@@ -500,10 +838,9 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
         <p className="mytrips__suggested-packing-list-title">
           Suggested Packing List
         </p>
-
         <div className="mytrips__activities">
-          {trip?.activities &&
-            trip?.activities.map((activity, index) => (
+          {activities &&
+            activities.map((activities, index) => (
               <span key={index} className="mytrips__activity-tag-inside">
                 <button
                   type="button"
@@ -512,7 +849,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                 >
                   X
                 </button>
-                {activity}
+                {activities}
               </span>
             ))}
         </div>
@@ -918,7 +1255,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Personal Items</p>
-            {personalItems.map((item, index) => (
+            {personal_items.map((item, index) => (
               <div key={index} className="mytrips__item-category__added-item">
                 <label className="mytrips__checkbox-lable">
                   <input
@@ -1076,6 +1413,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
           </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

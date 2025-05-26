@@ -712,6 +712,7 @@ function App() {
                 userTrips={userTrips}
                 onSelectTrip={handleSelectTrip}
                 onTripDeleted={fetchAllUserTrips}
+                
               />
               //</ProtectedRoute>
             }
@@ -792,7 +793,7 @@ function App() {
           />
         </Routes>
 
-        {/* <Footer customStyle={elementStyle}/> */}
+        
 
         {activeModal === "addTripModal" && (
           <AddTripModal 
