@@ -3,7 +3,7 @@ import "./TripsDropbox.css";
 import CurrentUserContext from "../../Contexts/CurrentUserContext";
 import { useNavigate } from "react-router-dom";
 
-const TripsDropbox = ({ isOpened, handleCloseModal, userTrips }) => {
+const TripsDropbox = ({ isOpened, handleCloseModal, userTrips, handleOpenAddTripModal }) => {
   const currentUser = useContext(CurrentUserContext);
   const dropboxRef = useRef(null);
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const TripsDropbox = ({ isOpened, handleCloseModal, userTrips }) => {
   }, [isOpened, handleCloseModal]);
 
   const handleAddTripClick = () => {
-    if (handleOpenAddTrip) {
-      handleOpenAddTrip();
+    if (handleOpenAddTripModal) {
+      handleOpenAddTripModal();
     }
     handleCloseModal();
   };
@@ -59,7 +59,7 @@ const TripsDropbox = ({ isOpened, handleCloseModal, userTrips }) => {
           </li>
         )}
         <li className="tripdropbox__list-item">
-          <button className="tripdropbox__button" type="button">
+          <button className="tripdropbox__button" type="button" onClick={handleAddTripClick}>
             Add Trip
           </button>
         </li>

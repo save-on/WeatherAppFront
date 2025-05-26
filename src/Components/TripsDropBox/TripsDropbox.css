@@ -1,7 +1,8 @@
 .tripdropbox {
   position: absolute;
-  width: 135px;
-  height: 208px;
+  width: 200px;
+  max-height: 208px;
+  overflow-y: auto;
   right: 30px;
   top: 100px;
   z-index: 999;

@@ -110,15 +110,19 @@
 
 .mytrips__suggested-packing-list-items-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  width: 100%;
+  max-width: 1500px;
   list-style-type: none;
-  padding-left: 148px;
-  padding-right: 148px;
+  column-gap: 50px;
+  row-gap: 100px;
+  flex-wrap: wrap;
+  margin: auto;
 }
 
 .mytrips__item-category {
-  width: 255px;
-  height: 480px;
+  width: 550px;
+  height: 486px;
   background-color: #fff;
   border-radius: 10px;
 }
@@ -141,9 +145,9 @@
 }
 
 .mytrips__item-category__added-item-checkbox:disabled + .custom-checkbox-box {
-    background-color: #f0f0f0;
-    border-color: #cccccc;
-    cursor: auto;
+  background-color: #f0f0f0;
+  border-color: #cccccc;
+  cursor: auto;
 }
 
 .mytrips__item-category-add-item-button {
@@ -155,7 +159,7 @@
   padding: 0;
   height: 24px;
   width: 24px;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .mytrips__item-category-add-item-button:hover {
   cursor: pointer;
@@ -176,7 +180,7 @@
 }
 
 .mytrips__item-category-add-item-form-input {
-  width: 120px;
+  width: 367px;
   height: 30px;
   border-radius: 5px;
   border-width: thin;
@@ -191,6 +195,18 @@
   border-color: rgba(62, 62, 70, 0.2);
 }
 
+.mytrips__item-category-add-item-form-input-quantities {
+  display: flex;
+  margin-right: 10px;
+  gap: 5px;
+}
+
+.mytrips__item-category-add-item-form-input-controls {
+  display: flex;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
 .mytrips__item-category-add-button {
   background-color: #000;
   color: #fff;
@@ -198,13 +214,13 @@
   border-width: thin;
 }
 
-.mytrips__item-name-text {
-
-}
-
 .mytrips__item-category__added-item {
   display: flex;
   margin: 0 0 20px 20px;
+}
+
+.mytrips__item-category__added-item:hover {
+  background-color: #eaeaea;
 }
 
 .mytrips__item-category__added-item-text {
@@ -232,32 +248,48 @@
   width: 20px;
   height: 20px;
   border: 1px solid #000;
-  border-radius: 5px;
+  border-radius: 15px;
   vertical-align: middle;
   margin-right: 8px;
   cursor: pointer;
 }
 
 .custom-checkbox-box:hover {
-  background-color: #B7B7B7;
+  background-color: #b7b7b7;
 }
-
-
 
 .mytrips__checkmark {
   width: 20px;
   height: 20px;
+  border-radius: 15px;
 }
 
 .mytrips__quantity-controls {
   display: flex;
+  margin-right: 20px;
   margin-left: auto;
+  align-items: center;
+  gap: 5px;
 }
 
 .mytrips__quantity-button {
   width: 15px;
   height: 15px;
-  background-color: #fff;
+  background-color: transparent;
+  border-width: thin;
+  border-radius: 5px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.mytrips__quantity-buttons {
+    width: 15px;
+  height: 15px;
+  background-color: transparent;
   border-width: thin;
   border-radius: 5px;
   font-size: 10px;
@@ -265,10 +297,15 @@
   justify-content: center;
 }
 
+.mytrips__item-category__added-item:hover .mytrips__quantity-button {
+  visibility: visible;
+  opacity: 1;
+}
+
 .mytrips__delete-item-button {
-  background-color: #fff;
+  background-color: transparent;
   border: none;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .mytrips__item-category__added-item:hover .mytrips__delete-icon {
@@ -279,6 +316,7 @@
 .mytrips__delete-icon {
   visibility: hidden;
   opacity: 0;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .mytrips__delete-item-button:hover {
@@ -287,7 +325,6 @@
 
 .mytrips__other-items {
   display: flex;
-  padding-left: 148px;
   margin-top: 80px;
 }
 
@@ -301,8 +338,9 @@
 .mytrips__other-items-container {
   background-color: #fff;
   height: 179px;
-  width: 1096px;
+  width: 1100px;
   border-radius: 10px;
+  margin: auto;
 }
 
 .mytrips__email-packing-list {

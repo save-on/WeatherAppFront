@@ -3,7 +3,7 @@ import Sunny from "../../Images/sunny.svg";
 import PartlyCloudy from "../../Images/partly-cloudy.svg";
 import ScatteredShowers from "../../Images/scattered-showers.svg";
 import Plus from "../../Images/Plus.svg";
-import Increment from "../../Images/Increment.svg";
+import Increment from "../../Images/increment.svg";
 import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
 import { useState, useContext, useEffect } from "react";
@@ -80,57 +80,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
 
-  // useEffect(() => {
-  //   const fetchTripDetails = async () => {
-  //     console.log("MyTrips useEffect running...");
-  //     console.log("tripId:", tripId);
-  //     console.log("lggedIn:", loggedIn);
-  //     // Only attempt to fetch if tripId exists and the user is logged in
-  //     if (tripId && loggedIn) {
-  //       setIsLoading(true); // Start loading
-  //       setError(null); // Clear previous errors
-
-  //       const token = localStorage.getItem("jwt"); // Get the authentication token
-
-  //       if (!token) {
-  //         setError("Authentication token not found. Please log in.");
-  //         setIsLoading(false);
-  //         return;
-  //       }
-
-  //       try {
-  //         const fetchedTrip = await getTripById(tripId, token);
-  //         console.log("DEBUG: fetchedTrip directly from API: ", fetchedTrip);
-
-  //         setTrip(fetchedTrip);
-  //       } catch (err) {
-  //         console.error("Failed to fetch trip:", err);
-  //         setError(
-  //           err.message || "An error occurred while fetching trip details."
-  //         );
-  //       } finally {
-  //         setIsLoading(false); // End loading regardless of success or failure
-  //       }
-  //     } else if (!loggedIn) {
-  //       // If not logged in, set an error message
-  //       setError("You must be logged in to view trip details.");
-  //       setIsLoading(false);
-  //     } else {
-  //       // If no tripId is present (e.g., /mytrips without an ID), reset state
-  //       setTrip(null);
-  //       setIsLoading(false);
-  //       setError(null);
-  //     }
-  //   };
-
-  //   fetchTripDetails();
-  // }, [tripId, loggedIn]);
-
   useEffect(() => {
-    console.log("MyTrips useEffect running...");
-    console.log("tripId:", tripId);
-    console.log("loggedIn:", loggedIn);
-
     const fetchTripDetails = async () => {
       if (tripId && loggedIn) {
         setIsLoading(true);
@@ -611,6 +561,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                   </span>
                 </label>
                 <div className="mytrips__quantity-controls">
+                  {!item.isEmpty && (
+                    <button
+                      type="button"
+                      className="mytrips__delete-item-button"
+                      onClick={() => handleDeleteItem("Clothes", index)}
+                    >
+                      <img
+                        src={Trashcan}
+                        alt="Delete"
+                        className="mytrips__delete-icon"
+                      />
+                    </button>
+                  )}
                   <img
                     className="mytrips__quantity-button"
                     src={Decrement}
@@ -639,19 +602,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                     }
                   />
                 </div>
-                {!item.isEmpty && (
-                  <button
-                    type="button"
-                    className="mytrips__delete-item-button"
-                    onClick={() => handleDeleteItem("Clothes", index)}
-                  >
-                    <img
-                      src={Trashcan}
-                      alt="Delete"
-                      className="mytrips__delete-icon"
-                    />
-                  </button>
-                )}
               </div>
             ))}
             {!isAddingItem || currentCategory !== "Clothes" ? (
@@ -682,27 +632,33 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                   onChange={(e) => setNewItemName(e.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-                <img
-                  className="mytrips__quantity-button"
-                  src={Decrement}
-                  onClick={() =>
-                    setNewItemQuantity(Math.max(1, newItemQuantity - 1))
-                  }
-                />
-                <span className="mytrips__item-category__added-item-text">
-                  {newItemQuantity}
-                </span>
-                <img
-                  className="mytrips__quantity-button"
-                  src={Increment}
-                  onClick={() => setNewItemQuantity(newItemQuantity + 1)}
-                />
-                <button
-                  className="mytrips__item-category-add-button"
-                  onClick={() => handleAddItem("Clothes")}
-                >
-                  Add
-                </button>
+                <div className="mytrips__item-category-add-item-form-input-controls">
+                  <div className="mytrips__item-category-add-item-form-input-quantities">
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Decrement}
+                      onClick={() =>
+                        setNewItemQuantity(Math.max(1, newItemQuantity - 1))
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {newItemQuantity}
+                    </span>
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Increment}
+                      onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                    />
+                  </div>
+
+                  <button
+                    className="mytrips__item-category-add-button"
+                    onClick={() => handleAddItem("Clothes")}
+                  >
+                    Add
+                  </button>
+                </div>
+
                 {/* <button onClick={() => setIsAddingItem(false)}>Cancel</button> */}
               </div>
             )}
@@ -808,27 +764,32 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                   onChange={(e) => setNewItemName(e.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-                <img
-                  className="mytrips__quantity-button"
-                  src={Decrement}
-                  onClick={() =>
-                    setNewItemQuantity(Math.max(1, newItemQuantity - 1))
-                  }
-                />
-                <span className="mytrips__item-category__added-item-text">
-                  {newItemQuantity}
-                </span>
-                <img
-                  className="mytrips__quantity-button"
-                  src={Increment}
-                  onClick={() => setNewItemQuantity(newItemQuantity + 1)}
-                />
-                <button
-                  className="mytrips__item-category-add-button"
-                  onClick={() => handleAddItem("Footwear")}
-                >
-                  Add
-                </button>
+                <div className="mytrips__item-category-add-item-form-input-controls">
+                  <div className="mytrips__item-category-add-item-form-input-quantities">
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Decrement}
+                      onClick={() =>
+                        setNewItemQuantity(Math.max(1, newItemQuantity - 1))
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {newItemQuantity}
+                    </span>
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Increment}
+                      onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                    />
+                  </div>
+
+                  <button
+                    className="mytrips__item-category-add-button"
+                    onClick={() => handleAddItem("Clothes")}
+                  >
+                    Add
+                  </button>
+                </div>
                 {/* <button onClick={() => setIsAddingItem(false)}>Cancel</button> */}
               </div>
             )}
@@ -934,27 +895,32 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                   onChange={(e) => setNewItemName(e.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-                <img
-                  className="mytrips__quantity-button"
-                  src={Decrement}
-                  onClick={() =>
-                    setNewItemQuantity(Math.max(1, newItemQuantity - 1))
-                  }
-                />
-                <span className="mytrips__item-category__added-item-text">
-                  {newItemQuantity}
-                </span>
-                <img
-                  className="mytrips__quantity-button"
-                  src={Increment}
-                  onClick={() => setNewItemQuantity(newItemQuantity + 1)}
-                />
-                <button
-                  className="mytrips__item-category-add-button"
-                  onClick={() => handleAddItem("Accessories")}
-                >
-                  Add
-                </button>
+                <div className="mytrips__item-category-add-item-form-input-controls">
+                  <div className="mytrips__item-category-add-item-form-input-quantities">
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Decrement}
+                      onClick={() =>
+                        setNewItemQuantity(Math.max(1, newItemQuantity - 1))
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {newItemQuantity}
+                    </span>
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Increment}
+                      onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                    />
+                  </div>
+
+                  <button
+                    className="mytrips__item-category-add-button"
+                    onClick={() => handleAddItem("Clothes")}
+                  >
+                    Add
+                  </button>
+                </div>
                 {/* <button onClick={() => setIsAddingItem(false)}>Cancel</button> */}
               </div>
             )}
@@ -1060,27 +1026,32 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
                   onChange={(e) => setNewItemName(e.target.value)}
                   onKeyDown={handleKeyPress}
                 />
-                <img
-                  className="mytrips__quantity-button"
-                  src={Decrement}
-                  onClick={() =>
-                    setNewItemQuantity(Math.max(1, newItemQuantity - 1))
-                  }
-                />
-                <span className="mytrips__item-category__added-item-text">
-                  {newItemQuantity}
-                </span>
-                <img
-                  className="mytrips__quantity-button"
-                  src={Increment}
-                  onClick={() => setNewItemQuantity(newItemQuantity + 1)}
-                />
-                <button
-                  className="mytrips__item-category-add-button"
-                  onClick={() => handleAddItem("Personal Items")}
-                >
-                  Add
-                </button>
+                <div className="mytrips__item-category-add-item-form-input-controls">
+                  <div className="mytrips__item-category-add-item-form-input-quantities">
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Decrement}
+                      onClick={() =>
+                        setNewItemQuantity(Math.max(1, newItemQuantity - 1))
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {newItemQuantity}
+                    </span>
+                    <img
+                      className="mytrips__quantity-buttons"
+                      src={Increment}
+                      onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                    />
+                  </div>
+
+                  <button
+                    className="mytrips__item-category-add-button"
+                    onClick={() => handleAddItem("Clothes")}
+                  >
+                    Add
+                  </button>
+                </div>
                 {/* <button onClick={() => setIsAddingItem(false)}>Cancel</button> */}
               </div>
             )}

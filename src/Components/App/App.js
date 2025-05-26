@@ -217,6 +217,10 @@ function App() {
     setActiveModal("logindropbox");
   };
 
+  const handleOpenAddTripModal = () => {
+    setActiveModal("addTripModal");
+  }
+
   const registerUser = (values) => {
     console.log("Values: ", values);
     setIsLoading(true);
@@ -558,12 +562,12 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    console.log("App.js useEffect (initial load/token check) starting...");
+    
     const token = checkLoggedIn();
-    console.log("App.js: Token from checkLoggedIn():", token);
+    
 
     if (token) {
-      console.log("App.js: Token found, attempting to get user data...");
+     
       getUserData(token)
         .then((res) => {
           setLoggedIn(true);
@@ -572,14 +576,7 @@ function App() {
             localStorage.getItem("userSavedTrips") || "[]"
           );
           setUserTrips(storedTrips);
-          console.log(
-            "DEBUG: App.js - User data and trips loaded SUCCESSFULLY."
-          );
-          console.log("DEBUG: App.js - isLoggedIn is now:", true);
-          console.log("DEBUG: App.js - currentUser is now:", {
-            ...res,
-            token: token,
-          });
+     
         })
         .catch((err) => {
           console.log(
@@ -594,7 +591,6 @@ function App() {
         })
         .finally(() => {
           setIsLoading(false);
-          console.log("App.js: getUserData promise settled.");
         });
     } else {
       // If no token, explicitly set states to default logged-out values
@@ -604,9 +600,6 @@ function App() {
       setIsLoading(false);
       console.log("App.js: No token found. isLoggedIn set to false.");
     }
-    console.log(
-      "App.js useEffect (initial load/token check) finished processing."
-    );
   }, []);
 
   const fetchAllUserTrips = async () => {
@@ -623,7 +616,6 @@ function App() {
         return;
       }
       const tripsData = await getTrips(token);
-      console.log("App.js: Fetched all user trips: ", tripsData);
       setUserTrips(tripsData);
     } catch (error) {
       console.error(
@@ -694,6 +686,7 @@ function App() {
           userTrips={userTrips}
           isLoadingTrips={isLoadingTrips}
           onSelectTrip={handleSelectTrip}
+          handleOpenAddTripModal={handleOpenAddTripModal}
         />
         <Routes>
           <Route

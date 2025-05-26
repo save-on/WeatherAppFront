@@ -16,6 +16,7 @@ function NewHeader({
   handleCloseModal,
   handleOpenDropbox,
   handleOpenTripDropbox,
+  handleOpenAddTripModal,
   onSignOut,
   customStyle,
   userTrips,
@@ -44,6 +45,7 @@ function NewHeader({
               handleCloseModal={handleCloseModal}
               loggeIn={loggedIn}
               userTrips={userTrips}
+              handleOpenAddTripModal={handleOpenAddTripModal}
             />
 
             <img
