@@ -1,5 +1,10 @@
-import { createContext } from "react";
+import React from "react";
 
-const CurrentUserContext = createContext();
+const CurrentUserContext = React.createContext({
+  currentUser: null,
+  loggedIn: false,
+  setCurrentUser: () => {},
+  setloggedIn: () => {},
+});
 
 export default CurrentUserContext;

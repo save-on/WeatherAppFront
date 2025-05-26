@@ -8,51 +8,53 @@ import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
 import { useState, useContext, useEffect } from "react";
 import Trashcan from "../../Images/trashcan.svg";
-import { sendPackingListEmail, getTrips } from "../../Utils/Api.js";
+import { sendPackingListEmail, getTrips, getTripById } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
+import { useParams } from "react-router-dom";
 
 const formatDate = (date) => {
-    if (date instanceof Date) {
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const day = date.getDate().toString().padStart(2, "0");
-      const year = date.getFullYear();
-      return `${month}/${day}/${year}`;
-    }
-    return "";
-  };
+  if (date instanceof Date) {
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
+  return "";
+};
 
-  const formatDateDay = (date) => {
-    if (date instanceof Date) {
-      const options = { weekday: "long", month: "long", day: "numeric" };
-      return date.toLocaleDateString("en-US", options);
-    }
-    return "";
-  };
+const formatDateDay = (date) => {
+  if (date instanceof Date) {
+    const options = { weekday: "long", month: "long", day: "numeric" };
+    return date.toLocaleDateString("en-US", options);
+  }
+  return "";
+};
 
-  const formatTripDates = (dateRangeString) => {
-    if (!dateRangeString) return "N/A";
+const formatTripDates = (dateRangeString) => {
+  if (!dateRangeString) return "N/A";
 
-    const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
-    if (parts.length < 2) return dateRangeString;
+  const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
+  if (parts.length < 2) return dateRangeString;
 
-      const startDate = new Date(parts[0]);
-      const endDate = new Date(parts[1]);
+  const startDate = new Date(parts[0]);
+  const endDate = new Date(parts[1]);
 
-      const formattedStartDate = formatDate(startDate);
-      const formattedEndDate = formatDate(endDate);
+  const formattedStartDate = formatDate(startDate);
+  const formattedEndDate = formatDate(endDate);
 
-    return `${formattedStartDate} - ${formattedEndDate}`;
-  };
+  return `${formattedStartDate} - ${formattedEndDate}`;
+};
 
-function MyTrips({ tripDetails, onRemoveActivity }) {
-  const destination = tripDetails?.trip?.destination;
-  const tripDateString = tripDetails?.trip?.trip_date;
+function MyTrips({ onRemoveActivity }) {
+  const { tripId } = useParams();
+  console.log("MyTrips: tripId from URL params: ", tripId);
+  const { currentUser, loggedIn } = useContext(CurrentUserContext);
 
-  // console.log("tripDetails object: ", tripDetails);
-  // console.log("tripDetails.trip_date: ", tripDetails?.trip?.trip_date);
-  // console.log("tripDetails destination: ", destination);
-  // console.log("tripDetails trip date string: ", tripDateString);
+  //State for fetched trip details
+  const [trip, setTrip] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const initialEmptyItems = Array(9).fill({
     name: "Item",
@@ -72,7 +74,84 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [emailStatus, setEmailStatus] = useState("");
 
-  const { currentUser, isLoggedIn } = useContext(CurrentUserContext);
+  // useEffect(() => {
+  //   const fetchTripDetails = async () => {
+  //     console.log("MyTrips useEffect running...");
+  //     console.log("tripId:", tripId);
+  //     console.log("lggedIn:", loggedIn);
+  //     // Only attempt to fetch if tripId exists and the user is logged in
+  //     if (tripId && loggedIn) {
+  //       setIsLoading(true); // Start loading
+  //       setError(null); // Clear previous errors
+
+  //       const token = localStorage.getItem("jwt"); // Get the authentication token
+
+  //       if (!token) {
+  //         setError("Authentication token not found. Please log in.");
+  //         setIsLoading(false);
+  //         return;
+  //       }
+
+  //       try {
+  //         const fetchedTrip = await getTripById(tripId, token);
+  //         console.log("DEBUG: fetchedTrip directly from API: ", fetchedTrip);
+
+  //         setTrip(fetchedTrip);
+  //       } catch (err) {
+  //         console.error("Failed to fetch trip:", err);
+  //         setError(
+  //           err.message || "An error occurred while fetching trip details."
+  //         );
+  //       } finally {
+  //         setIsLoading(false); // End loading regardless of success or failure
+  //       }
+  //     } else if (!loggedIn) {
+  //       // If not logged in, set an error message
+  //       setError("You must be logged in to view trip details.");
+  //       setIsLoading(false);
+  //     } else {
+  //       // If no tripId is present (e.g., /mytrips without an ID), reset state
+  //       setTrip(null);
+  //       setIsLoading(false);
+  //       setError(null);
+  //     }
+  //   };
+
+  //   fetchTripDetails();
+  // }, [tripId, loggedIn]);
+
+    useEffect(() => {
+    console.log("MyTrips useEffect running...");
+    console.log("tripId:", tripId);
+    console.log("loggedIn:", loggedIn);
+
+    const fetchTripDetails = async () => {
+      if (tripId && loggedIn) { 
+        setIsLoading(true); 
+        try {
+          const token = localStorage.getItem("jwt");
+          if (!token) {
+            console.error("No token found for fetching trip details.");
+            setIsLoading(false);
+            return;
+          }
+          console.log("MyTrips: Attempting to fetch trip with ID:", tripId); 
+          const fetchedTrip = await getTripById(tripId, token);
+          console.log("MyTrips: Fetched trip data:", fetchedTrip); 
+          setTrip(fetchedTrip); 
+        } catch (err) {
+          console.error("Failed to fetch trip:", err.message || err);
+        } finally {
+          setIsLoading(false);
+        }
+      } else if (!tripId) {
+        console.log("MyTrips: No specific tripId, probably rendering all trips.");
+       
+      }
+    };
+
+    fetchTripDetails();
+  }, [tripId, loggedIn]);
 
   useEffect(() => {
     if (currentUser && currentUser.email) {
@@ -81,39 +160,6 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       setEmailStatus("Please sign in to email your packing list.");
     }
   }, [currentUser]);
-
-  // const formatDate = (date) => {
-  //   if (date instanceof Date) {
-  //     const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  //     const day = date.getDate().toString().padStart(2, "0");
-  //     const year = date.getFullYear();
-  //     return `${month}/${day}/${year}`;
-  //   }
-  //   return "";
-  // };
-
-  // const formatDateDay = (date) => {
-  //   if (date instanceof Date) {
-  //     const options = { weekday: "long", month: "long", day: "numeric" };
-  //     return date.toLocaleDateString("en-US", options);
-  //   }
-  //   return "";
-  // };
-
-  // const formatTripDates = (dateRangeString) => {
-  //   if (!dateRangeString) return "N/A";
-
-  //   const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
-  //   if (parts.length < 2) return dateRangeString;
-
-  //     const startDate = new Date(parts[0]);
-  //     const endDate = new Date(parts[1]);
-
-  //     const formattedStartDate = formatDate(startDate);
-  //     const formattedEndDate = formatDate(endDate);
-
-  //   return `${formattedStartDate} - ${formattedEndDate}`;
-  // };
 
   const handleRemoveActivity = (index) => {
     if (onRemoveActivity) {
@@ -353,7 +399,16 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     }
   };
 
- let weatherForecastDaysContent = null; // Initialize a variable to hold the JSX we want to render
+  //const destination = tripDetails?.trip?.destination;
+  //const tripDateString = tripDetails?.trip?.trip_date;
+
+  const destination = trip?.destination;
+  const tripDateString = trip?.trip_date;
+  console.log("DEBUG: current trip state:", trip); // <<< ADD THIS LINE
+  console.log("DEBUG: destination variable:", destination); // <<< ADD THIS LINE
+  console.log("DEBUG: tripDateString variable:", tripDateString); // <<< ADD THIS LINE
+
+  let weatherForecastDaysContent = null; // Initialize a variable to hold the JSX we want to render
 
   if (!tripDateString) {
     // If no tripDateString, set the content to the "No trip selected" message
@@ -363,7 +418,8 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
   } else {
     // If tripDateString exists, proceed with parsing and calculating dates
     const dateParts = tripDateString.replace(/[\[\]()]/g, "").split(",");
-    const rawStartDate = dateParts.length > 0 ? new Date(dateParts[0].trim()) : null;
+    const rawStartDate =
+      dateParts.length > 0 ? new Date(dateParts[0].trim()) : null;
 
     if (!rawStartDate || isNaN(rawStartDate.getTime())) {
       // If parsing fails, set the content to the error message
@@ -380,31 +436,55 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         <>
           {/* Day 1 */}
           <li className="mytrips__weatherForecast-day">
-            <img className="mytrips__weatherForecast-day-weather-image" src={Sunny} alt="Sunny weather icon"/>
+            <img
+              className="mytrips__weatherForecast-day-weather-image"
+              src={Sunny}
+              alt="Sunny weather icon"
+            />
             <div className="mytrips__weatherForecast-day-details">
               <p className="mytrips__weatherForecast-day-details-text">Day 1</p>
-              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day1Date)}</p>
-              <p className="mytrips__weatherForecast-day-details-text">Sunny, 80°</p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                {formatDateDay(day1Date)}
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                Sunny, 80°
+              </p>
             </div>
           </li>
 
           {/* Day 2 */}
           <li className="mytrips__weatherForecast-day">
-            <img className="mytrips__weatherForecast-day-weather-image" src={PartlyCloudy} alt="Partly Cloudy weather icon"/>
+            <img
+              className="mytrips__weatherForecast-day-weather-image"
+              src={PartlyCloudy}
+              alt="Partly Cloudy weather icon"
+            />
             <div className="mytrips__weatherForecast-day-details">
               <p className="mytrips__weatherForecast-day-details-text">Day 2</p>
-              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day2Date)}</p>
-              <p className="mytrips__weatherForecast-day-details-text">Partly Cloudy, 76°</p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                {formatDateDay(day2Date)}
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                Partly Cloudy, 76°
+              </p>
             </div>
           </li>
 
           {/* Day 3 */}
           <li className="mytrips__weatherForecast-day">
-            <img className="mytrips__weatherForecast-day-weather-image" src={ScatteredShowers} alt="Scattered Showers weather icon"/>
+            <img
+              className="mytrips__weatherForecast-day-weather-image"
+              src={ScatteredShowers}
+              alt="Scattered Showers weather icon"
+            />
             <div className="mytrips__weatherForecast-day-details">
               <p className="mytrips__weatherForecast-day-details-text">Day 3</p>
-              <p className="mytrips__weatherForecast-day-details-text">{formatDateDay(day3Date)}</p>
-              <p className="mytrips__weatherForecast-day-details-text">Scattered Showers, 83°</p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                {formatDateDay(day3Date)}
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text">
+                Scattered Showers, 83°
+              </p>
             </div>
           </li>
         </>
@@ -416,9 +496,7 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
     <div className="mytrips">
       <div className="mytrips__location">
         {destination && (
-          <p className="mytrips__location-destination">
-            {destination}{" "}
-          </p>
+          <p className="mytrips__location-destination">{destination} </p>
         )}
         {tripDateString && (
           <p className="mytrips__location-dates">
@@ -429,8 +507,8 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
       <div className="mytrips__weatherForecast">
         <p className="mytrips__weatherForecast-title">Weather Forecast</p>
         <div className="mytrips__weatherForecast-days">
-          < ul className="mytrips__weatherForecast-days-list">
-          {weatherForecastDaysContent}        
+          <ul className="mytrips__weatherForecast-days-list">
+            {weatherForecastDaysContent}
           </ul>
         </div>
       </div>
@@ -440,8 +518,8 @@ function MyTrips({ tripDetails, onRemoveActivity }) {
         </p>
 
         <div className="mytrips__activities">
-          {tripDetails.activities &&
-            tripDetails.activities.map((activity, index) => (
+          {trip?.activities &&
+            trip?.activities.map((activity, index) => (
               <span key={index} className="mytrips__activity-tag-inside">
                 <button
                   type="button"

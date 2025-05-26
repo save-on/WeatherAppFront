@@ -318,7 +318,7 @@ export const getTripById = (tripId, token) => {
     );
   }
 
-  return processServerRequest(`${baseUrl}mytrips/${tripId}`, {
+  return processServerRequest(`${baseUrl}trips/${tripId}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",

@@ -89,7 +89,7 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const tripData = {
-      location: values.location,
+      destination: values.location,
       startDate: values.travelDates.startDate
         ? values.travelDates.startDate.toISOString()
         : null,
@@ -98,7 +98,6 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
         : null,
       activities: activities.join(", "),
     };
-    navigate("/mytrips");
     onNewTripAttempt(tripData);
     navigate("/mytrips");
   };

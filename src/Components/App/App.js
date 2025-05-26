@@ -337,7 +337,7 @@ function App() {
     }
     //set up data to send to backend for trip
     const dataForBackend = {
-      destination: tripData.location,
+      destination: tripData.destination,
       startDate: tripData.startDate,
       endDate: tripData.endDate,
       activities: tripData.activities,
@@ -350,12 +350,14 @@ function App() {
     postTripWithPackinglist(dataForBackend, token)
       .then((res) => {
         console.log("Trip and packing list saved successfully: ", res);
+        const dateString = res.trip.trip_date.replace(/[\[\]\)]/g, "");
+        const [backendStartDate, backEndDate] = dateString.split(",");
         const savedTripFromBackend = {
-          id: res._id || "generateUniqueId()",
-          destination: res.destination || tripData.location,
-          startDate: res.startDate || tripData.travelDates.startDate,
-          endDate: res.endDate || tripData.travelDates.endDate,
-          activities: res.activities,
+          id: res.trip._id || res.trip.id,
+          destination: res.trip.destination || tripData.location,
+          startDate: backendStartDate || tripData.travelDates.startDate,
+          endDate: backEndDate || tripData.travelDates.endDate,
+          activities: res.trip.activities,
           packinglistId: res.packinglist?._id || "generated-packing-list-id",
         };
         setTripDetails(res);
@@ -363,11 +365,20 @@ function App() {
         //update user trips
         const updatedUserTrips = [...userTrips, savedTripFromBackend];
         setUserTrips(updatedUserTrips);
-        localStorage.setItem("userSavedTrips", JSON.stringify(updatedUserTrips));
-        console.log("DEBUG: userTrips state and localStorage updated: ", updatedUserTrips);
-
+        localStorage.setItem(
+          "userSavedTrips",
+          JSON.stringify(updatedUserTrips)
+        );
+        console.log(
+          "DEBUG: userTrips state and localStorage updated: ",
+          updatedUserTrips
+        );
+        console.log(
+          "DEBUB Appjs: Navigating to: ",
+          `/mytrips/${savedTripFromBackend.id}`
+        );
         if (!isPendingSave) {
-          navigate(`mytrips/${savedTripFromBackend}`);
+          navigate(`mytrips/${savedTripFromBackend.id}`);
         }
       })
       .catch((err) => {
@@ -544,8 +555,12 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
+    console.log("App.js useEffect (initial load/token check) starting...");
     const token = checkLoggedIn();
+    console.log("App.js: Token from checkLoggedIn():", token);
+
     if (token) {
+      console.log("App.js: Token found, attempting to get user data...");
       getUserData(token)
         .then((res) => {
           setLoggedIn(true);
@@ -554,17 +569,41 @@ function App() {
             localStorage.getItem("userSavedTrips") || "[]"
           );
           setUserTrips(storedTrips);
-          console.log("DEBUG: User data and trips loaded.");
+          console.log(
+            "DEBUG: App.js - User data and trips loaded SUCCESSFULLY."
+          );
+          console.log("DEBUG: App.js - isLoggedIn is now:", true);
+          console.log("DEBUG: App.js - currentUser is now:", {
+            ...res,
+            token: token,
+          });
         })
         .catch((err) => {
-          console.log("Error fetching user data: ", err.message);
+          console.log(
+            "DEBUG: App.js - Error fetching user data on load: ",
+            err.message
+          );
           localStorage.removeItem("jwt");
           setLoggedIn(false);
           setCurrentUser(null);
           setUserTrips([]);
+          console.log("DEBUG: App.js - isLoggedIn set to false due to error.");
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+          console.log("App.js: getUserData promise settled.");
+        });
+    } else {
+      // If no token, explicitly set states to default logged-out values
+      setLoggedIn(false);
+      setCurrentUser(null);
+      setUserTrips([]);
+      setIsLoading(false);
+      console.log("App.js: No token found. isLoggedIn set to false.");
     }
+    console.log(
+      "App.js useEffect (initial load/token check) finished processing."
+    );
   }, []);
 
   const videoMapping = {
@@ -593,12 +632,19 @@ function App() {
   const handleSelectTrip = (tripId) => {
     console.log("DEBUG: Navigating to packing list for trip ID: ", tripId);
     navigate(`/mytrips/${tripId}`);
-  }
+  };
 
   return (
     <div className="app">
       <CurrentUserContext.Provider
-        value={{ currentUser, loggedIn, loginUser, onSignOut }}
+        value={{
+          currentUser,
+          loggedIn,
+          loginUser,
+          onSignOut,
+          setCurrentUser,
+          setLoggedIn,
+        }}
       >
         {/* <video
           key={videoSrc}
@@ -669,13 +715,19 @@ function App() {
               //</ProtectedRoute>
             }
           />
-          <Route 
-          path="/mytrips/:tripId"
-          element={
-            <ProtectedRoute path="mytrips/:tripId" loggedIn={loggedIn}>
-              <MyTrips />
-            </ProtectedRoute>
-          }
+          <Route
+            path="/mytrips/:tripId"
+            element={
+              <ProtectedRoute path="mytrips/:tripId" loggedIn={loggedIn}>
+                <MyTrips
+                  customStyle={elementStyle}
+                  tripDetails={tripDetails}
+                  onRemoveActivity={handleRemoveActivityFromTrip}
+                  userTrips={userTrips}
+                  onSelectTrip={handleSelectTrip}
+                />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/profile/packing-lists"
