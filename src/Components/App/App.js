@@ -6,7 +6,6 @@ import NewMain from "../Main/NewMain.js";
 import Footer from "../Footer/Footer.js";
 import Profile from "../Profile/Profile.js";
 import MyTrips from "../MyTrips/MyTrips.js";
-
 import PackingListList from "../PackingListList/PackingListList.js";
 import CreatePackingListModal from "../PackingListsModal/CreatePackingListModal.js";
 import PackingListCard from "../PackingListCard/PackingListCard.js";
@@ -20,6 +19,7 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import AddItemModal from "../AddItemModal/AddItemModal.js";
 import SearchedCity from "../SearchedCity/SearchedCity.jsx";
 import RouteRerouter from "../RouteRerouter/RouteRerouter.jsx";
+import AddTripModal from "../AddTripModal/AddTripModal.js";
 
 //Videos
 import clearDay from "../../Videos/clear-day.mp4";
@@ -152,7 +152,6 @@ function App() {
     setActiveModal("");
     setErrMessage("");
     setIsPendingTripModal(false);
-    console.log("DEBUG: isPendingTripModal set to false on modal close");
   };
 
   const handleRemoveActivityFromTrip = (indexToRemove) => {
@@ -272,7 +271,7 @@ function App() {
             localStorage.removeItem("pendingTrip");
             setPendingTripData(null);
           } else {
-            navigate("/mytrips");
+            navigate("/");
           }
         } else {
           console.error("Login successful but no token received.");
@@ -794,6 +793,14 @@ function App() {
         </Routes>
 
         {/* <Footer customStyle={elementStyle}/> */}
+
+        {activeModal === "addTripModal" && (
+          <AddTripModal 
+          isOpen={activeModal === "addTripModal"}
+          onClose={handleCloseModal}
+          handleOpenAddTripModal={handleOpenAddTripModal}
+          />
+        )}
 
         {activeModal === "login" && (
           <LoginModal

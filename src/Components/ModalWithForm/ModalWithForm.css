@@ -67,7 +67,7 @@
   border: none;
 }
 
-.close_type_register:hover, 
+.close_type_register:hover,
 .close_type_login:hover {
   cursor: pointer;
 }
@@ -149,7 +149,7 @@
   margin: auto;
 }
 
-.modal-form-submit:hover, 
+.modal-form-submit:hover,
 .modal-form-submit-signup:hover {
   cursor: pointer;
 }
@@ -184,14 +184,14 @@
   margin: 40px 0;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8F8C8C;
+  color: #8f8c8c;
 }
 
 .modal-form-forgot-password-signup {
   display: flex;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8F8C8C;
+  color: #8f8c8c;
   margin: 18px 18px 18px 25px;
 }
 
@@ -216,7 +216,7 @@
   margin: 30px 30px 30px 50px;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8F8C8C;
+  color: #8f8c8c;
 }
 
 .modal__signup {

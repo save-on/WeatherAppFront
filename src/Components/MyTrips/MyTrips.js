@@ -53,7 +53,6 @@ const formatTripDates = (dateRangeString) => {
 
 function MyTrips({ onRemoveActivity, onTripDeleted }) {
   const { tripId } = useParams();
-  console.log("MyTrips: tripId from URL params: ", tripId);
   const { currentUser, loggedIn } = useContext(CurrentUserContext);
   const navigate = useNavigate();
 
@@ -91,9 +90,9 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
             setIsLoading(false);
             return;
           }
-          console.log("MyTrips: Attempting to fetch trip with ID:", tripId);
+
           const fetchedTrip = await getTripById(tripId, token);
-          console.log("MyTrips: Fetched trip data:", fetchedTrip);
+
           setTrip(fetchedTrip);
         } catch (err) {
           console.error("Failed to fetch trip:", err.message || err);
@@ -243,9 +242,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
         return;
       }
 
-      console.log("Attempting to delete trip with ID: ", tripIdToDelete);
       await deleteTrip(tripIdToDelete, token);
-      console.log(`Trip ${tripIdToDelete} deleted successfully.`);
 
       //1. After delete trigger re-fetch of all trips to update list
       if (onTripDeleted) {
@@ -392,14 +389,8 @@ function MyTrips({ onRemoveActivity, onTripDeleted }) {
     }
   };
 
-  //const destination = tripDetails?.trip?.destination;
-  //const tripDateString = tripDetails?.trip?.trip_date;
-
   const destination = trip?.destination;
   const tripDateString = trip?.trip_date;
-  console.log("DEBUG: current trip state:", trip); // <<< ADD THIS LINE
-  console.log("DEBUG: destination variable:", destination); // <<< ADD THIS LINE
-  console.log("DEBUG: tripDateString variable:", tripDateString); // <<< ADD THIS LINE
 
   let weatherForecastDaysContent = null; // Initialize a variable to hold the JSX we want to render
 
