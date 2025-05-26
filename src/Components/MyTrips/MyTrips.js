@@ -398,19 +398,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         switch (category) {
           case "Clothes":
             setState = setClothesItems;
-            currentItems = clothesItems; // This now comes from the latest 'clothesItems' due to useCallback dependencies
+            currentItems = clothesItems; 
             break;
           case "Footwear":
             setState = setFootwearItems;
-            currentItems = footwearItems; // This now comes from the latest 'footwearItems'
+            currentItems = footwearItems; 
             break;
           case "Accessories":
             setState = setAccessoriesItems;
-            currentItems = accessoriesItems; // This now comes from the latest 'accessoriesItems'
+            currentItems = accessoriesItems; 
             break;
-          case "Personal Items": // Ensure this matches your JSX exactly
+          case "Personal Items": 
             setState = setPersonal_items;
-            currentItems = personal_items; // This now comes from the latest 'personal_items'
+            currentItems = personal_items; 
             break;
           default:
             console.warn(`Unknown category: ${category}`);
@@ -436,22 +436,22 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     },
     [
       // IMPORTANT: Include all state variables and setters that handleAddItem reads or uses
-      newItemName, // Read directly
-      newItemQuantity, // Read directly
-      clothesItems, // Read directly
-      footwearItems, // Read directly
-      accessoriesItems, // Read directly
-      personal_items, // Read directly
-      setClothesItems, // Setter (stable reference)
-      setFootwearItems, // Setter (stable reference)
-      setAccessoriesItems, // Setter (stable reference)
-      setPersonal_items, // Setter (stable reference)
-      setNewItemName, // Setter (stable reference)
-      setNewItemQuantity, // Setter (stable reference)
-      setIsAddingItem, // Setter (stable reference)
-      setCurrentCategory, // Setter (stable reference)
-      handleSaveTripChanges, // Function being called (should be memoized with useCallback too)
-      saveChangesTimeoutRef, // The ref itself (stable reference)
+      newItemName, 
+      newItemQuantity, 
+      clothesItems, 
+      footwearItems, 
+      accessoriesItems, 
+      personal_items, 
+      setClothesItems, 
+      setFootwearItems, 
+      setAccessoriesItems, 
+      setPersonal_items, 
+      setNewItemName, 
+      setNewItemQuantity, 
+      setIsAddingItem, 
+      setCurrentCategory, 
+      handleSaveTripChanges, 
+      saveChangesTimeoutRef, 
     ]
   );
 
@@ -545,49 +545,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         break;
     }
   };
-  // const handleQuantityChange = (category, indexToUpdate, newQuantity) => {
-  //   switch (category) {
-  //     case "clothes":
-  //       setClothesItems((prevItems) => {
-  //         const updatedItems = prevItems.map((item, index) =>
-  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
-  //         );
-  //         setTimeout(() => handleSaveTripChanges(), 0);
-  //         return updatedItems;
-  //       });
-  //       break;
-  //     case "footwear":
-  //       setFootwearItems((prevItems) => {
-  //         const updatedItems = prevItems.map((item, index) =>
-  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
-  //         );
-  //         setTimeout(() => handleSaveTripChanges(), 0);
-  //         return updatedItems;
-  //       });
-  //       break;
-  //     case "accessories":
-  //       setAccessoriesItems((prevItems) => {
-  //         const updatedItems = prevItems.map((item, index) =>
-  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
-  //         );
-  //         setTimeout(() => handleSaveTripChanges(), 0);
-  //         return updatedItems;
-  //       });
-  //       break;
-  //     case "personal_items": // <--- Updated category name
-  //       setPersonal_items((prevItems) => {
-  //         // <--- Updated state variable
-  //         const updatedItems = prevItems.map((item, index) =>
-  //           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
-  //         );
-  //         setTimeout(() => handleSaveTripChanges(), 0);
-  //         return updatedItems;
-  //       });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const handleItemCheck = (category, indexToUpdate) => {
     switch (category) {
