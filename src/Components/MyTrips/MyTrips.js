@@ -398,19 +398,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         switch (category) {
           case "Clothes":
             setState = setClothesItems;
-            currentItems = clothesItems; 
+            currentItems = clothesItems;
             break;
           case "Footwear":
             setState = setFootwearItems;
-            currentItems = footwearItems; 
+            currentItems = footwearItems;
             break;
           case "Accessories":
             setState = setAccessoriesItems;
-            currentItems = accessoriesItems; 
+            currentItems = accessoriesItems;
             break;
-          case "Personal Items": 
+          case "Personal Items":
             setState = setPersonal_items;
-            currentItems = personal_items; 
+            currentItems = personal_items;
             break;
           default:
             console.warn(`Unknown category: ${category}`);
@@ -436,22 +436,22 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     },
     [
       // IMPORTANT: Include all state variables and setters that handleAddItem reads or uses
-      newItemName, 
-      newItemQuantity, 
-      clothesItems, 
-      footwearItems, 
-      accessoriesItems, 
-      personal_items, 
-      setClothesItems, 
-      setFootwearItems, 
-      setAccessoriesItems, 
-      setPersonal_items, 
-      setNewItemName, 
-      setNewItemQuantity, 
-      setIsAddingItem, 
-      setCurrentCategory, 
-      handleSaveTripChanges, 
-      saveChangesTimeoutRef, 
+      newItemName,
+      newItemQuantity,
+      clothesItems,
+      footwearItems,
+      accessoriesItems,
+      personal_items,
+      setClothesItems,
+      setFootwearItems,
+      setAccessoriesItems,
+      setPersonal_items,
+      setNewItemName,
+      setNewItemQuantity,
+      setIsAddingItem,
+      setCurrentCategory,
+      handleSaveTripChanges,
+      saveChangesTimeoutRef,
     ]
   );
 
@@ -978,6 +978,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                   </span>
                 </label>
                 <div className="mytrips__quantity-controls">
+                  {!item.isEmpty && (
+                    <button
+                      type="button"
+                      className="mytrips__delete-item-button"
+                      onClick={() => handleDeleteItem("Footwear", index)}
+                    >
+                      <img
+                        src={Trashcan}
+                        alt="Delete"
+                        className="mytrips__delete-icon"
+                      />
+                    </button>
+                  )}
                   <img
                     className="mytrips__quantity-button"
                     src={Decrement}
@@ -1006,19 +1019,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     }
                   />
                 </div>
-                {!item.isEmpty && (
-                  <button
-                    type="button"
-                    className="mytrips__delete-item-button"
-                    onClick={() => handleDeleteItem("Footwear", index)}
-                  >
-                    <img
-                      src={Trashcan}
-                      alt="Delete"
-                      className="mytrips__delete-icon"
-                    />
-                  </button>
-                )}
               </div>
             ))}
             {!isAddingItem || currentCategory !== "Footwear" ? (
@@ -1109,6 +1109,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                   </span>
                 </label>
                 <div className="mytrips__quantity-controls">
+                  {!item.isEmpty && (
+                    <button
+                      type="button"
+                      className="mytrips__delete-item-button"
+                      onClick={() => handleDeleteItem("Accessories", index)}
+                    >
+                      <img
+                        src={Trashcan}
+                        alt="Delete"
+                        className="mytrips__delete-icon"
+                      />
+                    </button>
+                  )}
                   <img
                     className="mytrips__quantity-button"
                     src={Decrement}
@@ -1137,19 +1150,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     }
                   />
                 </div>
-                {!item.isEmpty && (
-                  <button
-                    type="button"
-                    className="mytrips__delete-item-button"
-                    onClick={() => handleDeleteItem("Accessories", index)}
-                  >
-                    <img
-                      src={Trashcan}
-                      alt="Delete"
-                      className="mytrips__delete-icon"
-                    />
-                  </button>
-                )}
               </div>
             ))}
             {!isAddingItem || currentCategory !== "Accessories" ? (
@@ -1240,6 +1240,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                   </span>
                 </label>
                 <div className="mytrips__quantity-controls">
+                  {!item.isEmpty && (
+                    <button
+                      type="button"
+                      className="mytrips__delete-item-button"
+                      onClick={() => handleDeleteItem("Personal Items", index)}
+                    >
+                      <img
+                        src={Trashcan}
+                        alt="Delete"
+                        className="mytrips__delete-icon"
+                      />
+                    </button>
+                  )}
                   <img
                     className="mytrips__quantity-button"
                     src={Decrement}
@@ -1268,19 +1281,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     }
                   />
                 </div>
-                {!item.isEmpty && (
-                  <button
-                    type="button"
-                    className="mytrips__delete-item-button"
-                    onClick={() => handleDeleteItem("Personal Items", index)}
-                  >
-                    <img
-                      src={Trashcan}
-                      alt="Delete"
-                      className="mytrips__delete-icon"
-                    />
-                  </button>
-                )}
               </div>
             ))}
             {!isAddingItem || currentCategory !== "Personal Items" ? (
