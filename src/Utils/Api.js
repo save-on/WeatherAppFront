@@ -326,3 +326,20 @@ export const getTripById = (tripId, token) => {
     },
   });
 };
+
+export const deleteTrip = (tripId, token) => {
+  if(!tripId) {
+    return Promise.reject(new Error("Trip ID is required for deletion."));
+  }
+  if(!token) {
+    return Promise.reject(new Error("Authentication token not found. Please log in."));
+  }
+
+  return processServerRequest(`${baseUrl}trips/${tripId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

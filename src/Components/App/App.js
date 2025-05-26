@@ -61,6 +61,8 @@ import {
   removeCardLike,
   getCityLocationData,
   postTripWithPackinglist,
+  getTripById,
+  getTrips,
 } from "../../Utils/Api.js";
 import { login, update, register, getUserData } from "../../Utils/Auth.js";
 import {
@@ -90,6 +92,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingTrips, setIsLoadingTrips] = useState(false);
   const [coords, setCoords] = useState({});
   const [isPackingListModalOpen, setIsPackingListModalOpen] = useState(false);
   const [isCreatePackingListModalOpen, setIsCreatePackingListModalOpen] =
@@ -606,6 +609,37 @@ function App() {
     );
   }, []);
 
+  const fetchAllUserTrips = async () => {
+    if (!loggedIn) {
+      setUserTrips([]);
+      return;
+    }
+    setIsLoadingTrips(true);
+    try {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        console.error("App.ks: No token found for fetching all user trips.");
+        setUserTrips([]);
+        return;
+      }
+      const tripsData = await getTrips(token);
+      console.log("App.js: Fetched all user trips: ", tripsData);
+      setUserTrips(tripsData);
+    } catch (error) {
+      console.error(
+        "App.js: Failed to fetch all user trips: ",
+        error.message || error
+      );
+      setUserTrips([]);
+    } finally {
+      setIsLoadingTrips(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUserTrips();
+  }, [loggedIn]);
+
   const videoMapping = {
     ["clear-day"]: clearDay,
     ["clouds-day"]: cloudsDay,
@@ -646,33 +680,6 @@ function App() {
           setLoggedIn,
         }}
       >
-        {/* <video
-          key={videoSrc}
-          id="background-video"
-          autoPlay
-          loop
-          muted
-          className="background-video"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video> */}
-        {/* <CurrentTemperatureUnitContext.Provider
-          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-        > */}
-        {/* <Header
-            onCreateModal={handleCreateModal}
-            weatherData={weatherData}
-            loggedIn={loggedIn}
-            onLogin={handleOpenLoginModal}
-            onRegister={handleOpenRegisterModal}
-            locationData={locationData}
-            searchedCity={searchedCity}
-            savedCity={savedCity}
-            handleOpenDropbox={handleOpenDropbox}
-            activeModal={activeModal}
-            handleCloseModal={handleCloseModal}
-            onSignOut={onSignOut}
-          /> */}
         <NewHeader
           onRegister={handleOpenRegisterModal}
           loggedIn={loggedIn}
@@ -685,6 +692,7 @@ function App() {
           onLogin={handleOpenLoginModal}
           customStyle={elementStyle}
           userTrips={userTrips}
+          isLoadingTrips={isLoadingTrips}
           onSelectTrip={handleSelectTrip}
         />
         <Routes>
@@ -711,6 +719,7 @@ function App() {
                 onRemoveActivity={handleRemoveActivityFromTrip}
                 userTrips={userTrips}
                 onSelectTrip={handleSelectTrip}
+                onTripDeleted={fetchAllUserTrips}
               />
               //</ProtectedRoute>
             }
@@ -725,6 +734,7 @@ function App() {
                   onRemoveActivity={handleRemoveActivityFromTrip}
                   userTrips={userTrips}
                   onSelectTrip={handleSelectTrip}
+                  onTripDeleted={fetchAllUserTrips}
                 />
               </ProtectedRoute>
             }

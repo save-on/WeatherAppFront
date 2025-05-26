@@ -8,10 +8,15 @@ import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
 import { useState, useContext, useEffect } from "react";
 import Trashcan from "../../Images/trashcan.svg";
-import { sendPackingListEmail, getTrips, getTripById } from "../../Utils/Api.js";
+import {
+  sendPackingListEmail,
+  getTrips,
+  getTripById,
+  deleteTrip,
+} from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const formatDate = (date) => {
   if (date instanceof Date) {
@@ -46,10 +51,11 @@ const formatTripDates = (dateRangeString) => {
   return `${formattedStartDate} - ${formattedEndDate}`;
 };
 
-function MyTrips({ onRemoveActivity }) {
+function MyTrips({ onRemoveActivity, onTripDeleted }) {
   const { tripId } = useParams();
   console.log("MyTrips: tripId from URL params: ", tripId);
   const { currentUser, loggedIn } = useContext(CurrentUserContext);
+  const navigate = useNavigate();
 
   //State for fetched trip details
   const [trip, setTrip] = useState(null);
@@ -120,14 +126,14 @@ function MyTrips({ onRemoveActivity }) {
   //   fetchTripDetails();
   // }, [tripId, loggedIn]);
 
-    useEffect(() => {
+  useEffect(() => {
     console.log("MyTrips useEffect running...");
     console.log("tripId:", tripId);
     console.log("loggedIn:", loggedIn);
 
     const fetchTripDetails = async () => {
-      if (tripId && loggedIn) { 
-        setIsLoading(true); 
+      if (tripId && loggedIn) {
+        setIsLoading(true);
         try {
           const token = localStorage.getItem("jwt");
           if (!token) {
@@ -135,18 +141,19 @@ function MyTrips({ onRemoveActivity }) {
             setIsLoading(false);
             return;
           }
-          console.log("MyTrips: Attempting to fetch trip with ID:", tripId); 
+          console.log("MyTrips: Attempting to fetch trip with ID:", tripId);
           const fetchedTrip = await getTripById(tripId, token);
-          console.log("MyTrips: Fetched trip data:", fetchedTrip); 
-          setTrip(fetchedTrip); 
+          console.log("MyTrips: Fetched trip data:", fetchedTrip);
+          setTrip(fetchedTrip);
         } catch (err) {
           console.error("Failed to fetch trip:", err.message || err);
         } finally {
           setIsLoading(false);
         }
       } else if (!tripId) {
-        console.log("MyTrips: No specific tripId, probably rendering all trips.");
-       
+        console.log(
+          "MyTrips: No specific tripId, probably rendering all trips."
+        );
       }
     };
 
@@ -266,6 +273,42 @@ function MyTrips({ onRemoveActivity }) {
         break;
       default:
         break;
+    }
+  };
+
+  const handleDeleteTrip = async (tripIdToDelete) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this trip? This action cannot be undone."
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        console.error("No token found for deleting trip.");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("Attempting to delete trip with ID: ", tripIdToDelete);
+      await deleteTrip(tripIdToDelete, token);
+      console.log(`Trip ${tripIdToDelete} deleted successfully.`);
+
+      //1. After delete trigger re-fetch of all trips to update list
+      if (onTripDeleted) {
+        onTripDeleted();
+      }
+
+      //2. Navigate back to main page
+      navigate("/");
+    } catch (err) {
+      console.error("Failed to delete trip: ", err.message || err);
+      alert(`Error deleteing trip: ${err.message || "Something went wrong"}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -1062,7 +1105,13 @@ function MyTrips({ onRemoveActivity }) {
           Email Packing List
         </button>
         <div className="mytrips__delete-trip">
-          <button className="mytrips__delete-trip-button">Delete Trip</button>
+          <button
+            className="mytrips__delete-trip-button"
+            onClick={() => handleDeleteTrip(trip.id)}
+            disabled={isLoading}
+          >
+            Delete Trip
+          </button>
         </div>
       </div>
     </div>

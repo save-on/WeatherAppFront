@@ -24,9 +24,16 @@ const TripsDropbox = ({ isOpened, handleCloseModal, userTrips }) => {
   }, [isOpened, handleCloseModal]);
 
   const handleAddTripClick = () => {
-    handleOpenAddTrip();
+    if (handleOpenAddTrip) {
+      handleOpenAddTrip();
+    }
     handleCloseModal();
-  }
+  };
+
+  const handleTripButtonClick = (tripId) => {
+    navigate(`/mytrips/${tripId}`);
+    handleCloseModal();
+  };
 
   return (
     <ul
@@ -36,13 +43,17 @@ const TripsDropbox = ({ isOpened, handleCloseModal, userTrips }) => {
       <ul className="tripdropbox__list">
         {userTrips && userTrips.length > 0 ? (
           userTrips.map((trip) => (
-   <li className="tripdropbox__list-item" key={trip.id}>
-          <button className="tripdropbox__button" type="button" onClick={() => handleTripButtonClick(trip.id)}> 
-            {trip.destination}
-          </button>
-        </li>
+            <li className="tripdropbox__list-item" key={trip.id}>
+              <button
+                className="tripdropbox__button"
+                type="button"
+                onClick={() => handleTripButtonClick(trip.id)}
+              >
+                {trip.destination}
+              </button>
+            </li>
           ))
-        ): (
+        ) : (
           <li className="tripdropbox__list-item">
             <p className="tripdropbox__no-trips-message">No Trips saved yet.</p>
           </li>
