@@ -131,14 +131,13 @@
 
 .react-datepicker__day:hover,
 .react-datepicker__day--keyboard-selected {
-  background-color: rgba(115,87,255,1);
+  background-color: #76d1bc;
   color: #fff;
   border-radius: 16px;
 }
 
-
 .react-datepicker__day--selected {
-  background-color: rgba(115,87,255,1);
+  background-color: #76d1bc;
   color: #fff;
   border-radius: 16px;
   font-weight: bold;
@@ -146,7 +145,7 @@
 
 .react-datepicker__day--selected.react-datepicker__day--range-start,
 .react-datepicker__day--keyboard-selected.react-datepicker__day--range-end {
-   background-color: rgba(115,87,255,1) !important;
+  background-color: #76d1bc !important;
   color: #fff !important;
 
   font-weight: bold;
@@ -162,15 +161,13 @@
   border-bottom-right-radius: 16px !important;
 }
 
-
-.react-datepicker__day--in-range{
-  background-color: rgba(115,87,255,.1);
+.react-datepicker__day--in-range {
+  background-color: rgba(118, 209, 188, 0.1);
   color: #000;
   border-radius: 0 !important;
   margin-right: -1px !important;
   margin-left: -1px !important;
-} 
-
+}
 
 .react-datepicker__week {
   display: flex !important;
@@ -181,11 +178,9 @@
   padding: 0;
 }
 
-
 .react-datepicker__day--outside-month {
   color: #ccc;
 }
-
 
 .dateRangePicker__footer {
   display: flex;
@@ -205,14 +200,13 @@
   font-size: 0.9rem;
   color: #555;
   background-color: #fff;
-  
+  display: flex;
 }
 
 .dateRangePicker__footer-right {
   display: flex;
   gap: 8px;
   background-color: #fff;
-  
 }
 
 .dateRangePicker__button {
@@ -233,13 +227,13 @@
 }
 
 .dateRangePicker__button-cancel:hover {
-  background-color: rgba(115,87,255,.5);
+  background-color: rgba(115, 87, 255, 0.5);
   color: #000;
 }
 
 .dateRangePicker__button-submit {
-  background-color: rgba(115,87,255,1);
-  color: #fff;
+  background-color: #76d1bc;
+  color: #000;
   border-radius: 6px;
   width: 120px;
   height: 36px;
@@ -251,8 +245,10 @@
   border-width: thin;
   font-family: KarlaMedium, sans-serif;
   border-radius: 6px;
-  border-color: rgba(63,63,70,0.1);
+  border-color: rgba(63, 63, 70, 0.1);
   padding: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 @font-face {

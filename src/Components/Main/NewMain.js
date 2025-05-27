@@ -1,6 +1,7 @@
 import "./NewMain.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm.js";
 import DateRangePicker from "../DateRangePicker/DateRangePicker.js";
+import Suitcase from "../../Images/suitcase.svg";
 import { useForm } from "../../hooks/useForm.js";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -108,13 +109,14 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
         <p className="newMain__title-text">Pack Smarter. Travel Lighter.</p>
       </div>
       <div className="newMain__title-description">
-        <p>
+        <p className="newMain__title-description-text">
           From city escapes to backcountry hikes, your perfect packing list is a
           click away.
         </p>
+        <p className="newMain__title-description-message">Create your personalized packing list below!</p>
       </div>
       <div className="newMain__container">
-        <form onSubmit={handleSubmit}>
+        <form className="newMain__form-container" onSubmit={handleSubmit}>
           <ul className="newMain__inputs">
             <label className="newMain__input-header" htmlFor="location">
               Where
@@ -136,6 +138,7 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
             <label className="newMain__input-header" htmlFor="date">
               When
             </label>
+            
             <li className="newMain__list__inputs">
               <input
                 className="newMain__input"
@@ -204,6 +207,7 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
               </div>
             </li>
           </ul>
+          
           <div className="newMain__submitButton">
             <button
               type="submit"
@@ -213,7 +217,8 @@ function NewMain({ onTripDetailsSubmit, onNewTripAttempt }) {
               Create My Packing List
             </button>
           </div>
-        </form>
+        </form> 
+        <img className="newMain__suitcase" src={Suitcase}/>      
       </div>
     </div>
   );

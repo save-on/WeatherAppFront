@@ -793,7 +793,7 @@ function App() {
           />
         </Routes>
 
-        
+        <Footer />
 
         {activeModal === "addTripModal" && (
           <AddTripModal 

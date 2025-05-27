@@ -61,11 +61,13 @@
 }
 
 .close_type_login {
-  background-image: url("../../Images/close.svg");
-  height: 20px;
-  width: 20px;
+  background-color: #B9E5DB;
+  color: #fff;
   border: none;
+  font-size: 20px;
 }
+
+
 
 .close_type_register:hover,
 .close_type_login:hover {
@@ -127,13 +129,18 @@
 .modal-form-submit {
   width: 583px;
   height: 56px;
-  border: none;
+  border: 1px solid;
+  border-width: thin;
   border-radius: 21px;
   color: #000;
   padding: 0;
-  background-color: rgba(183, 183, 183, 1);
+  background-color: #EAEAEA;
   font-family: KarlaMedium, sans-serif;
   font-size: 18px;
+}
+
+.modal-form-submit:hover{
+  background-color: #8F8C8C;
 }
 
 .modal-form-submit-signup {
@@ -155,9 +162,11 @@
 }
 
 .modal-form-submit:disabled {
-  background-color: rgba(183, 183, 183, 1);
+  background-color: #EAEAEA;
   color: #000;
   cursor: not-allowed;
+  border: 1px solid;
+  border-width: thin;
 }
 
 .modal-form_input-error {
@@ -184,7 +193,7 @@
   margin: 40px 0;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8f8c8c;
+  color: #000;
 }
 
 .modal-form-forgot-password-signup {
@@ -198,9 +207,9 @@
 .modal-form-signup {
   width: 583px;
   height: 237px;
-  border: 1px solid #000;
+  border: 1px solid;
+  border-width: thin;
   border-radius: 21px;
-  border-color: #cacaca;
   margin: auto;
 }
 
@@ -216,11 +225,11 @@
   margin: 30px 30px 30px 50px;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8f8c8c;
+  color: #000;
 }
 
 .modal__signup {
-  background-color: #b7b7b7;
+  background-color: #EAEAEA;
   width: 479px;
   height: 56px;
   padding: 0;
@@ -228,11 +237,16 @@
   display: flex;
   margin: auto;
   border-radius: 21px;
-  border: none;
+  border: 1px solid;
+  border-width: thin;
   justify-content: center;
   align-items: center;
   font-family: KarlaMedium, sans-serif;
   font-size: 18px;
+}
+
+.modal__signup:hover {
+  background-color: #8F8C8C;
 }
 
 .radio-label {
@@ -261,7 +275,7 @@ input[type="radio"]:checked + label {
 }
 
 .modal__content_type_login {
-  background-color: #fff;
+  background-color: #B9E5DB;
   border-radius: 21px;
 }
 

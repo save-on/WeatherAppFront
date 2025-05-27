@@ -1,5 +1,5 @@
 .mytrips {
-  background-color: rgba(217, 217, 217, 1);
+ background-color: #FDF8EF;
 }
 
 .mytrips__location {
@@ -7,6 +7,7 @@
   border-top: 1px solid rgba(0, 0, 0, 0.5);
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   padding-top: 40px;
+  background-color: #FDF8EF;
 }
 
 .mytrips__location-destination {
@@ -14,18 +15,32 @@
   margin: auto;
   font-size: 80px;
   margin-bottom: 50px;
+    font-family: KarlaLight, sans-serif;
+  font-size: 65px;
 }
 
 .mytrips__location-dates {
   height: 36px;
   margin: auto;
   font-size: 25px;
+  font-family: KarlaRegular, sans-serif;
+}
+
+.mytrips__location-dates-edit {
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+  color: #626262;
+}
+
+.mytrips__location-dates-edit-icon {
+  cursor: pointer;
 }
 
 .mytrips__weatherForecast {
   height: 438px;
   display: flex;
   flex-wrap: wrap;
+  background-color: #FDF8EF;
 }
 
 .mytrips__weatherForecast-title {
@@ -36,7 +51,7 @@
 }
 
 .mytrips__weatherForecast-days {
-  width: 951px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -44,34 +59,50 @@
   list-style-type: none;
   display: flex;
   justify-content: space-evenly;
+  padding: 0;
 }
 
 .mytrips__suggested-packing-list-title {
-  font-family: KarlaMedium, sans-serif;
-  font-size: 30px;
+  font-family: KarlaSemiBold, sans-serif;
+  font-size: 32px;
+  
 }
 
 .mytrips__weatherForecast-day {
-  width: 350px;
+  width: 200px;
   height: 128px;
   display: flex;
-  align-items: center;
+
 }
 
 .mytrips__weatherForecast-day-weather-image {
-  height: 100px;
-  width: 100px;
+  height: 40px;
+  width: 40px;
   margin-right: 16px;
 }
 
 .mytrips__weatherForecast-day-details {
 }
 
-.mytrips__weatherForecast-day-details-text {
+.mytrips__weatherForecast-day-details-text1 {
+  margin: 5px 0;
+  display: flex;
+  font-family: KarlaSemiBold, sans-serif;
+  font-size: 20px;
+  width: 300px;
+}
+.mytrips__weatherForecast-day-details-text2 {
   margin: 5px 0;
   display: flex;
   font-family: KarlaMedium, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
+  width: 300px;
+}
+.mytrips__weatherForecast-day-details-text3 {
+  margin: 5px 0;
+  display: flex;
+  font-family: KarlaMedium, sans-serif;
+  font-size: 18px;
   width: 300px;
 }
 
@@ -120,11 +151,17 @@
   margin: auto;
 }
 
+.mytrips__packing-list-items-scroll-container {
+overflow-y: auto;
+max-height: 435px;
+height: 435px;
+
+}
 .mytrips__item-category {
-  width: 550px;
-  height: 486px;
   background-color: #fff;
   border-radius: 10px;
+  width: 550px;
+  height: 486px;  
 }
 
 .mytrips__item-category-title {
@@ -165,6 +202,11 @@
   cursor: pointer;
 }
 
+.mytrips__item-name-text {
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+}
+
 .mytrips__item-category-add-item-text {
   margin: 0;
   font-family: KarlaRegular, sans-serif;
@@ -177,6 +219,7 @@
   gap: 5px;
   margin-left: 20px;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .mytrips__item-category-add-item-form-input {
@@ -351,18 +394,20 @@
 }
 
 .mytrips__email-submit-button {
-  background-color: rgba(0, 0, 0);
-  color: rgba(255, 255, 255);
+  background-color: #76D1BC;
+  color: #000;
   border-radius: 21px;
   height: 44px;
   width: 240px;
-  font-family: RobotoMedium, sans-serif;
-  font-size: 16px;
+  font-family: KarlaMedium, sans-serif;
+  font-size: 18px;
   border-width: thin;
+  border: none;
 }
 
 .mytrips__email-submit-button:hover {
   cursor: pointer;
+  background-color: #B9E5DB;
 }
 
 .mytrips__delete-trip {
@@ -375,10 +420,43 @@
   border-width: thin;
   border-radius: 21px;
   background-color: transparent;
+  font-family: KarlaMedium;
+  font-size: 18px;
 }
 
 .mytrips__delete-trip-button {
   cursor: pointer;
+}
+
+.mytrips__suggested-item-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: auto 10px;
+}
+
+.mytrips__suggested-item-button {
+  border-radius: 10px;
+  background-color: #383637;
+  color: #fff;
+  font-family: KarlaRegular, sans-serif;
+  font-size: 18px;
+  height: 28px;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.mytrips__suggested-item-button:hover {
+  cursor: pointer;
+}
+
+.mytrips__suggested-item-button-plus {
+  display: flex;
+  align-items: center;
+}
+
+.mytrips__suggested-item-button-icon {
+  margin-left: 10px;
 }
 
 @font-face {

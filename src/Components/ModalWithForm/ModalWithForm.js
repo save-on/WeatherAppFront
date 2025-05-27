@@ -17,7 +17,7 @@ const ModalWithForm = ({
       <div className={`modal__content_type_${name}`}>
         <h3 className={`modal-form-header_type_${name}`}>
           {title}
-          <button className={`close_type_${name}`} type="button" onClick={onClose}></button>
+          <button className={`close_type_${name}`} type="button" onClick={onClose}>X</button>
         </h3>
         <form
           ref={formRef}

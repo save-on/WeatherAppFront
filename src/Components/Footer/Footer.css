@@ -1,18 +1,17 @@
 .footer {
   display: flex;
   align-items: center;
-  color: #000;
+  color: #fff;
   padding: 0 0 0 40px;
   height: 184px;
   justify-content: end;
   gap: 50px;
-  background-color: #EAEAEA;
+  background-color: #383637;
 }
-
 
 .footer__text {
   line-height: 20px;
-  font-family: Cabinet Grotesk, sans-serif;
+  font-family: KarlaMedium, sans-serif;
   font-weight: 500;
   font-size: 20px;
   text-align: left;
@@ -24,4 +23,9 @@
 
 .footer__icon:hover {
   cursor: pointer;
+}
+
+@font-face {
+  font-family: KarlaMedium;
+  src: url("../../fonts/Karla-Medium.ttf");
 }

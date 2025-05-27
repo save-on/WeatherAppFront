@@ -1,9 +1,12 @@
 import "./MyTrips.css";
 import Footer from "../Footer/Footer.js";
-import Sunny from "../../Images/sunny.svg";
-import PartlyCloudy from "../../Images/partly-cloudy.svg";
-import ScatteredShowers from "../../Images/scattered-showers.svg";
+import Sunny from "../../Images/sunny-black.svg";
+import PartlyCloudy from "../../Images/partly-cloudy-black.svg";
+import ScatteredShowers from "../../Images/scattered-showers-black.svg";
+import Rain from "../../Images/rain-black.svg";
 import Plus from "../../Images/Plus.svg";
+import SuggestedPlus from "../../Images/suggested-add-icon.svg";
+import EditPencil from "../../Images/edit-pencil.svg";
 import Increment from "../../Images/increment.svg";
 import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
@@ -20,15 +23,15 @@ import { activityPackingSuggestions } from "../../Utils/AcitivitiesConstants.js"
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import { useParams, useNavigate } from "react-router-dom";
 
-const formatDate = (date) => {
-  if (date instanceof Date) {
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  }
-  return "";
-};
+// const formatDate = (date) => {
+//   if (date instanceof Date) {
+//     const month = (date.getMonth() + 1).toString().padStart(2, "0");
+//     const day = date.getDate().toString().padStart(2, "0");
+//     const year = date.getFullYear();
+//     return `${month}/${day}/${year}`;
+//   }
+//   return "";
+// };
 
 const formatDateDay = (date) => {
   if (date instanceof Date) {
@@ -38,33 +41,51 @@ const formatDateDay = (date) => {
   return "";
 };
 
-// const formatTripDates = (dateRangeString) => {
-//   if (!dateRangeString) return "N/A";
-
-//   const parts = dateRangeString.replace(/[\[)]/g, "").split(",");
-//   if (parts.length < 2) return dateRangeString;
-
-//   const startDate = new Date(parts[0]);
-//   const endDate = new Date(parts[1]);
-
-//   const formattedStartDate = formatDate(startDate);
-//   const formattedEndDate = formatDate(endDate);
-
-//   return `${formattedStartDate} - ${formattedEndDate}`;
-// };
 const formatTripDates = (dateRangeString) => {
-  if (!dateRangeString) return "";
-  try {
-    const [startDateISO, endDateISO] = dateRangeString
-      .replace(/[{}"\[\]]/g, "")
-      .split(",");
-    const startDate = new Date(startDateISO.trim());
-    const endDate = new Date(endDateISO.trim());
-    // Adjust format as needed
-    return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
-  } catch (e) {
-    console.error("Error formatting trip dates:", e);
+  if (!dateRangeString || typeof dateRangeString !== "string") {
     return "";
+  }
+
+  try {
+    // 1. Remove all boundary characters including '(' and ')'
+    const cleanDateRangeString = dateRangeString
+      .replace(/[{}"\[\]()]/g, "")
+      .trim();
+
+    const parts = cleanDateRangeString.split(",");
+    if (parts.length !== 2) {
+      console.error(
+        "Unexpected date range format after cleaning:",
+        cleanDateRangeString
+      );
+      return "Invalid Date Format"; // Indicate a parsing issue clearly
+    }
+
+    const startDateISO = parts[0].trim();
+    let endDateISO = parts[1].trim(); // Use let because we might adjust it
+
+    const startDate = new Date(startDateISO);
+    let endDate = new Date(endDateISO);
+
+    // 2. Adjust end date if the original string indicated an exclusive end
+    if (dateRangeString.endsWith(")")) {
+      endDate.setDate(endDate.getDate() - 1);
+    }
+
+    // 3. Validate parsed dates
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      console.error("Parsed date is invalid:", startDateISO, endDateISO);
+      return "Invalid Date";
+    }
+
+    // 4. Format for display (you can use your existing formatDate helper if you prefer MM/DD/YYYY)
+    const formattedStartDate = startDate.toLocaleDateString("en-US"); // Example: "6/23/2025"
+    const formattedEndDate = endDate.toLocaleDateString("en-US"); // Example: "6/30/2025"
+
+    return `${formattedStartDate} - ${formattedEndDate}`;
+  } catch (e) {
+    console.error("Error formatting trip dates (outer catch):", e);
+    return "Invalid Date"; // Fallback for any unexpected errors
   }
 };
 
@@ -91,6 +112,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     ...initialEmptyItems,
   ]);
   const [personal_items, setPersonal_items] = useState([...initialEmptyItems]);
+  const [otherSuggestions, setOtherSuggestions] = useState([]);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQuantity, setNewItemQuantity] = useState(1);
   const [currentCategory, setCurrentCategory] = useState(null);
@@ -114,7 +136,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           }
 
           const fetchedTrip = await getTripById(tripId, token);
-         
+
           setTrip(fetchedTrip.trip);
           console.log("Fetched Trip: ", fetchedTrip.trip);
 
@@ -345,6 +367,60 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     ]
   );
 
+  const handleAddOtherSuggestion = useCallback(
+    (itemToAdd) => {
+      // Determine the target category based on itemToAdd.suggestedCategory or a default
+      const targetCategory = itemToAdd.suggestedCategory || "personal_items"; // Default if not specified
+
+      // Find the correct setter function based on the target category
+      let setterFunction;
+      let currentItems;
+
+      switch (targetCategory) {
+        case "clothes":
+          setterFunction = setClothesItems;
+          currentItems = clothesItems;
+          break;
+        case "footwear":
+          setterFunction = setFootwearItems;
+          currentItems = footwearItems;
+          break;
+        case "accessories":
+          setterFunction = setAccessoriesItems;
+          currentItems = accessoriesItems;
+          break;
+        case "personal_items":
+          setterFunction = setPersonal_items;
+          currentItems = personal_items;
+          break;
+        default:
+          console.warn(
+            `No setter found for category: ${targetCategory}. Item not added.`
+          );
+          return;
+      }
+
+      // Call your existing addItemsToCategoryState function
+      addItemsToCategoryState(setterFunction, currentItems, [itemToAdd]); // Pass as an array for consistency
+
+      // Optional: Remove the item from the otherSuggestions list after adding
+      setOtherSuggestions((prevSuggestions) =>
+        prevSuggestions.filter((sug) => sug.name !== itemToAdd.name)
+      );
+    },
+    [
+      setClothesItems,
+      clothesItems,
+      setFootwearItems,
+      footwearItems,
+      setAccessoriesItems,
+      accessoriesItems,
+      setPersonal_items,
+      personal_items,
+      setOtherSuggestions, // Add setOtherSuggestions to dependencies
+    ]
+  );
+
   useEffect(() => {
     if (savePending) {
       // Clear any previous timeout if a new item was added quickly
@@ -384,7 +460,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           .filter((item) => !item.isEmpty) // Only consider actual items, not placeholders
           .map((item) => item.name.toLowerCase())
       );
-
 
       // Filter out items from `itemsToAdd` that are duplicates based on existing non-empty names
       const newUniqueItems = itemsToAdd.filter(
@@ -429,6 +504,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
   const handleActivityBasedPackingSuggestions = useCallback(
     (activities) => {
       if (!activities || activities.length === 0) {
+        setOtherSuggestions([]);
         return;
       }
 
@@ -437,6 +513,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         footwear: [],
         accessories: [],
         personal_items: [],
+        other_items: [],
       };
 
       activities.forEach((activityName) => {
@@ -484,8 +561,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           itemsToProcess.personal_items
         );
       }
-
-      //setTimeout(() => handleSaveTripChanges(), 50);
+      setOtherSuggestions(itemsToProcess.other_items);
     },
     [
       setClothesItems,
@@ -496,6 +572,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
       accessoriesItems,
       setPersonal_items,
       personal_items,
+      setOtherSuggestions,
     ]
   );
 
@@ -745,12 +822,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
               alt="Sunny weather icon"
             />
             <div className="mytrips__weatherForecast-day-details">
-              <p className="mytrips__weatherForecast-day-details-text">Day 1</p>
-              <p className="mytrips__weatherForecast-day-details-text">
+              <p className="mytrips__weatherForecast-day-details-text1">
+                Day 1
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text2">
                 {formatDateDay(day1Date)}
               </p>
-              <p className="mytrips__weatherForecast-day-details-text">
-                Sunny, 80°
+              <p className="mytrips__weatherForecast-day-details-text3">
+                Sunny, 70°
               </p>
             </div>
           </li>
@@ -759,16 +838,18 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           <li className="mytrips__weatherForecast-day">
             <img
               className="mytrips__weatherForecast-day-weather-image"
-              src={PartlyCloudy}
+              src={Sunny}
               alt="Partly Cloudy weather icon"
             />
             <div className="mytrips__weatherForecast-day-details">
-              <p className="mytrips__weatherForecast-day-details-text">Day 2</p>
-              <p className="mytrips__weatherForecast-day-details-text">
+              <p className="mytrips__weatherForecast-day-details-text1">
+                Day 2
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text2">
                 {formatDateDay(day2Date)}
               </p>
-              <p className="mytrips__weatherForecast-day-details-text">
-                Partly Cloudy, 76°
+              <p className="mytrips__weatherForecast-day-details-text3">
+                Sunny, 68°
               </p>
             </div>
           </li>
@@ -777,16 +858,56 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           <li className="mytrips__weatherForecast-day">
             <img
               className="mytrips__weatherForecast-day-weather-image"
+              src={PartlyCloudy}
+              alt="Scattered Showers weather icon"
+            />
+            <div className="mytrips__weatherForecast-day-details">
+              <p className="mytrips__weatherForecast-day-details-text1">
+                Day 3
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text2">
+                {formatDateDay(day3Date)}
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text3">
+                Partly Cloudy, 62°
+              </p>
+            </div>
+          </li>
+          {/* Day 4 */}
+          <li className="mytrips__weatherForecast-day">
+            <img
+              className="mytrips__weatherForecast-day-weather-image"
               src={ScatteredShowers}
               alt="Scattered Showers weather icon"
             />
             <div className="mytrips__weatherForecast-day-details">
-              <p className="mytrips__weatherForecast-day-details-text">Day 3</p>
-              <p className="mytrips__weatherForecast-day-details-text">
+              <p className="mytrips__weatherForecast-day-details-text1">
+                Day 4
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text2">
                 {formatDateDay(day3Date)}
               </p>
-              <p className="mytrips__weatherForecast-day-details-text">
-                Scattered Showers, 83°
+              <p className="mytrips__weatherForecast-day-details-text3">
+                Scattered Showers, 65°
+              </p>
+            </div>
+          </li>
+          {/* DAY 5 */}
+          <li className="mytrips__weatherForecast-day">
+            <img
+              className="mytrips__weatherForecast-day-weather-image"
+              src={Rain}
+              alt="Scattered Showers weather icon"
+            />
+            <div className="mytrips__weatherForecast-day-details">
+              <p className="mytrips__weatherForecast-day-details-text1">
+                Day 5
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text2">
+                {formatDateDay(day3Date)}
+              </p>
+              <p className="mytrips__weatherForecast-day-details-text3">
+                Scattered Showers, 58°
               </p>
             </div>
           </li>
@@ -806,6 +927,10 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
             {formatTripDates(tripDateString)}
           </p>
         )}
+        <p className="mytrips__location-dates-edit">
+          Edit Location and Dates{" "}
+          <img className="mytrips__location-dates-edit-icon" src={EditPencil} />
+        </p>
       </div>
       <div className="mytrips__weatherForecast">
         <p className="mytrips__weatherForecast-title">Weather Forecast</p>
@@ -818,6 +943,10 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
       <div className="mytrips__suggested-packing-list">
         <p className="mytrips__suggested-packing-list-title">
           Suggested Packing List
+        </p>
+        <p className="mytrips__location-dates-edit">
+          Edit Activity Selections{" "}
+          <img className="mytrips__location-dates-edit-icon" src={EditPencil} />
         </p>
         <div className="mytrips__activities">
           {activities &&
@@ -837,82 +966,85 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         <ul className="mytrips__suggested-packing-list-items-container">
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Clothes</p>
-            {clothesItems.map((item, index) => (
-              <div
-                key={index}
-                className={`mytrips__item-category__added-item ${
-                  !item.isEmpty ? "mytrips__item-not-empty" : ""
-                }`}
-              >
-                <label className="mytrips__checkbox-lable">
-                  <input
-                    className="mytrips__item-category__added-item-checkbox"
-                    type="checkbox"
-                    checked={item.isChecked}
-                    onChange={() => handleItemCheck("clothes", index)}
-                    disabled={item.isEmpty}
-                  />
-                  <span className="custom-checkbox-box">
-                    {item.isChecked && (
-                      <img
-                        className="mytrips__checkmark"
-                        src={Checkmark}
-                        alt="Checked"
-                      />
+            <div className="mytrips__packing-list-items-scroll-container">
+              {clothesItems.map((item, index) => (
+                <div
+                  key={index}
+                  className={`mytrips__item-category__added-item ${
+                    !item.isEmpty ? "mytrips__item-not-empty" : ""
+                  }`}
+                >
+                  <label className="mytrips__checkbox-lable">
+                    <input
+                      className="mytrips__item-category__added-item-checkbox"
+                      type="checkbox"
+                      checked={item.isChecked}
+                      onChange={() => handleItemCheck("clothes", index)}
+                      disabled={item.isEmpty}
+                    />
+                    <span className="custom-checkbox-box">
+                      {item.isChecked && (
+                        <img
+                          className="mytrips__checkmark"
+                          src={Checkmark}
+                          alt="Checked"
+                        />
+                      )}
+                    </span>
+                    <span className="mytrips__item-name-text">
+                      {item.isEmpty ? (
+                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                      ) : (
+                        <>{item.name}</>
+                      )}
+                    </span>
+                  </label>
+                  <div className="mytrips__quantity-controls">
+                    {!item.isEmpty && (
+                      <button
+                        type="button"
+                        className="mytrips__delete-item-button"
+                        onClick={() => handleDeleteItem("Clothes", index)}
+                      >
+                        <img
+                          src={Trashcan}
+                          alt="Delete"
+                          className="mytrips__delete-icon"
+                        />
+                      </button>
                     )}
-                  </span>
-                  <span className="mytrips__item-name-text">
-                    {item.isEmpty ? (
-                      <>Item {item.quantity === 0 && "(quantity)"}</>
-                    ) : (
-                      <>{item.name}</>
-                    )}
-                  </span>
-                </label>
-                <div className="mytrips__quantity-controls">
-                  {!item.isEmpty && (
-                    <button
-                      type="button"
-                      className="mytrips__delete-item-button"
-                      onClick={() => handleDeleteItem("Clothes", index)}
-                    >
-                      <img
-                        src={Trashcan}
-                        alt="Delete"
-                        className="mytrips__delete-icon"
-                      />
-                    </button>
-                  )}
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Decrement}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Clothes",
-                        index,
-                        Math.max(0, item.quantity - 1)
-                      )
-                    }
-                  />
-                  <span className="mytrips__item-category__added-item-text">
-                    {item.quantity > 0 && !item.isEmpty
-                      ? `${item.quantity}`
-                      : ""}
-                  </span>
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Increment}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Clothes",
-                        index,
-                        Math.max(0, item.quantity + 1)
-                      )
-                    }
-                  />
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Decrement}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Clothes",
+                          index,
+                          Math.max(0, item.quantity - 1)
+                        )
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {item.quantity > 0 && !item.isEmpty
+                        ? `${item.quantity}`
+                        : ""}
+                    </span>
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Increment}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Clothes",
+                          index,
+                          Math.max(0, item.quantity + 1)
+                        )
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
             {!isAddingItem || currentCategory !== "Clothes" ? (
               <div className="mytrips__item-category-add-item">
                 <button
@@ -974,77 +1106,80 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Footwear</p>
-            {footwearItems.map((item, index) => (
-              <div key={index} className="mytrips__item-category__added-item">
-                <label className="mytrips__checkbox-lable">
-                  <input
-                    className="mytrips__item-category__added-item-checkbox"
-                    type="checkbox"
-                    checked={item.isChecked}
-                    onChange={() => handleItemCheck("footwear", index)}
-                    disabled={item.isEmpty}
-                  />
-                  <span className="custom-checkbox-box">
-                    {item.isChecked && (
-                      <img
-                        className="mytrips__checkmark"
-                        src={Checkmark}
-                        alt="Checked"
-                      />
+            <div className="mytrips__packing-list-items-scroll-container">
+              {footwearItems.map((item, index) => (
+                <div key={index} className="mytrips__item-category__added-item">
+                  <label className="mytrips__checkbox-lable">
+                    <input
+                      className="mytrips__item-category__added-item-checkbox"
+                      type="checkbox"
+                      checked={item.isChecked}
+                      onChange={() => handleItemCheck("footwear", index)}
+                      disabled={item.isEmpty}
+                    />
+                    <span className="custom-checkbox-box">
+                      {item.isChecked && (
+                        <img
+                          className="mytrips__checkmark"
+                          src={Checkmark}
+                          alt="Checked"
+                        />
+                      )}
+                    </span>
+                    <span className="mytrips__item-name-text">
+                      {item.isEmpty ? (
+                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                      ) : (
+                        <>{item.name}</>
+                      )}
+                    </span>
+                  </label>
+                  <div className="mytrips__quantity-controls">
+                    {!item.isEmpty && (
+                      <button
+                        type="button"
+                        className="mytrips__delete-item-button"
+                        onClick={() => handleDeleteItem("Footwear", index)}
+                      >
+                        <img
+                          src={Trashcan}
+                          alt="Delete"
+                          className="mytrips__delete-icon"
+                        />
+                      </button>
                     )}
-                  </span>
-                  <span className="mytrips__item-name-text">
-                    {item.isEmpty ? (
-                      <>Item {item.quantity === 0 && "(quantity)"}</>
-                    ) : (
-                      <>{item.name}</>
-                    )}
-                  </span>
-                </label>
-                <div className="mytrips__quantity-controls">
-                  {!item.isEmpty && (
-                    <button
-                      type="button"
-                      className="mytrips__delete-item-button"
-                      onClick={() => handleDeleteItem("Footwear", index)}
-                    >
-                      <img
-                        src={Trashcan}
-                        alt="Delete"
-                        className="mytrips__delete-icon"
-                      />
-                    </button>
-                  )}
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Decrement}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Footwear",
-                        index,
-                        Math.max(0, item.quantity - 1)
-                      )
-                    }
-                  />
-                  <span className="mytrips__item-category__added-item-text">
-                    {item.quantity > 0 && !item.isEmpty
-                      ? `${item.quantity}`
-                      : ""}
-                  </span>
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Increment}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Footwear",
-                        index,
-                        Math.max(0, item.quantity + 1)
-                      )
-                    }
-                  />
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Decrement}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Footwear",
+                          index,
+                          Math.max(0, item.quantity - 1)
+                        )
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {item.quantity > 0 && !item.isEmpty
+                        ? `${item.quantity}`
+                        : ""}
+                    </span>
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Increment}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Footwear",
+                          index,
+                          Math.max(0, item.quantity + 1)
+                        )
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
             {!isAddingItem || currentCategory !== "Footwear" ? (
               <div className="mytrips__item-category-add-item">
                 <button
@@ -1105,77 +1240,80 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Accessories</p>
-            {accessoriesItems.map((item, index) => (
-              <div key={index} className="mytrips__item-category__added-item">
-                <label className="mytrips__checkbox-lable">
-                  <input
-                    className="mytrips__item-category__added-item-checkbox"
-                    type="checkbox"
-                    checked={item.isChecked}
-                    onChange={() => handleItemCheck("accessories", index)}
-                    disabled={item.isEmpty}
-                  />
-                  <span className="custom-checkbox-box">
-                    {item.isChecked && (
-                      <img
-                        className="mytrips__checkmark"
-                        src={Checkmark}
-                        alt="Checked"
-                      />
+            <div className="mytrips__packing-list-items-scroll-container">
+              {accessoriesItems.map((item, index) => (
+                <div key={index} className="mytrips__item-category__added-item">
+                  <label className="mytrips__checkbox-lable">
+                    <input
+                      className="mytrips__item-category__added-item-checkbox"
+                      type="checkbox"
+                      checked={item.isChecked}
+                      onChange={() => handleItemCheck("accessories", index)}
+                      disabled={item.isEmpty}
+                    />
+                    <span className="custom-checkbox-box">
+                      {item.isChecked && (
+                        <img
+                          className="mytrips__checkmark"
+                          src={Checkmark}
+                          alt="Checked"
+                        />
+                      )}
+                    </span>
+                    <span className="mytrips__item-name-text">
+                      {item.isEmpty ? (
+                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                      ) : (
+                        <>{item.name}</>
+                      )}
+                    </span>
+                  </label>
+                  <div className="mytrips__quantity-controls">
+                    {!item.isEmpty && (
+                      <button
+                        type="button"
+                        className="mytrips__delete-item-button"
+                        onClick={() => handleDeleteItem("Accessories", index)}
+                      >
+                        <img
+                          src={Trashcan}
+                          alt="Delete"
+                          className="mytrips__delete-icon"
+                        />
+                      </button>
                     )}
-                  </span>
-                  <span className="mytrips__item-name-text">
-                    {item.isEmpty ? (
-                      <>Item {item.quantity === 0 && "(quantity)"}</>
-                    ) : (
-                      <>{item.name}</>
-                    )}
-                  </span>
-                </label>
-                <div className="mytrips__quantity-controls">
-                  {!item.isEmpty && (
-                    <button
-                      type="button"
-                      className="mytrips__delete-item-button"
-                      onClick={() => handleDeleteItem("Accessories", index)}
-                    >
-                      <img
-                        src={Trashcan}
-                        alt="Delete"
-                        className="mytrips__delete-icon"
-                      />
-                    </button>
-                  )}
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Decrement}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Accessories",
-                        index,
-                        Math.max(0, item.quantity - 1)
-                      )
-                    }
-                  />
-                  <span className="mytrips__item-category__added-item-text">
-                    {item.quantity > 0 && !item.isEmpty
-                      ? `${item.quantity}`
-                      : ""}
-                  </span>
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Increment}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Accessories",
-                        index,
-                        Math.max(0, item.quantity + 1)
-                      )
-                    }
-                  />
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Decrement}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Accessories",
+                          index,
+                          Math.max(0, item.quantity - 1)
+                        )
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {item.quantity > 0 && !item.isEmpty
+                        ? `${item.quantity}`
+                        : ""}
+                    </span>
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Increment}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Accessories",
+                          index,
+                          Math.max(0, item.quantity + 1)
+                        )
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
             {!isAddingItem || currentCategory !== "Accessories" ? (
               <div className="mytrips__item-category-add-item">
                 <button
@@ -1236,77 +1374,82 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           </li>
           <li className="mytrips__item-category">
             <p className="mytrips__item-category-title">Personal Items</p>
-            {personal_items.map((item, index) => (
-              <div key={index} className="mytrips__item-category__added-item">
-                <label className="mytrips__checkbox-lable">
-                  <input
-                    className="mytrips__item-category__added-item-checkbox"
-                    type="checkbox"
-                    checked={item.isChecked}
-                    onChange={() => handleItemCheck("personal_items", index)}
-                    disabled={item.isEmpty}
-                  />
-                  <span className="custom-checkbox-box">
-                    {item.isChecked && (
-                      <img
-                        className="mytrips__checkmark"
-                        src={Checkmark}
-                        alt="Checked"
-                      />
+            <div className="mytrips__packing-list-items-scroll-container">
+              {personal_items.map((item, index) => (
+                <div key={index} className="mytrips__item-category__added-item">
+                  <label className="mytrips__checkbox-lable">
+                    <input
+                      className="mytrips__item-category__added-item-checkbox"
+                      type="checkbox"
+                      checked={item.isChecked}
+                      onChange={() => handleItemCheck("personal_items", index)}
+                      disabled={item.isEmpty}
+                    />
+                    <span className="custom-checkbox-box">
+                      {item.isChecked && (
+                        <img
+                          className="mytrips__checkmark"
+                          src={Checkmark}
+                          alt="Checked"
+                        />
+                      )}
+                    </span>
+                    <span className="mytrips__item-name-text">
+                      {item.isEmpty ? (
+                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                      ) : (
+                        <>{item.name}</>
+                      )}
+                    </span>
+                  </label>
+                  <div className="mytrips__quantity-controls">
+                    {!item.isEmpty && (
+                      <button
+                        type="button"
+                        className="mytrips__delete-item-button"
+                        onClick={() =>
+                          handleDeleteItem("Personal Items", index)
+                        }
+                      >
+                        <img
+                          src={Trashcan}
+                          alt="Delete"
+                          className="mytrips__delete-icon"
+                        />
+                      </button>
                     )}
-                  </span>
-                  <span className="mytrips__item-name-text">
-                    {item.isEmpty ? (
-                      <>Item {item.quantity === 0 && "(quantity)"}</>
-                    ) : (
-                      <>{item.name}</>
-                    )}
-                  </span>
-                </label>
-                <div className="mytrips__quantity-controls">
-                  {!item.isEmpty && (
-                    <button
-                      type="button"
-                      className="mytrips__delete-item-button"
-                      onClick={() => handleDeleteItem("Personal Items", index)}
-                    >
-                      <img
-                        src={Trashcan}
-                        alt="Delete"
-                        className="mytrips__delete-icon"
-                      />
-                    </button>
-                  )}
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Decrement}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Personal Items",
-                        index,
-                        Math.max(0, item.quantity - 1)
-                      )
-                    }
-                  />
-                  <span className="mytrips__item-category__added-item-text">
-                    {item.quantity > 0 && !item.isEmpty
-                      ? `${item.quantity}`
-                      : ""}
-                  </span>
-                  <img
-                    className="mytrips__quantity-button"
-                    src={Increment}
-                    onClick={() =>
-                      handleQuantityChange(
-                        "Personal Items",
-                        index,
-                        Math.max(0, item.quantity + 1)
-                      )
-                    }
-                  />
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Decrement}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Personal Items",
+                          index,
+                          Math.max(0, item.quantity - 1)
+                        )
+                      }
+                    />
+                    <span className="mytrips__item-category__added-item-text">
+                      {item.quantity > 0 && !item.isEmpty
+                        ? `${item.quantity}`
+                        : ""}
+                    </span>
+                    <img
+                      className="mytrips__quantity-button"
+                      src={Increment}
+                      onClick={() =>
+                        handleQuantityChange(
+                          "Personal Items",
+                          index,
+                          Math.max(0, item.quantity + 1)
+                        )
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
             {!isAddingItem || currentCategory !== "Personal Items" ? (
               <div className="mytrips__item-category-add-item">
                 <button
@@ -1370,6 +1513,23 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
       <div className="mytrips__other-items">
         <div className="mytrips__other-items-container">
           <p className="mytrips__other-items-text">Other Items You May Need:</p>
+          <div className="mytrips__suggested-item-buttons">
+            {otherSuggestions.map((item, index) => (
+              <button
+                key={item.name + index}
+                className="mytrips__suggested-item-button"
+                onClick={() => handleAddOtherSuggestion(item)}
+              >
+                {item.name}{" "}
+                <span className="mytrips__suggested-item-button-plus">
+                  <img
+                    className="mytrips__suggested-item-button-icon"
+                    src={SuggestedPlus}
+                  />
+                </span>{" "}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       <div className="mytrips__email-packing-list">
@@ -1394,7 +1554,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           </button>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

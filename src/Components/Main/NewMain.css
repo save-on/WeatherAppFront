@@ -1,11 +1,15 @@
+.newMain {
+  background-color: #fdf8ef;
+  }
+
 .newMain__title {
   display: flex;
   justify-content: center;
 }
 
 .newMain__title-text {
-  font-family: KarlaLightItalic, sans-serif;
-  font-size: 80px;
+  font-family: KarlaItalic, sans-serif;
+  font-size: 65px;
   margin-bottom: 40px;
 }
 
@@ -15,11 +19,30 @@
   margin: 38px 0 38px 0;
 }
 
+.newMain__title-description-text {
+  font-family: KarlaRegular;
+  font-size: 24px;
+}
+
+.newMain__title-description-message {
+  font-size: 24px;
+  font-family: KarlaMediumSemiBold, sans-serif;
+}
+
+.newMain__form-container {
+  background-color: #fff;
+  width: 462px;
+  height: 441px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
 .newMain__inputs {
   list-style-type: none;
   width: 402px;
   margin: auto;
-  padding: 0;
+  padding: 30px 30px 0 30px;
 }
 
 .newMain__input {
@@ -47,6 +70,7 @@
   z-index: 10;
   top: 45px;
   left: -67px;
+  margin-left: 28px;
 }
 
 .newMain__input-header {
@@ -69,24 +93,27 @@
 }
 
 .newMain__submitButton {
-  margin-top: 50px;
+  margin-top: 35px;
+  position: relative;
+  z-index: 2;
 }
 
 .submitButton {
   width: 240px;
   height: 48px;
   border-radius: 21px;
-  color: #fff;
-  background-color: #000;
+  color: #000;
+  background-color: #76D1BC;
   border-width: thin;
   font-family: KarlaMedium;
   font-size: 18px;
+  border: none;
 }
 
 .submitButton:hover {
   cursor: pointer;
+  background-color: #B9E5DB;
 }
-
 
 .activity-tags-inside-input {
   display: flex;
@@ -193,9 +220,23 @@
   border-color: #007bff;
 }
 
+.newMain__suitcase {
+    position: relative;
+    bottom: 400px;
+    left: 450px;
+    width: 1131px;
+    height: 634px;
+    z-index: 1;
+}
+
 @font-face {
   font-family: KarlaExtraLightItalic;
   src: url("../../fonts/Karla-ExtraLightItalic.ttf");
+}
+
+@font-face {
+  font-family: KarlaItalic;
+  src: url("../../fonts/Karla-Italic.ttf");
 }
 
 @font-face {
