@@ -9,8 +9,8 @@ const Footer = ({ customStyle }) => {
         <p className="footer__text">About Us</p>
         <p className="footer__text">Contact Us</p>
         <p className="footer__text">Privace Policy</p>
-        <img src={Instagram}/>
-        <img src={Facebook}/>
+        <img className="footer__icon" src={Instagram}/>
+        <img className="footer__icon" src={Facebook}/>
       
     </footer>
   );

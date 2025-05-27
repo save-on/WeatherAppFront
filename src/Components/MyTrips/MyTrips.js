@@ -16,6 +16,7 @@ import {
   updateTrip,
 } from "../../Utils/Api.js";
 import { checkLoggedIn } from "../../Utils/token.js";
+import { activityPackingSuggestions } from "../../Utils/AcitivitiesConstants.js";
 import CurrentUserContext from "../../Contexts/CurrentUserContext.js";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -100,64 +101,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
   let saveChangesTimeout;
 
-  // useEffect(() => {
-  //   const fetchTripDetails = async () => {
-  //     if (tripId && loggedIn) {
-  //       setIsLoading(true);
-  //       try {
-  //         const token = localStorage.getItem("jwt");
-  //         if (!token) {
-  //           console.error("No token found for fetching trip details.");
-  //           setIsLoading(false);
-  //           return;
-  //         }
-
-  //         const fetchedTrip = await getTripById(tripId, token);
-  //         setTrip(fetchedTrip.trip);
-  //         console.log("Fetched Trip: ", fetchedTrip.trip);
-
-  //         if (fetchedTrip.trip.activities) {
-  //           setCurrentActivities(fetchedTrip.trip.activities);
-  //         }
-  //         if (fetchedTrip.trip.packingList) {
-  //           //set each items to each category
-  //           setClothesItems(
-  //             fetchedTrip.trip.packingList.clothes || [...initialEmptyItems]
-  //           );
-  //           setFootwearItems(
-  //             fetchedTrip.trip.packingList.footwear || [...initialEmptyItems]
-  //           );
-  //           setAccessoriesItems(
-  //             fetchedTrip.trip.packingList.accessories || [...initialEmptyItems]
-  //           );
-  //           setPersonal_items(
-  //             fetchedTrip.trip.packingList.personal_items || [
-  //               ...initialEmptyItems,
-  //             ]
-  //           );
-  //         } else {
-  //           //if no items set each category to no items
-  //           setClothesItems([...initialEmptyItems]);
-  //           setFootwearItems([...initialEmptyItems]);
-  //           setAccessoriesItems([...initialEmptyItems]);
-  //           setPersonal_items([...initialEmptyItems]);
-  //         }
-  //       } catch (err) {
-  //         console.error("Failed to fetch trip:", err.message || err);
-  //         setError(err.message || "Failed to load trip details.");
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     } else if (!tripId && loggedIn) {
-  //       console.log(
-  //         "MyTrips: No specific tripId, probably rendering all trips."
-  //       );
-  //       setIsLoading(false);
-  //     } else if (!loggedIn) {
-  //       console.log("MyTrips: User not logged in.");
-  //       setIsLoading(false);
-  //     }
-  //   };
   useEffect(() => {
     const fetchTripDetails = async () => {
       if (tripId && loggedIn) {
@@ -171,17 +114,18 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
           }
 
           const fetchedTrip = await getTripById(tripId, token);
+         
           setTrip(fetchedTrip.trip);
           console.log("Fetched Trip: ", fetchedTrip.trip);
 
           if (fetchedTrip.trip.activities) {
             setCurrentActivities(fetchedTrip.trip.activities);
           }
-          const loadedClothes = fetchedTrip.trip.packingList?.clothes || [];
-          setClothesItems([
-            ...loadedClothes,
-            ...initialEmptyItems.slice(loadedClothes.length),
-          ]);
+          // const loadedClothes = fetchedTrip.trip.packingList?.clothes || [];
+          // setClothesItems([
+          //   ...loadedClothes,
+          //   ...initialEmptyItems.slice(loadedClothes.length),
+          // ]);
 
           // A safer way to ensure a fixed size (e.g., 9 total slots) and fill remaining with placeholders:
           const getPaddedList = (list) => {
@@ -221,54 +165,6 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     fetchTripDetails();
   }, [tripId, loggedIn]);
 
-  // useEffect(() => {
-  //   if (currentUser && currentUser.email) {
-  //     setEmailStatus("");
-  //   } else {
-  //     setEmailStatus("Please sign in to email your packing list.");
-  //   }
-  // }, [currentUser]);
-
-  // const handleRemoveActivity = (index) => {
-  //   if (onRemoveActivity) {
-  //     onRemoveActivity(index);
-  //   }
-  // };
-
-  // const handleDeleteItem = (category, indexToDelete) => {
-  //   switch (category) {
-  //     case "Clothes":
-  //       setClothesItems((prevItems) => {
-  //         const newItems = [...prevItems];
-  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
-  //         return newItems;
-  //       });
-  //       break;
-  //     case "Footwear":
-  //       setFootwearItems((prevItems) => {
-  //         const newItems = [...prevItems];
-  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
-  //         return newItems;
-  //       });
-  //       break;
-  //     case "Accessories":
-  //       setAccessoriesItems((prevItems) => {
-  //         const newItems = [...prevItems];
-  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
-  //         return newItems;
-  //       });
-  //       break;
-  //     case "Personal Items":
-  //       setPersonal_items((prevItems) => {
-  //         const newItems = [...prevItems];
-  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
-  //         return newItems;
-  //       });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
   const handleDeleteItem = (category, indexToDelete) => {
     switch (category) {
       case "Clothes":
@@ -305,14 +201,8 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
   };
 
   const handleSaveTripChanges = useCallback(async () => {
-    console.log("handleSaveTripChanges triggered.");
-    console.log("Current clothesItems state:", clothesItems); // This should now show your updated item!
-    console.log("Current footwearItems state:", footwearItems);
-    console.log("Current accessoriesItems state:", accessoriesItems);
-    console.log("Current personal_items state:", personal_items);
-
     if (!tripId || !loggedIn) {
-      console.log(
+      console.warn(
         "Cannot save changes: Trip not loaded or user is not logged in."
       );
       return;
@@ -480,6 +370,140 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     handleSaveTripChanges, // This function should be stable (memoized with useCallback)
     saveChangesTimeoutRef, // The ref itself
   ]);
+
+  const addItemsToCategoryState = (
+    setterFunction,
+    currentItems,
+    itemsToAdd
+  ) => {
+    setterFunction((prev) => {
+      // Only consider the names of *non-empty* items that are already in the `prev` array
+      // as "existing" for the purpose of avoiding duplicates.
+      const existingNames = new Set(
+        prev
+          .filter((item) => !item.isEmpty) // Only consider actual items, not placeholders
+          .map((item) => item.name.toLowerCase())
+      );
+
+
+      // Filter out items from `itemsToAdd` that are duplicates based on existing non-empty names
+      const newUniqueItems = itemsToAdd.filter(
+        (newItem) => !existingNames.has(newItem.name.toLowerCase())
+      );
+
+      if (newUniqueItems.length === 0) {
+        // No new unique items to add, return the previous array reference
+        return prev;
+      } else {
+        // Add new items to the beginning (as per previous request)
+        // We need to preserve the `isEmpty` placeholders if they exist
+        // This requires a more nuanced approach for padding if adding to the top.
+
+        // Let's assume you want to maintain the fixed size/padding at the end
+        // and simply add new unique items to the front, pushing placeholders down.
+        // Or, more robustly, remove empty items first, add new unique, then re-pad.
+
+        // Option A: Just add new unique items to the front, simple but might exceed 9 if many exist
+        // return [...newUniqueItems, ...prev]; // This was for adding to top
+
+        // Option B: Remove empty items, add new, then re-pad to fixed size (this is safer)
+        const currentActualItems = prev.filter((item) => !item.isEmpty);
+        const combinedItems = [...newUniqueItems, ...currentActualItems];
+
+        // Now re-pad the combined list to your desired size (e.g., 9)
+        const paddedCombinedItems = [...combinedItems];
+        while (paddedCombinedItems.length < 9) {
+          // Assuming 9 is your target padded size
+          paddedCombinedItems.push({
+            name: "Item",
+            quantity: 0,
+            isEmpty: true,
+            isChecked: false,
+          });
+        }
+        return paddedCombinedItems;
+      }
+    });
+  };
+
+  const handleActivityBasedPackingSuggestions = useCallback(
+    (activities) => {
+      if (!activities || activities.length === 0) {
+        return;
+      }
+
+      const itemsToProcess = {
+        clothes: [],
+        footwear: [],
+        accessories: [],
+        personal_items: [],
+      };
+
+      activities.forEach((activityName) => {
+        console.log("Processing activityName:", activityName);
+        const suggestions = activityPackingSuggestions[activityName];
+        console.log("Fetched suggestions for", activityName, ":", suggestions);
+        if (suggestions) {
+          for (const category in suggestions) {
+            if (
+              suggestions.hasOwnProperty(category) &&
+              itemsToProcess[category]
+            ) {
+              itemsToProcess[category].push(...suggestions[category]);
+            }
+          }
+        }
+      });
+
+      //add collected items to each unique states
+      if (itemsToProcess.clothes.length > 0) {
+        addItemsToCategoryState(
+          setClothesItems,
+          clothesItems,
+          itemsToProcess.clothes
+        );
+      }
+      if (itemsToProcess.footwear.length > 0) {
+        addItemsToCategoryState(
+          setFootwearItems,
+          footwearItems,
+          itemsToProcess.footwear
+        );
+      }
+      if (itemsToProcess.accessories.length > 0) {
+        addItemsToCategoryState(
+          setAccessoriesItems,
+          accessoriesItems,
+          itemsToProcess.accessories
+        );
+      }
+      if (itemsToProcess.personal_items.length > 0) {
+        addItemsToCategoryState(
+          setPersonal_items,
+          personal_items,
+          itemsToProcess.personal_items
+        );
+      }
+
+      //setTimeout(() => handleSaveTripChanges(), 50);
+    },
+    [
+      setClothesItems,
+      clothesItems,
+      setFootwearItems,
+      footwearItems,
+      setAccessoriesItems,
+      accessoriesItems,
+      setPersonal_items,
+      personal_items,
+    ]
+  );
+
+  useEffect(() => {
+    if (trip && trip.activities && trip.activities.length > 0) {
+      handleActivityBasedPackingSuggestions(trip.activities);
+    }
+  }, [trip, handleActivityBasedPackingSuggestions]);
 
   const handleDeleteTrip = async (tripIdToDelete) => {
     const confirmDelete = window.confirm(
@@ -825,7 +849,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     className="mytrips__item-category__added-item-checkbox"
                     type="checkbox"
                     checked={item.isChecked}
-                    onChange={() => handleItemCheck("Clothes", index)}
+                    onChange={() => handleItemCheck("clothes", index)}
                     disabled={item.isEmpty}
                   />
                   <span className="custom-checkbox-box">
@@ -957,7 +981,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     className="mytrips__item-category__added-item-checkbox"
                     type="checkbox"
                     checked={item.isChecked}
-                    onChange={() => handleItemCheck("Footwear", index)}
+                    onChange={() => handleItemCheck("footwear", index)}
                     disabled={item.isEmpty}
                   />
                   <span className="custom-checkbox-box">
@@ -1088,7 +1112,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     className="mytrips__item-category__added-item-checkbox"
                     type="checkbox"
                     checked={item.isChecked}
-                    onChange={() => handleItemCheck("Accessories", index)}
+                    onChange={() => handleItemCheck("accessories", index)}
                     disabled={item.isEmpty}
                   />
                   <span className="custom-checkbox-box">
@@ -1219,7 +1243,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     className="mytrips__item-category__added-item-checkbox"
                     type="checkbox"
                     checked={item.isChecked}
-                    onChange={() => handleItemCheck("Personal Items", index)}
+                    onChange={() => handleItemCheck("personal_items", index)}
                     disabled={item.isEmpty}
                   />
                   <span className="custom-checkbox-box">

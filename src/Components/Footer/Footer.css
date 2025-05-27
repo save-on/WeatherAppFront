@@ -16,6 +16,12 @@
   font-weight: 500;
   font-size: 20px;
   text-align: left;
-  
 }
 
+.footer__text:hover {
+  cursor: pointer;
+}
+
+.footer__icon:hover {
+  cursor: pointer;
+}
