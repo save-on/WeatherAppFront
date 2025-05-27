@@ -164,7 +164,7 @@ export function deletePackingList(packingListId, token) {
 }
 
 export const deletePackingListItem = async (packingListId, itemId, token) => {
-  const url = `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`;
+  //const url = `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`;
   const response = await fetch(
     `${baseUrl}profile/packing-lists/${packingListId}/items/${itemId}`,
     {
@@ -248,7 +248,7 @@ export const sendPackingListEmail = async (dataToSend, token) => {
       try {
         const errorData = JSON.parse(errorText);
         errorMessage = errorData.message || errorMessage;
-      } catch (e) {
+      } catch (error) {
         errorMessage = errorText || errorMessage;
       }
       throw new Error(errorMessage);
@@ -362,7 +362,7 @@ export const updateTrip = async (tripId, tripData, token) => {
       try {
         const errorData = await res.json();
         errorMessage = errorData.message || errorMessage;
-      } catch (err) {
+      } catch (error) {
         // Fallback if the error response itself isn't JSON
         const errorText = await res.text();
         errorMessage = errorText || errorMessage;

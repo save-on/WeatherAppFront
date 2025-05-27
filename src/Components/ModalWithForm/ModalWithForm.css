@@ -61,13 +61,11 @@
 }
 
 .close_type_login {
-  background-color: #B9E5DB;
+  background-color: #b9e5db;
   color: #fff;
   border: none;
   font-size: 20px;
 }
-
-
 
 .close_type_register:hover,
 .close_type_login:hover {
@@ -134,13 +132,13 @@
   border-radius: 21px;
   color: #000;
   padding: 0;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   font-family: KarlaMedium, sans-serif;
   font-size: 18px;
 }
 
-.modal-form-submit:hover{
-  background-color: #8F8C8C;
+.modal-form-submit:hover {
+  background-color: #8f8c8c;
 }
 
 .modal-form-submit-signup {
@@ -162,7 +160,7 @@
 }
 
 .modal-form-submit:disabled {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   color: #000;
   cursor: not-allowed;
   border: 1px solid;
@@ -229,7 +227,7 @@
 }
 
 .modal__signup {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
   width: 479px;
   height: 56px;
   padding: 0;
@@ -246,7 +244,7 @@
 }
 
 .modal__signup:hover {
-  background-color: #8F8C8C;
+  background-color: #8f8c8c;
 }
 
 .radio-label {
@@ -275,7 +273,7 @@ input[type="radio"]:checked + label {
 }
 
 .modal__content_type_login {
-  background-color: #B9E5DB;
+  background-color: #b9e5db;
   border-radius: 21px;
 }
 

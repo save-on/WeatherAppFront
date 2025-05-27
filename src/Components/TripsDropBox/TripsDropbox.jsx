@@ -1,11 +1,14 @@
 import "./TripsDropbox.css";
-import AddTripModal from "../AddTripModal/AddTripModal.js";
-import { useContext, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import CurrentUserContext from "../../Contexts/CurrentUserContext";
 
-const TripsDropbox = ({ isOpened, handleCloseModal, userTrips, handleOpenAddTripModal }) => {
-  const currentUser = useContext(CurrentUserContext);
+import { useNavigate } from "react-router-dom";
+
+const TripsDropbox = ({
+  isOpened,
+  handleCloseModal,
+  userTrips,
+  handleOpenAddTripModal,
+}) => {
+  //const currentUser = useContext(CurrentUserContext);
   const dropboxRef = useRef(null);
   const navigate = useNavigate();
 
@@ -60,7 +63,11 @@ const TripsDropbox = ({ isOpened, handleCloseModal, userTrips, handleOpenAddTrip
           </li>
         )}
         <li className="tripdropbox__list-item">
-          <button className="tripdropbox__button" type="button" onClick={handleAddTripClick}>
+          <button
+            className="tripdropbox__button"
+            type="button"
+            onClick={handleAddTripClick}
+          >
             Add Trip
           </button>
         </li>
