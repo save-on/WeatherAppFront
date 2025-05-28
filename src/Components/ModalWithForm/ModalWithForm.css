@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(143,140,140,0.64);
   transition: backdrop-filter 0.3s ease-in-out;
   z-index: 1000;
 }
@@ -33,6 +33,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 28px 15px;
+
 }
 
 .modal-form-header_type_login {
@@ -47,22 +48,24 @@
   display: flex;
   justify-content: space-between;
   padding: 0 28px;
-  font-family: KarlaBold, sans-serif;
+  font-family: KarlaSemiBold, sans-serif;
   font-size: 48px;
 }
 
 .close_type_register {
-  background-image: url("../../Images/close.svg");
   height: 20px;
   width: 20px;
   border: none;
   position: relative;
   top: -20px;
+  color: #000;
+  background: transparent;
+  font-size: 20px;
 }
 
 .close_type_login {
-  background-color: #b9e5db;
-  color: #fff;
+  background: transparent;
+  color: #000;
   border: none;
   font-size: 20px;
 }
@@ -124,7 +127,7 @@
   cursor: pointer;
 }
 
-.modal-form-submit {
+/* .modal-form-submit {
   width: 583px;
   height: 56px;
   border: 1px solid;
@@ -132,7 +135,7 @@
   border-radius: 21px;
   color: #000;
   padding: 0;
-  background-color: #eaeaea;
+  background-color: #b7b7b7;
   font-family: KarlaMedium, sans-serif;
   font-size: 18px;
 }
@@ -148,23 +151,72 @@
   border-radius: 21px;
   color: #000;
   padding: 0;
-  background-color: rgba(183, 183, 183, 1);
+  background-color: #B7B7B7;
   font-family: KarlaMedium, sans-serif;
   font-size: 18px;
   margin: auto;
+  
 }
 
 .modal-form-submit:hover,
 .modal-form-submit-signup:hover {
   cursor: pointer;
+  
 }
 
+.modal-form-submit-signup:hover,
 .modal-form-submit:disabled {
-  background-color: #eaeaea;
+  background-color: #b7b7b7;
   color: #000;
   cursor: not-allowed;
   border: 1px solid;
   border-width: thin;
+} */
+ .modal-form-submit {
+  width: 583px;
+  height: 56px;
+  border: 1px solid;
+  border-width: thin;
+  border-radius: 21px;
+  color: #000;
+  padding: 0;
+  background-color: #b7b7b7; 
+  font-family: KarlaMedium, sans-serif;
+  font-size: 18px;
+}
+
+.modal-form-submit-signup {
+  width: 583px;
+  height: 56px;
+  border: none; 
+  border-radius: 21px;
+  color: #000;
+  padding: 0;
+  background-color: #B7B7B7; 
+  font-family: KarlaMedium, sans-serif;
+  font-size: 18px;
+  margin: auto;
+}
+
+.modal-form-submit:not(:disabled):hover, 
+.modal-form-submit-signup:not(:disabled):hover { 
+  cursor: pointer; 
+  background-color: #8f8c8c; 
+  
+}
+
+.modal-form-submit:disabled,
+.modal-form-submit-signup:disabled {
+  background-color: #b7b7b7; 
+  color: #000;            
+  border: 1px solid;
+  border-width: thin;
+  cursor: not-allowed;  
+}
+
+.modal-form-submit:disabled:hover,
+.modal-form-submit-signup:disabled:hover {
+  cursor: not-allowed; 
 }
 
 .modal-form_input-error {
@@ -198,7 +250,7 @@
   display: flex;
   font-family: KarlaRegular, sans-serif;
   font-size: 18px;
-  color: #8f8c8c;
+  color: #000;
   margin: 18px 18px 18px 25px;
 }
 
@@ -227,7 +279,7 @@
 }
 
 .modal__signup {
-  background-color: #eaeaea;
+  background-color: #b7b7b7;
   width: 479px;
   height: 56px;
   padding: 0;
@@ -268,13 +320,17 @@ input[type="radio"]:checked + label {
 .modal__content_type_register {
   height: 981px;
   width: 698px;
-  background-color: #fff;
+  background-color: #B9E5DB;
   border-radius: 21px;
+    border: 1px solid;
+  border-width: thin;
 }
 
 .modal__content_type_login {
-  background-color: #b9e5db;
+  background-color: rgba(185,229,219,1);
   border-radius: 21px;
+  border: 1px solid;
+  border-width: thin;
 }
 
 @media screen and (max-width: 500px) {

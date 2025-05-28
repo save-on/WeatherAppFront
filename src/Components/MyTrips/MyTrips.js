@@ -10,6 +10,7 @@ import EditPencil from "../../Images/edit-pencil.svg";
 import Increment from "../../Images/increment.svg";
 import Decrement from "../../Images/decrement.svg";
 import Checkmark from "../../Images/checkmark.svg";
+import CheckmarkHover from "../../Images/checkbox-hover.svg";
 import { useState, useContext, useEffect, useCallback, useRef } from "react";
 import Trashcan from "../../Images/trashcan.svg";
 import {
@@ -120,6 +121,9 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
   const [emailStatus, setEmailStatus] = useState("");
   const [currentActivities, setCurrentActivities] = useState("");
   const [savePending, setSavePending] = useState(false);
+  
+
+
 
   let saveChangesTimeout;
 
@@ -187,39 +191,93 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     fetchTripDetails();
   }, [tripId, loggedIn]);
 
+  // const handleDeleteItem = (category, indexToDelete) => {
+  //   switch (category) {
+  //     case "Clothes":
+  //       setClothesItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Footwear":
+  //       setFootwearItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Accessories":
+  //       setAccessoriesItems((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     case "Personal Items":
+  //       setPersonal_items((prevItems) => {
+  //         const newItems = [...prevItems];
+  //         newItems[indexToDelete] = { ...initialEmptyItems[0] };
+  //         return newItems;
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
   const handleDeleteItem = (category, indexToDelete) => {
+    console.log(
+      "handleDeleteItem called. Category: ",
+      category,
+      "Index to Delete:",
+      indexToDelete
+    );
+    let setterFunction;
+    let currentItems;
+
     switch (category) {
-      case "Clothes":
-        setClothesItems((prevItems) => {
-          const newItems = [...prevItems];
-          newItems[indexToDelete] = { ...initialEmptyItems[0] };
-          return newItems;
-        });
+      case "clothes":
+        setterFunction = setClothesItems;
+        currentItems = clothesItems;
         break;
-      case "Footwear":
-        setFootwearItems((prevItems) => {
-          const newItems = [...prevItems];
-          newItems[indexToDelete] = { ...initialEmptyItems[0] };
-          return newItems;
-        });
+      case "footwear":
+        setterFunction = setFootwearItems;
+        currentItems = footwearItems;
         break;
-      case "Accessories":
-        setAccessoriesItems((prevItems) => {
-          const newItems = [...prevItems];
-          newItems[indexToDelete] = { ...initialEmptyItems[0] };
-          return newItems;
-        });
+      case "accessories":
+        setterFunction = setAccessoriesItems;
+        currentItems = accessoriesItems;
         break;
-      case "Personal Items":
-        setPersonal_items((prevItems) => {
-          const newItems = [...prevItems];
-          newItems[indexToDelete] = { ...initialEmptyItems[0] };
-          return newItems;
-        });
+      case "personal_items":
+        setterFunction = setPersonal_items;
+        currentItems = personal_items;
         break;
       default:
-        break;
+        console.warn(`Category '${category}' not found for deletion.`);
+        return;
     }
+    console.log("Category matched. Current items BEFORE filter:", currentItems); // CHECK 3
+    if (!currentItems || !Array.isArray(currentItems)) {
+      console.error(
+        `ERROR: currentItems is not an array for category '${category}'. Value:`,
+        currentItems
+      ); // CHECK 4
+      return;
+    }
+    if (indexToDelete < 0 || indexToDelete >= currentItems.length) {
+      console.warn(
+        `WARN: Index to delete (${indexToDelete}) is out of bounds for category '${category}' (length ${currentItems.length}).`
+      ); // CHECK 5
+      return;
+    }
+
+    const updatedItems = currentItems.filter(
+      (_item, index) => index !== indexToDelete
+    );
+    console.log("Items After filter: ", updatedItems);
+
+    setterFunction(updatedItems);
+    console.log("Setter function called for category: ", category);
   };
 
   const handleSaveTripChanges = useCallback(async () => {
@@ -308,19 +366,19 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
         let currentItems;
 
         switch (category) {
-          case "Clothes":
+          case "clothes":
             setState = setClothesItems;
             currentItems = clothesItems;
             break;
-          case "Footwear":
+          case "footwear":
             setState = setFootwearItems;
             currentItems = footwearItems;
             break;
-          case "Accessories":
+          case "accessories":
             setState = setAccessoriesItems;
             currentItems = accessoriesItems;
             break;
-          case "Personal Items":
+          case "personal_items":
             setState = setPersonal_items;
             currentItems = personal_items;
             break;
@@ -423,29 +481,23 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
   useEffect(() => {
     if (savePending) {
-      // Clear any previous timeout if a new item was added quickly
       if (saveChangesTimeoutRef.current) {
         clearTimeout(saveChangesTimeoutRef.current);
       }
 
       saveChangesTimeoutRef.current = setTimeout(() => {
         console.log("Debounced save triggered by savePending flag.");
-        handleSaveTripChanges(); // This should now see the latest state
-        setSavePending(false); // Reset the flag after triggering save
+        handleSaveTripChanges();
+        setSavePending(false);
       }, 500);
     }
 
-    // Cleanup function: clear timeout if component unmounts or effect re-runs
     return () => {
       if (saveChangesTimeoutRef.current) {
         clearTimeout(saveChangesTimeoutRef.current);
       }
     };
-  }, [
-    savePending, // This effect runs when savePending changes
-    handleSaveTripChanges, // This function should be stable (memoized with useCallback)
-    saveChangesTimeoutRef, // The ref itself
-  ]);
+  }, [savePending, handleSaveTripChanges, saveChangesTimeoutRef]);
 
   const addItemsToCategoryState = (
     setterFunction,
@@ -453,42 +505,24 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     itemsToAdd
   ) => {
     setterFunction((prev) => {
-      // Only consider the names of *non-empty* items that are already in the `prev` array
-      // as "existing" for the purpose of avoiding duplicates.
       const existingNames = new Set(
         prev
-          .filter((item) => !item.isEmpty) // Only consider actual items, not placeholders
+          .filter((item) => !item.isEmpty)
           .map((item) => item.name.toLowerCase())
       );
 
-      // Filter out items from `itemsToAdd` that are duplicates based on existing non-empty names
       const newUniqueItems = itemsToAdd.filter(
         (newItem) => !existingNames.has(newItem.name.toLowerCase())
       );
 
       if (newUniqueItems.length === 0) {
-        // No new unique items to add, return the previous array reference
         return prev;
       } else {
-        // Add new items to the beginning (as per previous request)
-        // We need to preserve the `isEmpty` placeholders if they exist
-        // This requires a more nuanced approach for padding if adding to the top.
-
-        // Let's assume you want to maintain the fixed size/padding at the end
-        // and simply add new unique items to the front, pushing placeholders down.
-        // Or, more robustly, remove empty items first, add new unique, then re-pad.
-
-        // Option A: Just add new unique items to the front, simple but might exceed 9 if many exist
-        // return [...newUniqueItems, ...prev]; // This was for adding to top
-
-        // Option B: Remove empty items, add new, then re-pad to fixed size (this is safer)
         const currentActualItems = prev.filter((item) => !item.isEmpty);
         const combinedItems = [...newUniqueItems, ...currentActualItems];
 
-        // Now re-pad the combined list to your desired size (e.g., 9)
         const paddedCombinedItems = [...combinedItems];
         while (paddedCombinedItems.length < 9) {
-          // Assuming 9 is your target padded size
           paddedCombinedItems.push({
             name: "Item",
             quantity: 0,
@@ -500,6 +534,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
       }
     });
   };
+
 
   const handleActivityBasedPackingSuggestions = useCallback(
     (activities) => {
@@ -618,25 +653,25 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
   const handleQuantityChange = (category, indexToUpdate, newQuantity) => {
     switch (category) {
-      case "Clothes":
+      case "clothes":
         const updatedClothesItems = clothesItems.map((item, index) =>
           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
         );
         setClothesItems(updatedClothesItems);
         break;
-      case "Footwear":
+      case "footwear":
         const updatedFootwearItems = footwearItems.map((item, index) =>
           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
         );
         setFootwearItems(updatedFootwearItems);
         break;
-      case "Accessories":
+      case "accessories":
         const updatedAccessoriesItems = accessoriesItems.map((item, index) =>
           index === indexToUpdated ? { ...item, quantity: newQuantity } : item
         );
         setAccessoriesItems(updatedAccessoriesItems);
         break;
-      case "Personal Items":
+      case "personal_items":
         const updatedPersonalItems = personal_items.map((item, index) =>
           index === indexToUpdate ? { ...item, quantity: newQuantity } : item
         );
@@ -784,6 +819,8 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
     });
   };
 
+
+
   const destination = trip?.destination;
   const tripDateString = trip?.trip_date;
   const activities = trip?.activities;
@@ -811,6 +848,8 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
       const day1Date = rawStartDate;
       const day2Date = new Date(day1Date.getTime() + 24 * 60 * 60 * 1000);
       const day3Date = new Date(day1Date.getTime() + 2 * 24 * 60 * 60 * 1000);
+      const day4Date = new Date(day1Date.getTime() + 3 * 24 * 60 * 60 * 1000);
+      const day5Date = new Date(day1Date.getTime() + 4 * 24 * 60 * 60 * 1000);
 
       weatherForecastDaysContent = (
         <>
@@ -885,7 +924,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                 Day 4
               </p>
               <p className="mytrips__weatherForecast-day-details-text2">
-                {formatDateDay(day3Date)}
+                {formatDateDay(day4Date)}
               </p>
               <p className="mytrips__weatherForecast-day-details-text3">
                 Scattered Showers, 65°
@@ -904,7 +943,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                 Day 5
               </p>
               <p className="mytrips__weatherForecast-day-details-text2">
-                {formatDateDay(day3Date)}
+                {formatDateDay(day5Date)}
               </p>
               <p className="mytrips__weatherForecast-day-details-text3">
                 Scattered Showers, 58°
@@ -983,17 +1022,18 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       disabled={item.isEmpty}
                     />
                     <span className="custom-checkbox-box">
-                      {item.isChecked && (
+                       {item.isChecked && (
                         <img
                           className="mytrips__checkmark"
                           src={Checkmark}
                           alt="Checked"
                         />
                       )}
+
                     </span>
                     <span className="mytrips__item-name-text">
                       {item.isEmpty ? (
-                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                        <>Item {item.quantity === 0}</>
                       ) : (
                         <>{item.name}</>
                       )}
@@ -1004,7 +1044,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       <button
                         type="button"
                         className="mytrips__delete-item-button"
-                        onClick={() => handleDeleteItem("Clothes", index)}
+                        onClick={() => {
+                          console.log("Deleting:", {
+                            category: "clothes",
+                            index: index,
+                            itemName: item.name,
+                          });
+                          handleDeleteItem("clothes", index);
+                        }}
                       >
                         <img
                           src={Trashcan}
@@ -1018,7 +1065,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Decrement}
                       onClick={() =>
                         handleQuantityChange(
-                          "Clothes",
+                          "clothes",
                           index,
                           Math.max(0, item.quantity - 1)
                         )
@@ -1034,7 +1081,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Increment}
                       onClick={() =>
                         handleQuantityChange(
-                          "Clothes",
+                          "clothes",
                           index,
                           Math.max(0, item.quantity + 1)
                         )
@@ -1042,17 +1089,18 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     />
                   </div>
                 </div>
-              ))}
+              ))} 
+              
             </div>
 
-            {!isAddingItem || currentCategory !== "Clothes" ? (
+            {!isAddingItem || currentCategory !== "clothes" ? (
               <div className="mytrips__item-category-add-item">
                 <button
                   className="mytrips__item-category-add-item-button"
                   type="button"
                   onClick={() => {
                     setIsAddingItem(true);
-                    setCurrentCategory("Clothes");
+                    setCurrentCategory("clothes");
                   }}
                 >
                   <img
@@ -1094,7 +1142,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
                   <button
                     className="mytrips__item-category-add-button"
-                    onClick={() => handleAddItem("Clothes")}
+                    onClick={() => handleAddItem("clothes")}
                   >
                     Add
                   </button>
@@ -1128,7 +1176,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     </span>
                     <span className="mytrips__item-name-text">
                       {item.isEmpty ? (
-                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                        <>Item {item.quantity === 0}</>
                       ) : (
                         <>{item.name}</>
                       )}
@@ -1139,7 +1187,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       <button
                         type="button"
                         className="mytrips__delete-item-button"
-                        onClick={() => handleDeleteItem("Footwear", index)}
+                        onClick={() => {
+                          console.log("Deleting:", {
+                            category: "footwear",
+                            index: index,
+                            itemName: item.name,
+                          });
+                          handleDeleteItem("footwear", index);
+                        }}
                       >
                         <img
                           src={Trashcan}
@@ -1153,7 +1208,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Decrement}
                       onClick={() =>
                         handleQuantityChange(
-                          "Footwear",
+                          "footwear",
                           index,
                           Math.max(0, item.quantity - 1)
                         )
@@ -1169,7 +1224,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Increment}
                       onClick={() =>
                         handleQuantityChange(
-                          "Footwear",
+                          "footwear",
                           index,
                           Math.max(0, item.quantity + 1)
                         )
@@ -1180,14 +1235,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
               ))}
             </div>
 
-            {!isAddingItem || currentCategory !== "Footwear" ? (
+            {!isAddingItem || currentCategory !== "footwear" ? (
               <div className="mytrips__item-category-add-item">
                 <button
                   className="mytrips__item-category-add-item-button"
                   type="button"
                   onClick={() => {
                     setIsAddingItem(true);
-                    setCurrentCategory("Footwear");
+                    setCurrentCategory("footwear");
                   }}
                 >
                   <img
@@ -1229,7 +1284,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
                   <button
                     className="mytrips__item-category-add-button"
-                    onClick={() => handleAddItem("Clothes")}
+                    onClick={() => handleAddItem("clothes")}
                   >
                     Add
                   </button>
@@ -1262,7 +1317,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     </span>
                     <span className="mytrips__item-name-text">
                       {item.isEmpty ? (
-                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                        <>Item {item.quantity === 0}</>
                       ) : (
                         <>{item.name}</>
                       )}
@@ -1273,7 +1328,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       <button
                         type="button"
                         className="mytrips__delete-item-button"
-                        onClick={() => handleDeleteItem("Accessories", index)}
+                        onClick={() => {
+                          console.log("Deleting:", {
+                            category: "accessories",
+                            index: index,
+                            itemName: item.name,
+                          });
+                          handleDeleteItem("accessories", index);
+                        }}
                       >
                         <img
                           src={Trashcan}
@@ -1287,7 +1349,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Decrement}
                       onClick={() =>
                         handleQuantityChange(
-                          "Accessories",
+                          "accessories",
                           index,
                           Math.max(0, item.quantity - 1)
                         )
@@ -1303,7 +1365,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Increment}
                       onClick={() =>
                         handleQuantityChange(
-                          "Accessories",
+                          "accessories",
                           index,
                           Math.max(0, item.quantity + 1)
                         )
@@ -1314,14 +1376,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
               ))}
             </div>
 
-            {!isAddingItem || currentCategory !== "Accessories" ? (
+            {!isAddingItem || currentCategory !== "accessories" ? (
               <div className="mytrips__item-category-add-item">
                 <button
                   className="mytrips__item-category-add-item-button"
                   type="button"
                   onClick={() => {
                     setIsAddingItem(true);
-                    setCurrentCategory("Accessories");
+                    setCurrentCategory("accessories");
                   }}
                 >
                   <img
@@ -1363,7 +1425,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
                   <button
                     className="mytrips__item-category-add-button"
-                    onClick={() => handleAddItem("Clothes")}
+                    onClick={() => handleAddItem("clothes")}
                   >
                     Add
                   </button>
@@ -1396,7 +1458,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                     </span>
                     <span className="mytrips__item-name-text">
                       {item.isEmpty ? (
-                        <>Item {item.quantity === 0 && "(quantity)"}</>
+                        <>Item {item.quantity === 0}</>
                       ) : (
                         <>{item.name}</>
                       )}
@@ -1407,9 +1469,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       <button
                         type="button"
                         className="mytrips__delete-item-button"
-                        onClick={() =>
-                          handleDeleteItem("Personal Items", index)
-                        }
+                        onClick={() => {
+                          console.log("Deleting:", {
+                            category: "personal_items",
+                            index: index,
+                            itemName: item.name,
+                          });
+                          handleDeleteItem("personal_items", index);
+                        }}
                       >
                         <img
                           src={Trashcan}
@@ -1423,7 +1490,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Decrement}
                       onClick={() =>
                         handleQuantityChange(
-                          "Personal Items",
+                          "personal_items",
                           index,
                           Math.max(0, item.quantity - 1)
                         )
@@ -1439,7 +1506,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
                       src={Increment}
                       onClick={() =>
                         handleQuantityChange(
-                          "Personal Items",
+                          "personal_items",
                           index,
                           Math.max(0, item.quantity + 1)
                         )
@@ -1450,14 +1517,14 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
               ))}
             </div>
 
-            {!isAddingItem || currentCategory !== "Personal Items" ? (
+            {!isAddingItem || currentCategory !== "personal_items" ? (
               <div className="mytrips__item-category-add-item">
                 <button
                   className="mytrips__item-category-add-item-button"
                   type="button"
                   onClick={() => {
                     setIsAddingItem(true);
-                    setCurrentCategory("Personal Items");
+                    setCurrentCategory("personal_items");
                   }}
                 >
                   <img
@@ -1499,7 +1566,7 @@ function MyTrips({ onRemoveActivity, onTripDeleted, customStyle }) {
 
                   <button
                     className="mytrips__item-category-add-button"
-                    onClick={() => handleAddItem("Clothes")}
+                    onClick={() => handleAddItem("clothes")}
                   >
                     Add
                   </button>

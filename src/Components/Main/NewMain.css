@@ -156,10 +156,10 @@
   outline: none;
   min-width: 120px;
   flex: 1;
-
   padding: 4px;
   margin-bottom: 4px;
   width: 402px;
+  padding-left: 10px
 }
 
 .activity-input-field::placeholder {
@@ -206,7 +206,7 @@
 .newMain__input:not([id="activity"]) {
   width: 402px;
   height: 36px;
-  padding: 0;
+  padding-left: 10px;
   border-radius: 6px;
   margin-bottom: 38px;
   border-style: solid;

@@ -1,6 +1,8 @@
 import "./TripsDropbox.css";
 
 import { useNavigate } from "react-router-dom";
+import { useRef, useEffect } from "react";
+
 
 const TripsDropbox = ({
   isOpened,

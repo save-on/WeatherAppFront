@@ -1,5 +1,5 @@
 .mytrips {
- background-color: #FDF8EF;
+  background-color: #fdf8ef;
 }
 
 .mytrips__location {
@@ -7,7 +7,7 @@
   border-top: 1px solid rgba(0, 0, 0, 0.5);
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   padding-top: 40px;
-  background-color: #FDF8EF;
+  background-color: #fff;
 }
 
 .mytrips__location-destination {
@@ -15,7 +15,7 @@
   margin: auto;
   font-size: 80px;
   margin-bottom: 50px;
-    font-family: KarlaLight, sans-serif;
+  font-family: KarlaLight, sans-serif;
   font-size: 65px;
 }
 
@@ -40,7 +40,9 @@
   height: 438px;
   display: flex;
   flex-wrap: wrap;
-  background-color: #FDF8EF;
+  background-color: #fdf8ef;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
 }
 
 .mytrips__weatherForecast-title {
@@ -65,14 +67,12 @@
 .mytrips__suggested-packing-list-title {
   font-family: KarlaSemiBold, sans-serif;
   font-size: 32px;
-  
 }
 
 .mytrips__weatherForecast-day {
   width: 200px;
   height: 128px;
   display: flex;
-
 }
 
 .mytrips__weatherForecast-day-weather-image {
@@ -117,7 +117,7 @@
 }
 
 .mytrips__activity-tag-inside {
-  background-color: rgba(175, 174, 174, 1);
+  background-color: rgba(185, 229, 219, 1);
   color: #000;
   border-radius: 16px;
   padding: 4px 8px;
@@ -152,16 +152,22 @@
 }
 
 .mytrips__packing-list-items-scroll-container {
-overflow-y: auto;
-max-height: 435px;
-height: 435px;
+  overflow-y: auto;
+  max-height: 435px;
+  height: 435px;
+}
 
+.mytrips__packing-list-items-scroll-container::-webkit-scrollbar {
+  display: none;
 }
 .mytrips__item-category {
   background-color: #fff;
   border-radius: 10px;
   width: 550px;
-  height: 486px;  
+  height: 486px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid #000;
+  border-width: thin;
 }
 
 .mytrips__item-category-title {
@@ -260,6 +266,11 @@ height: 435px;
 .mytrips__item-category__added-item {
   display: flex;
   margin: 0 0 20px 20px;
+}
+
+.mytrips__item-category__added-item-checkbox:checked
+  ~ .mytrips__item-name-text {
+  text-decoration-line: line-through;
 }
 
 .mytrips__item-category__added-item:hover {
@@ -386,6 +397,13 @@ height: 435px;
   width: 1100px;
   border-radius: 10px;
   margin: auto;
+  overflow-y: auto;
+  border: 1px solid #000;
+  border-width: thin;
+}
+
+.mytrips__other-items-container::-webkit-scrollbar {
+  display: none;
 }
 
 .mytrips__email-packing-list {
@@ -394,7 +412,7 @@ height: 435px;
 }
 
 .mytrips__email-submit-button {
-  background-color: #76D1BC;
+  background-color: #76d1bc;
   color: #000;
   border-radius: 21px;
   height: 44px;
@@ -407,7 +425,7 @@ height: 435px;
 
 .mytrips__email-submit-button:hover {
   cursor: pointer;
-  background-color: #B9E5DB;
+  background-color: #b9e5db;
 }
 
 .mytrips__delete-trip {
@@ -426,6 +444,11 @@ height: 435px;
 
 .mytrips__delete-trip-button {
   cursor: pointer;
+}
+
+.mytrips__delete-trip-button:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 .mytrips__suggested-item-buttons {
